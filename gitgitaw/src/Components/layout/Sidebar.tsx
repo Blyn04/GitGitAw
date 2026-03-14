@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import {
   Home, Rocket, BookOpen, GitBranch, Github, Users, Zap,
   Terminal, FileText, Target, Trophy, MessageCircle, BookMarked,
   Settings, Menu, X, Moon, Sun,
 } from "lucide-react"
+import { loadSettings, saveSettings, applySettings } from "../../utils/settings"
 
 const navItems = [
   { label: 'Home',                 to: '/',                             icon: Home },
@@ -31,15 +32,14 @@ const mono = { fontFamily: 'JetBrains Mono, monospace' }
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
 
-  // Dark mode: default to saved preference, fallback to dark
-  const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem('theme') !== 'light'
-  })
+  const [isDark, setIsDark] = useState(() => loadSettings().theme === 'dark')
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light'
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  }, [isDark])
+  function toggleTheme() {
+    const next = { ...loadSettings(), theme: isDark ? 'light' as const : 'dark' as const }
+    saveSettings(next)
+    applySettings(next)
+    setIsDark(!isDark)
+  }
 
   const close = () => setIsOpen(false)
 
@@ -57,8 +57,9 @@ export default function Sidebar() {
         >
           <Menu size={22} />
         </button>
-        <span style={{ ...mono, fontWeight: 700, fontSize: 16, color: 'var(--text-primary)' }}>
-          🐙 GitGit Aw
+        <span style={{ ...mono, fontWeight: 700, fontSize: 16, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 7 }}>
+          <Github size={16} />
+          GitGit Aw
         </span>
       </div>
 
@@ -73,8 +74,8 @@ export default function Sidebar() {
       {/* ── Sidebar panel ──────────────────────────────────────── */}
       <aside
         className={[
-          'fixed md:sticky top-0 left-0 h-screen w-60',
-          'flex flex-col shrink-0 border-r',
+          'fixed md:sticky top-0 left-0 h-screen w-64',
+          'flex flex-col shrink-0 border-r overflow-hidden',
           'z-50 md:z-auto',
           'transition-transform duration-300 ease-in-out md:transition-none',
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
@@ -83,10 +84,10 @@ export default function Sidebar() {
       >
 
         {/* Logo */}
-        <div className="flex flex-col gap-1.5 px-5 pt-6 pb-4 shrink-0">
+        <div className="flex flex-col gap-1.5 px-4 pt-5 pb-5 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <span className="text-[22px]">🐙</span>
+              <Github size={20} style={{ color: 'var(--text-primary)' }} />
               <span style={{ ...mono, fontWeight: 700, fontSize: 17, color: 'var(--text-primary)' }}>
                 GitGit Aw
               </span>
@@ -100,15 +101,15 @@ export default function Sidebar() {
               <X size={18} />
             </button>
           </div>
-          <span style={{ ...mono, fontSize: 11, color: 'var(--text-muted)' }}>
+          <span style={{ ...mono, fontSize: 11, color: 'var(--text-muted)', marginLeft: 26 }}>
             Learn Git the Pinoy way!
           </span>
         </div>
 
         <div className="h-px shrink-0" style={{ background: 'var(--border)' }} />
 
-        {/* Main nav — scrollable */}
-        <nav className="sidebar-nav flex-1 overflow-y-auto flex flex-col gap-0.5 p-2">
+        {/* Main nav — fills space and scrolls; bottom section stays pinned below */}
+        <nav className="sidebar-nav flex-1 min-h-0 overflow-y-auto flex flex-col gap-0.5 px-3 py-3">
           {navItems.map(({ label, to, icon: Icon }) => (
             <NavLink
               key={to}
@@ -118,7 +119,7 @@ export default function Sidebar() {
               style={({ isActive }) => ({
                 ...mono,
                 display: 'flex', alignItems: 'center', gap: 10,
-                padding: '10px 12px', borderRadius: 6,
+                padding: '8px 12px', borderRadius: 6,
                 fontSize: 13,
                 fontWeight: isActive ? 500 : 400,
                 color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
@@ -136,8 +137,8 @@ export default function Sidebar() {
 
         <div className="h-px shrink-0" style={{ background: 'var(--border)' }} />
 
-        {/* Bottom nav */}
-        <nav className="flex flex-col gap-0.5 p-2 shrink-0">
+        {/* Bottom nav — pinned to bottom of sidebar */}
+        <nav className="flex flex-col gap-0.5 px-3 py-3 shrink-0">
           {bottomItems.map(({ label, to, icon: Icon }) => (
             <NavLink
               key={to}
@@ -146,7 +147,7 @@ export default function Sidebar() {
               style={{
                 ...mono,
                 display: 'flex', alignItems: 'center', gap: 10,
-                padding: '10px 12px', borderRadius: 6,
+                padding: '8px 12px', borderRadius: 6,
                 fontSize: 13, color: 'var(--text-muted)',
                 textDecoration: 'none',
               }}
@@ -156,10 +157,10 @@ export default function Sidebar() {
             </NavLink>
           ))}
 
-          {/* Dark Mode toggle */}
+          {/* Dark Mode toggle — same vertical rhythm as nav links */}
           <button
-            onClick={() => setIsDark(d => !d)}
-            className="flex items-center justify-between w-full px-3 py-3 rounded-md cursor-pointer bg-transparent border-none"
+            onClick={toggleTheme}
+            className="flex items-center justify-between w-full py-2.5 px-3 rounded-md cursor-pointer bg-transparent border-none"
             style={{ gap: 8 }}
           >
             <span className="flex items-center gap-2.5" style={{ ...mono, fontSize: 12, color: 'var(--text-muted)' }}>

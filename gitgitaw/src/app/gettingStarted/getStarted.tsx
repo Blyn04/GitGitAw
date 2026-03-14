@@ -91,7 +91,7 @@ function PageHeaderSection() {
 function GitVsGitHubSection() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#e6edf3', fontFamily: 'Inter, sans-serif', margin: 0 }}>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
         Ano ang Git at GitHub?
       </h2>
 
@@ -122,7 +122,7 @@ function GitVsGitHubSection() {
               }}
             >
               {card.useSvg ? (
-                <img src={card.icon} alt="Git logo" style={{ width: 30, height: 30, filter: 'brightness(0) invert(1)' }} />
+                <img src={card.icon} alt="Git logo" style={{ width: 30, height: 30, filter: 'var(--icon-filter)' }} />
               ) : (
                 <span style={{ fontSize: 22 }}>{card.icon}</span>
               )}
@@ -164,7 +164,7 @@ const requirements = [
 function RequirementsSection() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#e6edf3', fontFamily: 'Inter, sans-serif', margin: 0 }}>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
         Ano ang kailangan mo?
       </h2>
 
@@ -213,17 +213,17 @@ function RequirementsSection() {
         <div style={{ height: 1, background: 'var(--border)' }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <span style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            <img src={windowsLogo} alt="" style={{ width: 16, height: 16, filter: 'brightness(0) invert(1)' }} />
+            <img src={windowsLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
             Windows: I-click ang Start &gt; Settings &gt; System &gt; About
           </span>
 
           <span style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            <img src={macLogo} alt="" style={{ width: 16, height: 16, filter: 'brightness(0) invert(1)' }} />
+            <img src={macLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
             Mac: I-click ang Apple logo &gt; About This Mac
           </span>
 
           <span style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif' }}>
-             <img src={linuxLogo} alt="" style={{ width: 16, height: 16, filter: 'brightness(0) invert(1)' }} />
+             <img src={linuxLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
              Linux: I-type sa terminal: uname -a
           </span>
         </div>
@@ -310,7 +310,7 @@ function InstallGitSection() {
               gap: 8,
             }}
           >
-            <img src={macLogo} alt="" style={{ width: 18, height: 18, filter: 'brightness(0) invert(1)' }} />
+            <img src={macLogo} alt="" style={{ width: 18, height: 18, filter: 'var(--icon-filter)' }} />
             Download for Mac
           </a>
           <a
@@ -331,7 +331,7 @@ function InstallGitSection() {
               gap: 8,
             }}
           >
-            <img src={linuxLogo} alt="" style={{ width: 18, height: 18, filter: 'brightness(0) invert(1)' }} />
+            <img src={linuxLogo} alt="" style={{ width: 18, height: 18, filter: 'var(--icon-filter)' }} />
             Download for Linux
           </a>
         </div>
@@ -404,7 +404,7 @@ function InstallGitSection() {
               gap: 8,
             }}
           >
-            <img src={macLogo} alt="" style={{ width: 16, height: 16, filter: 'brightness(0) invert(1)' }} />
+            <img src={macLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
             Mac
           </span>
           <span
@@ -420,7 +420,7 @@ function InstallGitSection() {
               gap: 8,
             }}
           >
-            <img src={linuxLogo} alt="" style={{ width: 16, height: 16, filter: 'brightness(0) invert(1)' }} />
+            <img src={linuxLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
             Linux
           </span>
         </div>
@@ -441,7 +441,7 @@ function InstallGitSection() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div
               style={{
-                background: '#21262d',
+                background: 'var(--bg-tertiary)',
                 borderRadius: 4,
                 padding: '3px 8px',
                 fontSize: 12,
@@ -474,7 +474,7 @@ function InstallGitSection() {
             borderRadius: 6,
             border: '1px solid var(--accent-dim)',
             padding: '10px 14px',
-            background: 'rgba(46, 160, 67, 0.08)',
+            background: 'var(--bg-tip)',
           }}
         >
           <p style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
@@ -524,7 +524,7 @@ function InstallGitSection() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div
               style={{
-                background: '#21262d',
+                background: 'var(--bg-tertiary)',
                 borderRadius: 4,
                 padding: '3px 8px',
                 fontSize: 12,
@@ -570,7 +570,7 @@ function InstallGitSection() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div
               style={{
-                background: '#21262d',
+                background: 'var(--bg-tertiary)',
                 borderRadius: 4,
                 padding: '3px 8px',
                 fontSize: 12,
@@ -603,7 +603,7 @@ function InstallGitSection() {
             borderRadius: 6,
             border: '1px solid var(--accent-dim)',
             padding: '10px 14px',
-            background: 'rgba(46, 160, 67, 0.08)',
+            background: 'var(--bg-tip)',
           }}
         >
           <p style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
@@ -649,7 +649,7 @@ function CreateGitHubAccountSection() {
                 }}
               >
                 {card.useSvg ? (
-                  <img src={card.icon} alt="Git logo" style={{ width: 30, height: 30, filter: 'brightness(0) invert(1)' }} />
+                  <img src={card.icon} alt="Git logo" style={{ width: 30, height: 30, filter: 'var(--icon-filter)' }} />
                 ) : (
                   <span style={{ fontSize: 22 }}>{card.icon}</span>
                 )}
@@ -743,15 +743,15 @@ function CreateGitHubAccountSection() {
           marginTop: 12,
           padding: '12px 16px',
           borderRadius: 8,
-          background: 'rgba(227, 179, 65, 0.08)',
-          border: '1px solid #e3b341',
+          background: 'var(--bg-warning)',
+          border: '1px solid var(--border-warning)',
         }}
       >
         <p
           style={{
             margin: 0,
             fontSize: 13,
-            color: '#e3b341',
+            color: 'var(--text-warning)',
             fontFamily: 'Inter, sans-serif',
           }}
         >

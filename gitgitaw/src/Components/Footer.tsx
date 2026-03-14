@@ -1,10 +1,11 @@
 import React from 'react'
+import { Github, ExternalLink, Heart } from 'lucide-react'
 
 export default function Footer() {
   return (
     <footer
       style={{
-        background: '#0a0d12',
+        background: 'var(--bg-footer)',
         borderTop: '2px solid var(--accent-dim)',
         padding: '48px 56px 28px',
         display: 'flex',
@@ -16,7 +17,7 @@ export default function Footer() {
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 48, flexWrap: 'wrap' }}>
         <div style={{ width: 280, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 20 }}>🐙</span>
+            <Github size={20} style={{ color: 'var(--text-primary)' }} />
             
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
               GitGit Aw
@@ -43,8 +44,9 @@ export default function Footer() {
               padding: '7px 12px',
             }}
           >
+            <ExternalLink size={11} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--text-muted)' }}>
-              🔗  yurialfrance/GitGitAw
+              yurialfrance/GitGitAw
             </span>
           </div>
         </div>
@@ -108,7 +110,7 @@ export default function Footer() {
         </span>
 
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: 'var(--text-muted)' }}>
-          Made with ❤️ in the Philippines
+          Made with <Heart size={11} style={{ display: 'inline-block', verticalAlign: 'middle', color: '#f85149', fill: '#f85149', margin: '0 2px' }} /> in the Philippines
         </span>
       </div>
     </footer>

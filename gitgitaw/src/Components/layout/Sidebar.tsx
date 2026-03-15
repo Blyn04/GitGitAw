@@ -74,7 +74,7 @@ export default function Sidebar() {
       {/* ── Sidebar panel ──────────────────────────────────────── */}
       <aside
         className={[
-          'fixed md:sticky top-0 left-0 h-screen w-64',
+          'fixed md:sticky top-0 left-0 h-screen w-[280px]',
           'flex flex-col shrink-0 border-r overflow-hidden',
           'z-50 md:z-auto',
           'transition-transform duration-300 ease-in-out md:transition-none',
@@ -84,7 +84,7 @@ export default function Sidebar() {
       >
 
         {/* Logo */}
-        <div className="flex flex-col gap-1.5 px-4 pt-5 pb-5 shrink-0">
+        <div className="flex flex-col gap-1.5 px-5 pt-6 pb-6 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <Github size={20} style={{ color: 'var(--text-primary)' }} />
@@ -101,7 +101,7 @@ export default function Sidebar() {
               <X size={18} />
             </button>
           </div>
-          <span style={{ ...mono, fontSize: 11, color: 'var(--text-muted)', marginLeft: 26 }}>
+          <span style={{ ...mono, fontSize: 12, color: 'var(--text-muted)', marginLeft: 30 }}>
             Learn Git the Pinoy way!
           </span>
         </div>
@@ -109,7 +109,7 @@ export default function Sidebar() {
         <div className="h-px shrink-0" style={{ background: 'var(--border)' }} />
 
         {/* Main nav — fills space and scrolls; bottom section stays pinned below */}
-        <nav className="sidebar-nav flex-1 min-h-0 overflow-y-auto flex flex-col gap-0.5 px-3 py-3">
+        <nav className="sidebar-nav flex-1 min-h-0 overflow-y-auto flex flex-col gap-1.5 px-4 py-4">
           {navItems.map(({ label, to, icon: Icon }) => (
             <NavLink
               key={to}
@@ -118,18 +118,18 @@ export default function Sidebar() {
               onClick={close}
               style={({ isActive }) => ({
                 ...mono,
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '8px 12px', borderRadius: 6,
-                fontSize: 13,
-                fontWeight: isActive ? 500 : 400,
+                display: 'flex', alignItems: 'center', gap: 12,
+                padding: '10px 16px', borderRadius: 6,
+                fontSize: 14,
+                fontWeight: isActive ? 600 : 400,
                 color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
-                background: isActive ? 'var(--active-bg)' : 'transparent',
-                borderLeft: isActive ? '3px solid var(--active-border)' : '3px solid transparent',
+                background: isActive ? 'var(--accent-dim)' : 'transparent',
+                borderLeft: isActive ? '3px solid var(--accent)' : '3px solid transparent',
                 textDecoration: 'none',
                 transition: 'background 0.15s, color 0.15s',
               })}
             >
-              <Icon size={16} />
+              <Icon size={18} />
               {label}
             </NavLink>
           ))}
@@ -137,8 +137,8 @@ export default function Sidebar() {
 
         <div className="h-px shrink-0" style={{ background: 'var(--border)' }} />
 
-        {/* Bottom nav — pinned to bottom of sidebar */}
-        <nav className="flex flex-col gap-0.5 px-3 py-3 shrink-0">
+        {/* Bottom nav — pinned to bottom of sidebar; extra horizontal padding so dark mode isn't cramped */}
+        <nav className="flex flex-col gap-1.5 px-5 py-4 pb-5 shrink-0">
           {bottomItems.map(({ label, to, icon: Icon }) => (
             <NavLink
               key={to}
@@ -146,26 +146,26 @@ export default function Sidebar() {
               onClick={close}
               style={{
                 ...mono,
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '8px 12px', borderRadius: 6,
-                fontSize: 13, color: 'var(--text-muted)',
+                display: 'flex', alignItems: 'center', gap: 12,
+                padding: '10px 16px', borderRadius: 6,
+                fontSize: 14, color: 'var(--text-muted)',
                 textDecoration: 'none',
               }}
             >
-              <Icon size={16} />
+              <Icon size={18} />
               {label}
             </NavLink>
           ))}
 
-          {/* Dark Mode toggle — same vertical rhythm as nav links */}
+          {/* Dark Mode toggle — extra padding so text and toggle aren't cramped */}
           <button
             onClick={toggleTheme}
-            className="flex items-center justify-between w-full py-2.5 px-3 rounded-md cursor-pointer bg-transparent border-none"
-            style={{ gap: 8 }}
+            className="flex items-center justify-between w-full py-3 px-5 rounded-md cursor-pointer bg-transparent border-none min-w-0"
+            style={{ gap: 12 }}
           >
-            <span className="flex items-center gap-2.5" style={{ ...mono, fontSize: 12, color: 'var(--text-muted)' }}>
-              {isDark ? <Moon size={14} /> : <Sun size={14} />}
-              {isDark ? 'Dark Mode' : 'Light Mode'}
+            <span className="flex items-center gap-2.5 min-w-0 truncate" style={{ ...mono, fontSize: 14, color: 'var(--text-muted)' }}>
+              {isDark ? <Moon size={14} className="shrink-0" /> : <Sun size={14} className="shrink-0" />}
+              <span className="truncate">{isDark ? 'Dark Mode' : 'Light Mode'}</span>
             </span>
 
             {/* Toggle pill */}

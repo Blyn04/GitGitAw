@@ -6,7 +6,7 @@ export default function AppLayout() {
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
       {/* pt-12 offsets the fixed mobile top bar; removed on md+ */}
-      <main className="flex-1 overflow-y-auto h-screen pt-12 md:pt-0">
+      <main id="main-scroll" className="flex-1 overflow-y-auto h-screen pt-12 md:pt-0">
         <Outlet />
       </main>
     </div>

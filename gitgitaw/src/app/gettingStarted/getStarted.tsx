@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
 import Footer from '../../Components/Footer'
+import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 import gitHubLogo from '../../assets/github-60.svg'
 import gitLogo from '../../assets/git.svg'
 import windowsLogo from '../../assets/windows.svg'
 import macLogo from '../../assets/mac-60.svg'
 import linuxLogo from '../../assets/linux.svg'
 
+function copyToClipboard(text: string): Promise<void> {
+  return navigator.clipboard.writeText(text)
+}
+
 export default function GetStarted() {
+  const { showBackToTop, scrollToTop } = useBackToTop()
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 64, padding: '48px 56px' }}>
       <BreadcrumbSection />
@@ -18,6 +25,7 @@ export default function GetStarted() {
       <ConnectToGitHub />
       <FreeResources />
       <Footer />
+      <BackToTopButton show={showBackToTop} onClick={scrollToTop} />
     </div>
   )
 }
@@ -39,26 +47,18 @@ const gitCards = [
 
 const gitCardsSteps = [
   {
-    icon: gitHubLogo,
-    useSvg: true,
     number: '01',
     desc: 'Pumunta sa github.com.',
   },
   {
-    icon: gitLogo,
-    useSvg: true,
     number: '02',
     desc: 'I-click ang Sign Up.',
   },
   {
-    icon: gitLogo,
-    useSvg: true,
     number: '03',
     desc: 'Piliin ang Free Plan.',
   },
   {
-    icon: gitLogo,
-    useSvg: true,
     number: '04',
     desc: 'I-verify ang inyong email.',
   },
@@ -222,9 +222,9 @@ function RequirementsSection() {
             Mac: I-click ang Apple logo &gt; About This Mac
           </span>
 
-          <span style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif' }}>
-             <img src={linuxLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
-             Linux: I-type sa terminal: uname -a
+          <span style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <img src={linuxLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }}/>
+            Linux: I-type sa terminal: uname -a
           </span>
         </div>
       </div>
@@ -232,8 +232,32 @@ function RequirementsSection() {
   )
 }
 
+type OsChoice = 'windows' | 'mac' | 'linux'
+
+const DOWNLOAD_URLS: Record<OsChoice, string> = {
+  windows: 'https://git-scm.com/download/win',
+  mac: 'https://git-scm.com/download/mac',
+  linux: 'https://git-scm.com/download/linux',
+}
+
+const SHELL_LABELS: Record<OsChoice, string> = {
+  windows: 'PowerShell',
+  mac: 'Terminal',
+  linux: 'bash',
+}
+
 function InstallGitSection() {
   const [hoverStep, setHoverStep] = useState<'1' | '2' | '3' | null>(null)
+  const [copiedBlock, setCopiedBlock] = useState<string | null>(null)
+  const [selectedDownloadOs, setSelectedDownloadOs] = useState<OsChoice | null>(null)
+  const [selectedStep2Os, setSelectedStep2Os] = useState<OsChoice>('windows')
+
+  const handleCopy = (text: string, blockId: string) => {
+    copyToClipboard(text).then(() => {
+      setCopiedBlock(blockId)
+      setTimeout(() => setCopiedBlock(null), 2000)
+    })
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -271,69 +295,38 @@ function InstallGitSection() {
         </p>
 
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <a
-            href="https://git-scm.com/download/win"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              padding: '12px 20px',
-              background: 'var(--accent-dim)',
-              color: 'var(--text-primary)',
-              borderRadius: 8,
-              fontWeight: 500,
-              fontSize: 14,
-              fontFamily: 'Inter, sans-serif',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <img src={windowsLogo} alt="" style={{ width: 18, height: 18, filter: 'brightness(0) invert(1)' }} />
-            Download for Windows
-          </a>
-          <a
-            href="https://git-scm.com/download/mac"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              padding: '12px 20px',
-              border: '1px solid var(--border)',
-              color: 'var(--text-primary)',
-              borderRadius: 8,
-              fontWeight: 500,
-              fontSize: 14,
-              fontFamily: 'Inter, sans-serif',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <img src={macLogo} alt="" style={{ width: 18, height: 18, filter: 'var(--icon-filter)' }} />
-            Download for Mac
-          </a>
-          <a
-            href="https://git-scm.com/download/linux"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              padding: '12px 20px',
-              border: '1px solid var(--border)',
-              color: 'var(--text-primary)',
-              borderRadius: 8,
-              fontWeight: 500,
-              fontSize: 14,
-              fontFamily: 'Inter, sans-serif',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <img src={linuxLogo} alt="" style={{ width: 18, height: 18, filter: 'var(--icon-filter)' }} />
-            Download for Linux
-          </a>
+          {(['windows', 'mac', 'linux'] as const).map((os) => {
+            const isSelected = selectedDownloadOs !== null && selectedDownloadOs === os
+            const logos = { windows: windowsLogo, mac: macLogo, linux: linuxLogo }
+            const labels = { windows: 'Download for Windows', mac: 'Download for Mac', linux: 'Download for Linux' }
+            const imgFilter = os === 'windows' ? 'brightness(0) invert(1)' : 'var(--icon-filter)'
+            return (
+              <a
+                key={os}
+                href={DOWNLOAD_URLS[os]}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setSelectedDownloadOs(os)}
+                style={{
+                  padding: '12px 20px',
+                  background: isSelected ? 'var(--accent-dim)' : 'transparent',
+                  border: isSelected ? '1px solid var(--accent-dim)' : '1px solid var(--border)',
+                  color: 'var(--text-primary)',
+                  borderRadius: 8,
+                  fontWeight: 500,
+                  fontSize: 14,
+                  fontFamily: 'Inter, sans-serif',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <img src={logos[os]} alt="" style={{ width: 18, height: 18, filter: imgFilter }} />
+                {labels[os]}
+              </a>
+            )
+          })}
         </div>
 
         <div
@@ -374,58 +367,38 @@ function InstallGitSection() {
         </p>
 
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4 }}>
-          <span
-            style={{
-              padding: '6px 14px',
-              borderRadius: 999,
-              background: 'var(--accent-dim)',
-              color: 'var(--text-primary)',
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 12,
-              fontWeight: 500,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <img src={windowsLogo} alt="" style={{ width: 16, height: 16, filter: 'brightness(0) invert(1)' }} />
-            Windows
-          </span>
-          <span
-            style={{
-              padding: '6px 14px',
-              borderRadius: 999,
-              border: '1px solid var(--border)',
-              color: 'var(--text-muted)',
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 12,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <img src={macLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
-            Mac
-          </span>
-          <span
-            style={{
-              padding: '6px 14px',
-              borderRadius: 999,
-              border: '1px solid var(--border)',
-              color: 'var(--text-muted)',
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 12,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            <img src={linuxLogo} alt="" style={{ width: 16, height: 16, filter: 'var(--icon-filter)' }} />
-            Linux
-          </span>
+          {(['windows', 'mac', 'linux'] as const).map((os) => {
+            const isSelected = selectedStep2Os === os
+            const logos = { windows: windowsLogo, mac: macLogo, linux: linuxLogo }
+            const imgFilter = os === 'windows' ? 'brightness(0) invert(1)' : 'var(--icon-filter)'
+            return (
+              <button
+                key={os}
+                type="button"
+                onClick={() => setSelectedStep2Os(os)}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  background: isSelected ? 'var(--accent-dim)' : 'transparent',
+                  border: isSelected ? '1px solid var(--accent-dim)' : '1px solid var(--border)',
+                  color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)',
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: 12,
+                  fontWeight: isSelected ? 500 : 400,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  cursor: 'pointer',
+                }}
+              >
+                <img src={logos[os]} alt="" style={{ width: 16, height: 16, filter: imgFilter }} />
+                {os === 'windows' ? 'Windows' : os === 'mac' ? 'Mac' : 'Linux'}
+              </button>
+            )
+          })}
         </div>
 
-        {/* Code block: git --version */}
+        {/* Code block: git --version — shell label changes by OS */}
         <div
           style={{
             marginTop: 8,
@@ -449,9 +422,11 @@ function InstallGitSection() {
                 fontFamily: 'JetBrains Mono, monospace',
               }}
             >
-              bash
+              {SHELL_LABELS[selectedStep2Os]}
             </div>
-            <div
+            <button
+              type="button"
+              onClick={() => handleCopy('$ git --version', 'git-version')}
               style={{
                 borderRadius: 4,
                 border: '1px solid var(--border)',
@@ -459,10 +434,12 @@ function InstallGitSection() {
                 fontSize: 12,
                 color: 'var(--text-muted)',
                 fontFamily: 'JetBrains Mono, monospace',
+                background: 'transparent',
+                cursor: 'pointer',
               }}
             >
-              Copy
-            </div>
+              {copiedBlock === 'git-version' ? 'Copied!' : 'Copy'}
+            </button>
           </div>
           <div style={{ height: 1, background: 'var(--border)', margin: '4px 0 6px' }} />
           <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--accent)' }}>$ git --version</div>
@@ -534,7 +511,9 @@ function InstallGitSection() {
             >
               bash
             </div>
-            <div
+            <button
+              type="button"
+              onClick={() => handleCopy('$ git config --global user.name "Ang Iyong Pangalan"\n$ git config --global user.email "email@example.com"', 'config')}
               style={{
                 borderRadius: 4,
                 border: '1px solid var(--border)',
@@ -542,10 +521,12 @@ function InstallGitSection() {
                 fontSize: 12,
                 color: 'var(--text-muted)',
                 fontFamily: 'JetBrains Mono, monospace',
+                background: 'transparent',
+                cursor: 'pointer',
               }}
             >
-              Copy
-            </div>
+              {copiedBlock === 'config' ? 'Copied!' : 'Copy'}
+            </button>
           </div>
           <div style={{ height: 1, background: 'var(--border)', margin: '4px 0 6px' }} />
           <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--accent)', lineHeight: 1.6 }}>
@@ -580,7 +561,9 @@ function InstallGitSection() {
             >
               bash
             </div>
-            <div
+            <button
+              type="button"
+              onClick={() => handleCopy('$ git config --list', 'config-list')}
               style={{
                 borderRadius: 4,
                 border: '1px solid var(--border)',
@@ -588,10 +571,12 @@ function InstallGitSection() {
                 fontSize: 12,
                 color: 'var(--text-muted)',
                 fontFamily: 'JetBrains Mono, monospace',
+                background: 'transparent',
+                cursor: 'pointer',
               }}
             >
-              Copy
-            </div>
+              {copiedBlock === 'config-list' ? 'Copied!' : 'Copy'}
+            </button>
           </div>
           <div style={{ height: 1, background: 'var(--border)', margin: '4px 0 6px' }} />
           <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--accent)' }}>$ git config --list</div>
@@ -616,6 +601,8 @@ function InstallGitSection() {
 }
 
 function CreateGitHubAccountSection() {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
@@ -626,6 +613,8 @@ function CreateGitHubAccountSection() {
         {gitCardsSteps.map((card, index) => (
           <React.Fragment key={card.number}>
             <div
+              onMouseEnter={() => setHoveredCard(card.number)}
+              onMouseLeave={() => setHoveredCard(null)}
               style={{
                 flex: 1,
                 background: 'var(--bg-secondary)',
@@ -634,34 +623,18 @@ function CreateGitHubAccountSection() {
                 padding: 24,
                 display: 'flex',
                 flexDirection: 'column',
+                alignItems: 'center',
                 gap: 14,
               }}
             >
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  background: 'var(--bg-secondary)',
-                  borderRadius: 10,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {card.useSvg ? (
-                  <img src={card.icon} alt="Git logo" style={{ width: 30, height: 30, filter: 'var(--icon-filter)' }} />
-                ) : (
-                  <span style={{ fontSize: 22 }}>{card.icon}</span>
-                )}
-              </div>
-
               <h3
                 style={{
                   fontWeight: 600,
-                  fontSize: 17,
-                  color: 'var(--text-primary)',
+                  fontSize: 36,
+                  color: hoveredCard === card.number ? 'var(--accent)' : 'var(--text-primary)',
                   fontFamily: 'Inter, sans-serif',
                   margin: 0,
+                  textAlign: 'center',
                 }}
               >
                 {card.number}
@@ -674,6 +647,7 @@ function CreateGitHubAccountSection() {
                   lineHeight: 1.6,
                   fontFamily: 'Inter, sans-serif',
                   margin: 0,
+                  textAlign: 'center',
                 }}
               >
                 {card.desc}
@@ -764,6 +738,8 @@ function CreateGitHubAccountSection() {
 }
 
 function ConnectToGitHub() {
+  const [hoverProtocol, setHoverProtocol] = useState<'https' | 'ssh' | null>(null)
+
   return (
       <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
@@ -775,11 +751,13 @@ function ConnectToGitHub() {
 
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <div
+            onMouseEnter={() => setHoverProtocol('https')}
+            onMouseLeave={() => setHoverProtocol(null)}
             style={{
               flex: 1,
               minWidth: 260,
               background: 'var(--bg-secondary)',
-              border: '1px solid var(--accent-dim)',
+              border: hoverProtocol === 'https' ? '2px solid var(--accent)' : '1px solid var(--border)',
               borderRadius: 12,
               padding: 20,
               display: 'flex',
@@ -797,7 +775,7 @@ function ConnectToGitHub() {
                 background: 'var(--bg-secondary)',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: 17,
-                color: 'var(--accent-dim)',
+                color: hoverProtocol === 'https' ? 'var(--accent)' : 'var(--text-muted)',
               }}
             >
               HTTPS
@@ -813,11 +791,13 @@ function ConnectToGitHub() {
           </div>
 
           <div
+            onMouseEnter={() => setHoverProtocol('ssh')}
+            onMouseLeave={() => setHoverProtocol(null)}
             style={{
               flex: 1,
               minWidth: 260,
               background: 'var(--bg-secondary)',
-              border: '1px solid var(--border)',
+              border: hoverProtocol === 'ssh' ? '2px solid var(--accent)' : '1px solid var(--border)',
               borderRadius: 12,
               padding: 20,
               display: 'flex',
@@ -835,7 +815,7 @@ function ConnectToGitHub() {
                 background: 'var(--bg-secondary)',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: 17,
-                color: 'var(--text-muted)',
+                color: hoverProtocol === 'ssh' ? 'var(--accent)' : 'var(--text-muted)',
               }}
             >
               SSH

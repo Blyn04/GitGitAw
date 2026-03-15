@@ -6,11 +6,14 @@ import {
   ThumbsUp, Trophy, MessageSquare,
 } from 'lucide-react'
 import Footer from '../../Components/Footer'
+import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
 
 export default function BasicsPage() {
+  const { showBackToTop, scrollToTop } = useBackToTop()
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 64, padding: '48px 56px' }}>
       <BreadcrumbSection />
@@ -25,6 +28,7 @@ export default function BasicsPage() {
       <Sec8Quiz />
       <Sec9Next />
       <Footer />
+      <BackToTopButton show={showBackToTop} onClick={scrollToTop} />
     </div>
   )
 }
@@ -104,7 +108,7 @@ function SectionHeader({ title, subtitle }: { title: string; subtitle: string })
 
 function BreadcrumbSection() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 14 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'Inter, sans-serif', fontSize: 13 }}>
       <span style={{ color: 'var(--accent-dim)' }}>Home</span>
       <span style={{ color: 'var(--text-muted)' }}>{'>'}</span>
       <span style={{ color: 'var(--text-muted)' }}>The Basics</span>

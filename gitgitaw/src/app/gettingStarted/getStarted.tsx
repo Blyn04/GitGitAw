@@ -896,6 +896,7 @@ function FreeResources() {
               <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
                 Pro Git Book
               </h3>
+
               <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
                 Libreng online book na talagang malalim magturo ng Git. Perfect kapag gusto mo nang mag-advance.
               </p>
@@ -917,6 +918,7 @@ function FreeResources() {
               <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
                 Learn Git Branching
               </h3>
+
               <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
                 Mga website tulad ng Git Kata at iba pa kung saan pwede kang mag-practice ng Git commands.
               </p>
@@ -938,6 +940,7 @@ function FreeResources() {
               <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
                 Git Practice Sites
               </h3>
+              
               <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
                 Mga website tulad ng Git Kata at iba pa kung saan pwede kang mag-practice ng Git commands.
               </p>

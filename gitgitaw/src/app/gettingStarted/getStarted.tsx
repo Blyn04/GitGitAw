@@ -432,7 +432,7 @@ function InstallGitSection() {
                 border: '1px solid var(--border)',
                 padding: '4px 8px',
                 fontSize: 12,
-                color: 'var(--text-muted)',
+                color: copiedBlock === 'git-version' ? 'var(--accent)' : 'var(--text-muted)',
                 fontFamily: 'JetBrains Mono, monospace',
                 background: 'transparent',
                 cursor: 'pointer',
@@ -519,7 +519,7 @@ function InstallGitSection() {
                 border: '1px solid var(--border)',
                 padding: '4px 8px',
                 fontSize: 12,
-                color: 'var(--text-muted)',
+                color: copiedBlock === 'config' ? 'var(--accent)' : 'var(--text-muted)',
                 fontFamily: 'JetBrains Mono, monospace',
                 background: 'transparent',
                 cursor: 'pointer',
@@ -569,7 +569,7 @@ function InstallGitSection() {
                 border: '1px solid var(--border)',
                 padding: '4px 8px',
                 fontSize: 12,
-                color: 'var(--text-muted)',
+                color: copiedBlock === 'config-list' ? 'var(--accent)' : 'var(--text-muted)',
                 fontFamily: 'JetBrains Mono, monospace',
                 background: 'transparent',
                 cursor: 'pointer',
@@ -940,7 +940,7 @@ function FreeResources() {
               <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
                 Git Practice Sites
               </h3>
-              
+
               <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
                 Mga website tulad ng Git Kata at iba pa kung saan pwede kang mag-practice ng Git commands.
               </p>

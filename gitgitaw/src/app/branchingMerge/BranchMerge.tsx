@@ -119,28 +119,29 @@ export default function BranchMerge() {
           Visual Branch
         </h2>
         <p style={{ ...mono, fontSize: 13, color: 'var(--text-muted)', margin: 0, textAlign: 'center' }}>
-          // ganito ang structure ng branching sa git
+          Ganito ang structure ng branching sa git
         </p>
         <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 4, padding: 24, minHeight: 210 }}>
           <svg width="100%" height="180" viewBox="0 0 400 180" style={{ overflow: 'visible' }}>
-            <path d="M 40 90 H 120" stroke="var(--accent)" strokeWidth="2" fill="none" />
-            <path d="M 120 90 H 200" stroke="var(--accent)" strokeWidth="2" fill="none" />
-            <path d="M 200 90 H 280" stroke="var(--accent)" strokeWidth="2" fill="none" />
-            <path d="M 280 90 H 360" stroke="var(--accent)" strokeWidth="2" fill="none" />
-            <path d="M 200 90 V 150 H 280" stroke="#79c0ff" strokeWidth="2" fill="none" />
-            <path d="M 280 150 H 360" stroke="#79c0ff" strokeWidth="2" fill="none" />
+            {/* main branch — green horizontal line with commits */}
+            <path d="M 40 90 H 120 H 200 H 280 H 360" stroke="var(--accent)" strokeWidth="2" fill="none" />
+            {/* feature branch — light blue: diverge at commit 1, two commits, merge back to main */}
+            <path d="M 120 90 L 120 150 H 200 H 280 L 280 90" stroke="#79c0ff" strokeWidth="2" fill="none" />
+            {/* main commit circles (green) */}
             <circle cx="40" cy="90" r="11" fill="var(--accent)" />
             <circle cx="120" cy="90" r="11" fill="var(--accent)" />
             <circle cx="200" cy="90" r="11" fill="var(--accent)" />
             <circle cx="280" cy="90" r="11" fill="var(--accent)" />
             <circle cx="360" cy="90" r="11" fill="var(--accent)" />
+            {/* feature commit circles (light blue) */}
+            <circle cx="200" cy="150" r="11" fill="#79c0ff" />
             <circle cx="280" cy="150" r="11" fill="#79c0ff" />
-            <circle cx="360" cy="150" r="11" fill="#79c0ff" />
+            {/* labels */}
             <text x="20" y="85" fill="var(--accent)" style={{ fontFamily: 'JetBrains Mono', fontSize: 12, fontWeight: 700 }}>main</text>
-            <text x="195" y="75" fill="var(--accent)" style={{ fontFamily: 'JetBrains Mono', fontSize: 11 }}>1</text>
-            <text x="275" y="75" fill="#ffa657" style={{ fontFamily: 'JetBrains Mono', fontSize: 10 }}>MERGE</text>
-            <text x="255" y="140" fill="#79c0ff" style={{ fontFamily: 'JetBrains Mono', fontSize: 12, fontWeight: 700 }}>feature</text>
-            <text x="265" y="105" fill="#ffa657" style={{ fontFamily: 'JetBrains Mono', fontSize: 10 }}>HEAD</text>
+            <text x="105" y="75" fill="var(--accent)" style={{ fontFamily: 'JetBrains Mono', fontSize: 11 }}>1</text>
+            <text x="268" y="72" fill="#ffa657" style={{ fontFamily: 'JetBrains Mono', fontSize: 10, fontWeight: 600 }}>MERGE</text>
+            <text x="272" y="88" fill="#ffa657" style={{ fontFamily: 'JetBrains Mono', fontSize: 10 }}>HEAD</text>
+            <text x="200" y="168" fill="#79c0ff" style={{ fontFamily: 'JetBrains Mono', fontSize: 12, fontWeight: 700 }}>feature</text>
           </svg>
         </div>
         <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--accent)', borderRadius: 4, padding: '14px 16px' }}>

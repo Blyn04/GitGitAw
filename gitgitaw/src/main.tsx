@@ -12,7 +12,11 @@ import GitHubEssentials from './app/githubEssentials/GitHubEssentials'
 import Collaboration from './app/collaboration/Collaboration'
 import MergeConflicts from './app/mergeConflicts/MergeConflicts'
 import CheatSheet from './app/cheatSheet/CheatSheet'
+import ConventionalCommits from './app/conventionalCommits/ConventionalCommits'
+import PracticeProjects from './app/practiceProjects/PracticeProjects'
+import ProjectPage from './app/practiceProjects/ProjectPage'
 import SettingsPage from './app/settings/Settings'
+import Challenges from './app/challenges/Challenges'
 
 // Apply persisted settings before first render
 applySettings(loadSettings())
@@ -29,8 +33,12 @@ createRoot(document.getElementById('root')!).render(
           <Route path="lessons/github-essentials" element={<GitHubEssentials />} />
           <Route path="lessons/collaboration"     element={<Collaboration />} />
           <Route path="lessons/merge-conflicts"   element={<MergeConflicts />} />
-          <Route path="lessons/cheat-sheet"       element={<CheatSheet />} />
-          <Route path="settings"                  element={<SettingsPage />} />
+          <Route path="lessons/cheat-sheet"          element={<CheatSheet />} />
+          <Route path="lessons/conventional-commits" element={<ConventionalCommits />} />
+          <Route path="lessons/practice"             element={<PracticeProjects />} />
+          <Route path="lessons/practice/:projectId"  element={<ProjectPage />} />
+          <Route path="lessons/challenges"             element={<Challenges />} />
+          <Route path="settings"                     element={<SettingsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

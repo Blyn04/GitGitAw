@@ -41,7 +41,7 @@ function useRevealChildren(ref: React.RefObject<HTMLElement | null>) {
 
 export default function HomePage() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 64, padding: '48px 56px' }}>
+    <div className="home-page">
       <HeroSection />
       <FeaturesSection />
       <QuickPathSection />
@@ -122,13 +122,7 @@ function TerminalBlock() {
   }
 
   return (
-    <div className="hero-animate hero-d5" style={{
-      width: 500, flexShrink: 0,
-      background: 'var(--bg-code)',
-      border: '1px solid var(--border)',
-      borderRadius: 12, overflow: 'hidden',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
-    }}>
+    <div className="hero-animate hero-d5 hero-terminal">
       {/* Title bar */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
@@ -183,9 +177,9 @@ function TerminalBlock() {
 
 function HeroSection() {
   return (
-    <div style={{ display: 'flex', gap: 56, alignItems: 'center' }}>
+    <div className="hero-layout">
       {/* Left */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 28 }}>
+      <div className="hero-left">
         {/* Badge */}
         <div className="hero-animate hero-d1" style={{ display: 'inline-flex', alignSelf: 'flex-start' }}>
           <div style={{
@@ -208,11 +202,7 @@ function HeroSection() {
         </div>
 
         {/* Heading */}
-        <h1 className="hero-animate hero-d2" style={{
-          fontSize: 54, fontWeight: 800, lineHeight: 1.12,
-          color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif',
-          letterSpacing: '-0.02em', margin: 0,
-        }}>
+        <h1 className="hero-animate hero-d2 hero-heading">
           Handa ka na bang<br />
           <span style={{ color: 'var(--accent)' }}>matuto ng Git?</span>
         </h1>
@@ -227,7 +217,7 @@ function HeroSection() {
         </p>
 
         {/* CTAs */}
-        <div className="hero-animate hero-d4" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <div className="hero-animate hero-d4 hero-ctas">
           <a
             href="/lessons/getting-started"
             style={{
@@ -298,7 +288,7 @@ function FeaturesSection() {
         <h2 style={{ fontSize: 32, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>Bakit GitGit Aw?</h2>
         <p style={{ color: 'var(--text-muted)', marginTop: 8, fontSize: 16, fontFamily: 'Inter, sans-serif' }}>Dinisenyo para sa mga Pinoy developers na gustong matuto nang tama.</p>
       </div>
-      <div ref={cardsRef} style={{ display: 'flex', gap: 20 }}>
+      <div ref={cardsRef} className="features-grid">
         {features.map(f => (
           <div key={f.title} style={{ flex: 1, background: 'var(--bg-tertiary)', border: '1px solid var(--border)', borderRadius: 12, padding: 28, display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ width: 48, height: 48, background: 'var(--active-bg)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-dim)' }}>
@@ -332,7 +322,7 @@ function QuickPathSection() {
         <h2 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>Saan ka magsisimula?</h2>
         <p style={{ color: 'var(--text-muted)', marginTop: 8, fontSize: 15, fontFamily: 'Inter, sans-serif' }}>Sundan lang ito para maging Git pro ka in no time!</p>
       </div>
-      <div ref={stepsRef} style={{ display: 'flex', alignItems: 'center' }}>
+      <div ref={stepsRef} className="steps-row">
         {steps.map((step, i) => (
           <React.Fragment key={step.num}>
             <div style={{ flex: 1, background: 'var(--bg-tertiary)', border: `1px solid ${step.active ? 'var(--active-border)' : 'var(--border)'}`, borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -344,7 +334,7 @@ function QuickPathSection() {
               <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>{step.desc}</p>
             </div>
             {i < steps.length - 1 && (
-              <div style={{ padding: '0 8px', fontSize: 24, color: 'var(--border)', flexShrink: 0 }}>→</div>
+              <div className="step-arrow">→</div>
             )}
           </React.Fragment>
         ))}

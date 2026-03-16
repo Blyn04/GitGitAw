@@ -15,7 +15,7 @@ export default function BasicsPage() {
   const { showBackToTop, scrollToTop } = useBackToTop()
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 64, padding: '48px 56px' }}>
+    <div className="lesson-page">
       <BreadcrumbSection />
       <HeaderSection />
       <Sec1VersionControl />
@@ -119,7 +119,7 @@ function BreadcrumbSection() {
 function HeaderSection() {
   return (
     <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <h1 style={{ ...sans, fontSize: 36, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>The Basics</h1>
+      <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>The Basics</h1>
       <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
         Ang pinaka-importanteng konsepto ng Git. Malinaw at praktikal.
       </p>
@@ -135,7 +135,7 @@ function Sec1VersionControl() {
       </h2>
 
       {/* Big card */}
-      <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 32, display: 'flex', gap: 32 }}>
+      <div className="basics-big-card" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 32 }}>
         {/* Left */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <span style={{ ...sans, fontSize: 18, fontWeight: 700, color: 'var(--text-link)' }}>Isipin mo ito...</span>
@@ -144,7 +144,7 @@ function Sec1VersionControl() {
           </p>
         </div>
         {/* Right — git log panel */}
-        <div style={{ width: 296, flexShrink: 0, background: 'var(--bg-code)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+        <div className="basics-log-panel" style={{ background: 'var(--bg-code)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-tertiary)', padding: '8px 14px', gap: 8 }}>
             <span style={{ ...mono, fontSize: 9, color: 'var(--text-muted)' }}>● ● ●</span>
             <span style={{ ...mono, fontSize: 11, color: 'var(--text-muted)' }}>git log --oneline</span>
@@ -166,7 +166,7 @@ function Sec1VersionControl() {
       </div>
 
       {/* 3 mini concept cards */}
-      <div style={{ display: 'flex', gap: 20 }}>
+      <div className="lesson-cards-row">
         {([
           { Icon: Camera,    title: 'Snapshot',    desc: 'Bawat commit ay parang litrato ng code mo sa isang specific na oras.' },
           { Icon: RotateCcw, title: 'Time Travel', desc: 'Pwede kang bumalik sa mas lumang version kung may nasira.' },
@@ -201,7 +201,7 @@ function Sec2Terms() {
       <SectionHeader title="Mga Importanteng Terms" subtitle="Mga salitang madalas mong makikita sa Git:" />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {Array.from({ length: Math.ceil(terms.length / 2) }, (_, row) => (
-          <div key={row} style={{ display: 'flex', gap: 16 }}>
+          <div key={row} className="lesson-cards-row">
             {terms.slice(row * 2, row * 2 + 2).map(t => (
               <div key={t.title} style={{ flex: 1, background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 10, padding: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <t.Icon size={20} style={{ color: 'var(--accent-dim)' }} />
@@ -243,7 +243,7 @@ function Sec3Workflow() {
       <SectionHeader title="Ang Git Workflow" subtitle="Ganito ang typical flow kapag gumagamit ka ng Git:" />
       <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
         {/* Flow row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="basics-flow-row">
           {stageBox(<FolderOpen size={18} style={{ color: 'var(--text-muted)' }} />, 'Working Dir', 'local files')}
           {arrow('git add')}
           {stageBox(<Layers size={18} style={{ color: 'var(--text-muted)' }} />, 'Staging Area', 'git add')}
@@ -354,7 +354,7 @@ function Sec5Commands() {
       <SectionHeader title="Mga Basic Commands" subtitle="Mga commands na madalas mong gagamitin:" />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {commands.map(c => (
-          <div key={c.cmd} style={{ display: 'flex', alignItems: 'center', gap: 24, background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 8, padding: '14px 20px' }}>
+          <div key={c.cmd} className="basics-cmd-row" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 8, padding: '14px 20px' }}>
             <code style={{ ...mono, fontSize: 13, color: 'var(--text-link)', whiteSpace: 'nowrap' }}>{c.cmd}</code>
             <span style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', flex: 1 }}>{c.desc}</span>
           </div>

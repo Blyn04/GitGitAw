@@ -40,7 +40,7 @@ export default function BranchMerge() {
   const { showBackToTop, scrollToTop } = useBackToTop()
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 64, padding: '48px 56px' }}>
+    <div className="lesson-page">
       {/* Breadcrumb */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 12 }}>
         <span style={{ color: 'var(--accent-dim)' }}>Home</span>
@@ -50,7 +50,7 @@ export default function BranchMerge() {
 
       {/* Page header */}
       <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <h1 style={{ ...sans, fontSize: 40, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+        <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
           Branching & Merging
         </h1>
         <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>

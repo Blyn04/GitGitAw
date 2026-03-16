@@ -15,7 +15,7 @@ export default function GetStarted() {
   const { showBackToTop, scrollToTop } = useBackToTop()
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 64, padding: '48px 56px' }}>
+    <div className="lesson-page">
       <BreadcrumbSection />
       <PageHeaderSection />
       <GitVsGitHubSection />
@@ -77,7 +77,7 @@ function BreadcrumbSection() {
 function PageHeaderSection() {
   return (
     <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <h1 style={{ fontSize: 40, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
+      <h1 className="lesson-page-title" style={{ fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
         Getting Started
       </h1>
       
@@ -95,7 +95,7 @@ function GitVsGitHubSection() {
         Ano ang Git at GitHub?
       </h2>
 
-      <div style={{ display: 'flex', gap: 20 }}>
+      <div className="lesson-cards-row">
         {gitCards.map((card) => (
           <div
             key={card.title}
@@ -168,7 +168,7 @@ function RequirementsSection() {
         Ano ang kailangan mo?
       </h2>
 
-      <div style={{ display: 'flex', gap: 20 }}>
+      <div className="lesson-cards-row">
         {requirements.map((req) => (
           <div
             key={req.title}
@@ -609,7 +609,7 @@ function CreateGitHubAccountSection() {
         Gumawa ng GitHub Account
       </h2>
 
-      <div style={{ display: 'flex', alignItems: 'stretch', gap: 8 }}>
+      <div className="lesson-steps-row">
         {gitCardsSteps.map((card, index) => (
           <React.Fragment key={card.number}>
             <div
@@ -654,17 +654,7 @@ function CreateGitHubAccountSection() {
               </p>
             </div>
             {index < gitCardsSteps.length - 1 && (
-              <div
-                style={{
-                  alignSelf: 'center',
-                  padding: '0 4px',
-                  fontSize: 22,
-                  color: 'var(--border)',
-                  flexShrink: 0,
-                }}
-              >
-                →
-              </div>
+              <div className="lesson-step-arrow">→</div>
             )}
           </React.Fragment>
         ))}

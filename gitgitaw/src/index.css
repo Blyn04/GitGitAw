@@ -357,13 +357,19 @@ body {
     background: #0d1117;
   }
 
-  #main-scroll {
-    overflow: visible;
-    height: auto;
+  /* AppLayout outer wrapper: "flex h-screen overflow-hidden"
+     clips content at viewport height, preventing the browser
+     from seeing the full document for pagination.
+     Remove those constraints so all pages are reachable.      */
+  .flex.h-screen.overflow-hidden {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
   }
 
-  .lesson-page {
-    padding: 16px;
-    gap: 24px;
+  /* Main scroll container — same fix */
+  #main-scroll {
+    overflow: visible !important;
+    height: auto !important;
   }
 }

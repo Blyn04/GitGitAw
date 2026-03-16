@@ -312,9 +312,9 @@ export default function Collaboration() {
         <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 16 }}>
           <h3 style={{ ...sans, fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>PR Anatomy</h3>
           {([
-            { Icon: ClipboardList, label: 'Title',       desc: 'Malinaw na buod ng ginawang changes' },
+            { Icon: ClipboardList, label: 'Title',       desc: 'Malinaw na summary ng ginawang changes' },
             { Icon: FileText,      label: 'Description', desc: 'Detalye ng changes, bakit ginawa, at paano i-test' },
-            { Icon: User,          label: 'Reviewers',   desc: 'Mga taong hihiling mong i-review ang iyong code' },
+            { Icon: User,          label: 'Reviewers',   desc: 'Mga taong magre-review ng code mo' },
             { Icon: Tag,           label: 'Labels',      desc: 'Kategorya ng PR (bug, feature, docs, etc.)' },
             { Icon: Target,        label: 'Milestone',   desc: 'Kung saang release o sprint kabilang ang PR' },
             { Icon: CheckCheck,    label: 'Checks',      desc: 'Automated tests at CI/CD status bago i-merge' },

@@ -341,3 +341,29 @@ body {
     transform: none !important;
   }
 }
+
+/* ── Print styles ────────────────────────────────────── */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #0d1117;
+  }
+
+  #main-scroll {
+    overflow: visible;
+    height: auto;
+  }
+
+  .lesson-page {
+    padding: 16px;
+    gap: 24px;
+  }
+}

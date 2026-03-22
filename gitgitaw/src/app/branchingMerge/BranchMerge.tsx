@@ -113,38 +113,70 @@ export default function BranchMerge() {
         </div>
       </section>
 
-      {/* Sec2 Visual Branch */}
+      {/* Sec2 Visual Branch — matches pencil design (Tree Diagram Container) */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '32px 40px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12 }}>
-        <h2 style={{ ...mono, fontSize: 22, fontWeight: 600, color: 'var(--accent)', margin: 0, textAlign: 'center' }}>
+        <h2 style={{ ...mono, fontSize: 22, fontWeight: 600, color: 'var(--accent)', margin: 0, textAlign: 'left' }}>
           Visual Branch
         </h2>
-        <p style={{ ...mono, fontSize: 13, color: 'var(--text-muted)', margin: 0, textAlign: 'center' }}>
-          Ganito ang structure ng branching sa git
+        <p style={{ ...mono, fontSize: 13, color: 'var(--text-muted)', margin: 0, textAlign: 'left' }}>
+          // ganito ang structure ng branching sa git
         </p>
-        <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 4, padding: 24, minHeight: 210 }}>
-          <svg width="100%" height="180" viewBox="0 0 400 180" style={{ overflow: 'visible' }}>
-            {/* main branch — green horizontal line with commits */}
-            <path d="M 40 90 H 120 H 200 H 280 H 360" stroke="var(--accent)" strokeWidth="2" fill="none" />
-            {/* feature branch — light blue: diverge at commit 1, two commits, merge back to main */}
-            <path d="M 120 90 L 120 150 H 200 H 280 L 280 90" stroke="#79c0ff" strokeWidth="2" fill="none" />
-            {/* main commit circles (green) */}
-            <circle cx="40" cy="90" r="11" fill="var(--accent)" />
-            <circle cx="120" cy="90" r="11" fill="var(--accent)" />
-            <circle cx="200" cy="90" r="11" fill="var(--accent)" />
-            <circle cx="280" cy="90" r="11" fill="var(--accent)" />
-            <circle cx="360" cy="90" r="11" fill="var(--accent)" />
-            {/* feature commit circles (light blue) */}
-            <circle cx="200" cy="150" r="11" fill="#79c0ff" />
-            <circle cx="280" cy="150" r="11" fill="#79c0ff" />
-            {/* labels */}
-            <text x="20" y="85" fill="var(--accent)" style={{ fontFamily: 'JetBrains Mono', fontSize: 12, fontWeight: 700 }}>main</text>
-            <text x="105" y="75" fill="var(--accent)" style={{ fontFamily: 'JetBrains Mono', fontSize: 11 }}>1</text>
-            <text x="268" y="72" fill="#ffa657" style={{ fontFamily: 'JetBrains Mono', fontSize: 10, fontWeight: 600 }}>MERGE</text>
-            <text x="272" y="88" fill="#ffa657" style={{ fontFamily: 'JetBrains Mono', fontSize: 10 }}>HEAD</text>
-            <text x="200" y="168" fill="#79c0ff" style={{ fontFamily: 'JetBrains Mono', fontSize: 12, fontWeight: 700 }}>feature</text>
+        <div
+          style={{
+            background: 'var(--bg-primary)',
+            border: '1px solid var(--border)',
+            borderRadius: 4,
+            padding: '20px 16px 24px',
+            minHeight: 210,
+          }}
+        >
+          {/*
+            Layout from gitgitaw-pencil-design.pen — Sec2 Visual ng Branch:
+            main: 4 commits (1, 2, MERGE, 3); feature splits at 2, commits A & B, merges at MERGE; HEAD at merge.
+          */}
+          <svg width="100%" height="200" viewBox="0 0 520 200" preserveAspectRatio="xMidYMid meet" style={{ overflow: 'visible', display: 'block' }}>
+            {/* Main branch — single horizontal line (accent) */}
+            <line x1="52" y1="92" x2="468" y2="92" stroke="var(--accent)" strokeWidth="3" strokeLinecap="round" />
+            {/* Feature branch: down from commit 2, across with A & B, up to merge */}
+            <path
+              d="M 138 92 L 138 158 L 262 158 L 262 92"
+              fill="none"
+              stroke="#79c0ff"
+              strokeWidth="3"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+            />
+            {/* Main commit nodes */}
+            <circle cx="52" cy="92" r="11" fill="var(--accent)" />
+            <circle cx="138" cy="92" r="11" fill="var(--accent)" />
+            <circle cx="262" cy="92" r="11" fill="var(--accent)" />
+            <circle cx="468" cy="92" r="11" fill="var(--accent)" />
+            {/* Feature commits A, B */}
+            <circle cx="178" cy="158" r="11" fill="#79c0ff" />
+            <circle cx="222" cy="158" r="11" fill="#79c0ff" />
+            {/* Labels — main, 1, 2, MERGE, 3 */}
+            <text x="8" y="96" fill="var(--accent)" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, fontWeight: 700 }}>main</text>
+            <text x="52" y="58" fill="var(--accent)" textAnchor="middle" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11 }}>1</text>
+            <text x="138" y="58" fill="var(--accent)" textAnchor="middle" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11 }}>2</text>
+            <text x="262" y="52" fill="#ffa657" textAnchor="middle" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, fontWeight: 600 }}>MERGE</text>
+            <text x="468" y="58" fill="var(--accent)" textAnchor="middle" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11 }}>3</text>
+            {/* HEAD — below merge node, small connector (pencil design) */}
+            <line x1="262" y1="108" x2="262" y2="118" stroke="#79c0ff" strokeWidth="2" />
+            <text x="262" y="134" fill="#ffa657" textAnchor="middle" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10 }}>HEAD</text>
+            {/* Feature branch labels */}
+            <text x="178" y="142" fill="#79c0ff" textAnchor="middle" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11 }}>A</text>
+            <text x="222" y="142" fill="#79c0ff" textAnchor="middle" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11 }}>B</text>
+            <text x="100" y="188" fill="#79c0ff" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, fontWeight: 700 }}>feature</text>
           </svg>
         </div>
-        <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--accent)', borderRadius: 4, padding: '14px 16px' }}>
+        <div
+          style={{
+            background: 'var(--bg-primary)',
+            border: '1px solid var(--accent)',
+            borderRadius: 4,
+            padding: '14px 16px',
+          }}
+        >
           <p style={{ ...mono, fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
             ang main branch ay patuloy na nag-iipon ng commits. ang feature branch ay nagsisimula sa isang commit point, may sariling history, at maaaring bumalik sa main.
           </p>

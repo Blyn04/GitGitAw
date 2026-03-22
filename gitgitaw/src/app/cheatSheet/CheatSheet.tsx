@@ -17,7 +17,7 @@ function CheatCard({
   commands: CmdRow[]
 }) {
   return (
-    // cheat-card → tells print CSS "don't slice this card across a page"
+    // cheat-card → print CSS keeps one section together; cheat-card-row = table-like rows when printing
     <div className="cheat-card" style={{
       flex: 1,
       background: '#161b22',
@@ -28,13 +28,13 @@ function CheatCard({
       gap: 14,
       borderLeft: `4px solid ${accent}`,
     }}>
-      <span style={{ ...mono, fontSize: 10, fontWeight: 700, color: accent }}>{tag}</span>
-      <h3 style={{ ...sans, fontSize: 18, fontWeight: 700, color: '#e6edf3', margin: 0 }}>{title}</h3>
-      <div style={{ height: 1, background: '#30363d' }} />
+      <span className="cheat-card-tag" style={{ ...mono, fontSize: 10, fontWeight: 700, color: accent }}>{tag}</span>
+      <h3 className="cheat-card-title" style={{ ...sans, fontSize: 18, fontWeight: 700, color: '#e6edf3', margin: 0 }}>{title}</h3>
+      <div className="cheat-card-divider" style={{ height: 1, background: '#30363d' }} />
       {commands.map((row) => (
-        <div key={row.cmd} style={{ display: 'flex', gap: 12, width: '100%' }}>
-          <span style={{ ...mono, fontSize: 12, color: accent, flexShrink: 0, width: 210 }}>{row.cmd}</span>
-          <span style={{ ...sans, fontSize: 12, color: '#8b949e' }}>{row.desc}</span>
+        <div key={row.cmd} className="cheat-card-row" style={{ display: 'flex', gap: 12, width: '100%' }}>
+          <span className="cheat-cmd" style={{ ...mono, fontSize: 12, color: accent, flexShrink: 0, width: 210 }}>{row.cmd}</span>
+          <span className="cheat-desc" style={{ ...sans, fontSize: 12, color: '#8b949e' }}>{row.desc}</span>
         </div>
       ))}
     </div>
@@ -44,68 +44,129 @@ function CheatCard({
 export default function CheatSheet() {
   const { showBackToTop, scrollToTop } = useBackToTop()
 
-  // ─── Print-only styles ───────────────────────────────────────────────────
-  //
-  // How pagination works:
-  //   • @page sets the paper size and margins for every printed page.
-  //   • .print-page      → break-after: page forces a new page AFTER this group.
-  //   • .print-page-last → no forced break (it's the final group).
-  //   • .cheat-card      → break-inside: avoid keeps one card on one page.
-  //   • .cheat-row       → break-inside: avoid keeps a pair of cards together.
-  //
-  // Screen styles are kept as inline styles on the JSX elements themselves;
-  // this block only overrides what needs to change for print.
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─── Print / PDF: clean “document” layout (readable like a simple Word handout) ───
   const printCss = `
     @media print {
       @page {
         size: A4 portrait;
-        margin: 15mm 12mm;
+        margin: 18mm 16mm;
       }
 
-      /* Strip the screen wrapper's padding/gap so the page groups
-         fill the full printable area without extra whitespace. */
-      .lesson-page {
+      html, body {
+        background: #ffffff !important;
+        color: #1a1a1a !important;
+      }
+
+      .lesson-page.cheat-sheet-page {
         padding: 0 !important;
-        gap: 10mm !important;
+        gap: 0 !important;
         max-width: 100% !important;
+        background: #ffffff !important;
+        font-family: 'Segoe UI', 'Calibri', 'Inter', Arial, sans-serif !important;
       }
 
-      /* Hide everything that makes no sense in a PDF */
       .no-print {
         display: none !important;
       }
 
-      /* ── Page groups ───────────────────────────────────────────────
-         Each .print-page ends with a hard page break.
-         .print-page-last has no break so the browser doesn't
-         emit an unwanted blank final page.                          */
-      .print-page {
-        break-after: page;
-        page-break-after: always;
-        gap: 8mm !important;
+      /* Title block — black on white */
+      .cheat-sheet-page header h1,
+      .cheat-sheet-page header p {
+        color: #111111 !important;
       }
 
+      /* Natural flow; no forced blank pages between groups */
+      .print-page,
       .print-page-last {
-        break-after: auto;
-        page-break-after: auto;
-        gap: 8mm !important;
+        break-after: auto !important;
+        page-break-after: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
       }
 
-      /* ── Card rules ────────────────────────────────────────────────
-         Prevent a card from being sliced mid-content across pages.
-         If both cards in a row fit on the remaining space they stay
-         together; if not, the whole row moves to the next page.    */
-      .cheat-card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
+      /* One column on paper — easier to scan */
       .cheat-row {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        gap: 10px !important;
+        flex-direction: column !important;
         flex-wrap: nowrap !important;
+        gap: 14px !important;
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+      }
+
+      .cheat-card {
+        flex: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        background: #ffffff !important;
+        border: 1px solid #cccccc !important;
+        border-left: 4px solid #333333 !important;
+        border-radius: 4px !important;
+        padding: 14px 16px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        box-shadow: none !important;
+      }
+
+      .cheat-card-tag {
+        color: #444444 !important;
+        font-size: 9pt !important;
+        letter-spacing: 0.04em !important;
+      }
+
+      .cheat-card-title {
+        color: #000000 !important;
+        font-size: 13pt !important;
+        font-weight: 700 !important;
+      }
+
+      .cheat-card-divider {
+        background: #cccccc !important;
+        height: 1px !important;
+      }
+
+      .cheat-card-row {
+        display: grid !important;
+        grid-template-columns: minmax(0, 38%) 1fr !important;
+        gap: 12px 16px !important;
+        align-items: start !important;
+        padding: 6px 0 !important;
+        border-bottom: 1px solid #e8e8e8 !important;
+      }
+
+      .cheat-card-row:last-child {
+        border-bottom: none !important;
+      }
+
+      .cheat-cmd {
+        color: #000000 !important;
+        font-family: Consolas, 'Courier New', monospace !important;
+        font-size: 9.5pt !important;
+        font-weight: 600 !important;
+        width: auto !important;
+        flex-shrink: 1 !important;
+        word-break: break-word !important;
+      }
+
+      .cheat-desc {
+        color: #333333 !important;
+        font-family: 'Segoe UI', 'Calibri', 'Inter', Arial, sans-serif !important;
+        font-size: 10pt !important;
+        line-height: 1.45 !important;
+      }
+
+      /* Pro tips box — subtle gray, not dark terminal */
+      .cheat-sheet-page .cheat-print-protips {
+        background: #f5f5f5 !important;
+        border: 1px solid #bbbbbb !important;
+        border-radius: 4px !important;
+        padding: 14px 16px !important;
+        break-inside: avoid !important;
+      }
+
+      .cheat-sheet-page .cheat-print-protips span,
+      .cheat-sheet-page .cheat-print-protips p {
+        color: #222222 !important;
       }
     }
   `
@@ -119,7 +180,7 @@ export default function CheatSheet() {
   const rowStyle: React.CSSProperties = { display: 'flex', gap: 20, flexWrap: 'wrap' }
 
   return (
-    <div className="lesson-page">
+    <div className="lesson-page cheat-sheet-page">
       <style>{printCss}</style>
 
       {/* Breadcrumb — hidden in print */}
@@ -303,15 +364,18 @@ export default function CheatSheet() {
         </div>
 
         {/* Pro Tips Banner — inside page 3 so it stays on the same printed page */}
-        <div style={{
-          background: '#0d2818',
-          border: '1px solid #238636',
-          borderRadius: 12,
-          padding: '20px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 12,
-        }}>
+        <div
+          className="cheat-print-protips"
+          style={{
+            background: '#0d2818',
+            border: '1px solid #238636',
+            borderRadius: 12,
+            padding: '20px 24px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+          }}
+        >
           <span style={{ ...sans, fontSize: 15, fontWeight: 700, color: '#3fb950' }}>💡  Pro Tips</span>
           <p style={{ ...sans, fontSize: 13, color: '#8b949e', lineHeight: 1.7, margin: 0, whiteSpace: 'pre-line' }}>
             {'• Laging mag-commit nang madalas — kahit maliit na change.\n• Gumamit ng descriptive branch names: feature/add-login, bugfix/fix-nav.\n• Bago mag-push, laging i-pull muna para maiwasan ang conflicts.\n• Huwag i-force push sa main/main branch ng shared repo.'}

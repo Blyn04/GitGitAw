@@ -75,6 +75,26 @@ body {
   animation-duration:  0ms !important;
 }
 
+/* ── Route / page transition (AppLayout outlet wrapper) ─ */
+@keyframes pageOutletEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-outlet-transition {
+  animation: pageOutletEnter 0.38s ease-out both;
+}
+
+[data-reduce-motion="true"] .page-outlet-transition {
+  animation: none !important;
+}
+
 /* ── Sidebar scrollbar ──────────────────────────────── */
 .sidebar-nav::-webkit-scrollbar        { width: 4px; }
 .sidebar-nav::-webkit-scrollbar-track  { background: transparent; }

@@ -67,7 +67,7 @@ export default function BranchMerge() {
         <div style={{ background: 'var(--bg-secondary)', borderLeft: '4px solid var(--accent-dim)', borderRadius: 12, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'center' }}>
           <span style={{ fontSize: 40 }}></span>
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <h3 style={{ ...sans, fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+            <h3 style={{ ...sans, fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
               Ang Branch = Hiwalay na Kopya ng Code
             </h3>
             <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>

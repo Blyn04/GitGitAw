@@ -54,6 +54,18 @@
   --border-warning: #d4a017;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -93,6 +105,343 @@ body {
 
 [data-reduce-motion="true"] .page-outlet-transition {
   animation: none !important;
+}
+
+/* ── Collaboration: Code Review — equal columns + Uiverse-style glow cards ─
+   Inspired by Uiverse.io / SouravBandyopadhyay (notification), adapted for theme tokens */
+.code-review-pairs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  align-items: stretch;
+}
+
+.code-review-pairs-grid .cr-col-head {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  align-self: end;
+  padding-bottom: 2px;
+}
+
+@media (max-width: 639px) {
+  .code-review-pairs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.uiverse-review-card {
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  position: relative;
+  width: 100%;
+  min-height: 8.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 15px;
+  --ui-gradient: linear-gradient(to bottom, #2eadff, #3d83ff, #7e61ff);
+  --ui-accent: #58a6ff;
+  background: color-mix(in srgb, var(--bg-secondary) 90%, #2eadff 10%);
+}
+
+[data-theme="light"] .uiverse-review-card {
+  background: color-mix(in srgb, var(--bg-secondary) 94%, #3d83ff 6%);
+  --ui-accent: #0969da;
+}
+
+.uiverse-review-card::before {
+  position: absolute;
+  content: "";
+  inset: 1px;
+  border-radius: 0.9375rem;
+  background: var(--bg-primary);
+  z-index: 2;
+}
+
+.uiverse-review-card::after {
+  position: absolute;
+  content: "";
+  width: 0.25rem;
+  inset: 0.65rem auto 0.65rem 0.5rem;
+  border-radius: 0.125rem;
+  background: var(--ui-gradient);
+  transition: transform 300ms ease;
+  z-index: 4;
+}
+
+.uiverse-review-card:hover::after {
+  transform: translateX(0.15rem);
+}
+
+/* Glow sits top-left (radial origin upper-left) */
+.uiverse-notiglow,
+.uiverse-notiborderglow {
+  position: absolute;
+  width: 22rem;
+  height: 22rem;
+  left: 0;
+  top: 0;
+  transform: translate(-42%, -42%);
+  background: radial-gradient(
+    circle 55% at 28% 28%,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.15) 45%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.uiverse-notiglow {
+  z-index: 3;
+}
+
+.uiverse-notiborderglow {
+  z-index: 1;
+}
+
+.uiverse-review-card:hover .uiverse-notiglow,
+.uiverse-review-card:hover .uiverse-notiborderglow {
+  opacity: 0.12;
+}
+
+.uiverse-review-card__content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1rem 1rem 1.1rem 1.35rem;
+  height: 100%;
+  min-height: 8.5rem;
+  box-sizing: border-box;
+}
+
+.uiverse-review-card__content > svg {
+  color: var(--ui-accent);
+  flex-shrink: 0;
+}
+
+.uiverse-notititle {
+  color: var(--ui-accent);
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
+  transition: transform 300ms ease;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.uiverse-review-card:hover .uiverse-notititle {
+  transform: translateX(0.15rem);
+}
+
+.uiverse-notibody {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  margin: 0;
+  transition: transform 300ms ease;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.uiverse-review-card:hover .uiverse-notibody {
+  transform: translateX(0.25rem);
+}
+
+[data-reduce-motion="true"] .uiverse-review-card::after,
+[data-reduce-motion="true"] .uiverse-review-card .uiverse-notititle,
+[data-reduce-motion="true"] .uiverse-review-card .uiverse-notibody {
+  transition: none !important;
+}
+
+[data-reduce-motion="true"] .uiverse-review-card:hover::after {
+  transform: none !important;
+}
+
+[data-reduce-motion="true"] .uiverse-review-card:hover .uiverse-notititle,
+[data-reduce-motion="true"] .uiverse-review-card:hover .uiverse-notibody {
+  transform: none !important;
+}
+
+/* ── Settings: Madflows-style theme toggle (Uiverse.io) ─ */
+.settings-theme-toggle {
+  position: relative;
+  width: 96px;
+  height: 48px;
+  flex-shrink: 0;
+  --st-track-dark: #28292c;
+  --st-track-light: #d8dbe0;
+  --st-knob-moon: #d8dbe0;
+  --st-knob-solid: #28292c;
+  --st-border: #28292c;
+}
+
+[data-theme="light"] .settings-theme-toggle {
+  --st-track-dark: #424a53;
+  --st-border: #6e7781;
+  --st-knob-solid: #24292f;
+}
+
+.settings-theme-toggle__label {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  cursor: pointer;
+  border: 3px solid var(--st-border);
+  background-color: transparent;
+  margin: 0;
+  display: block;
+}
+
+.settings-theme-toggle__checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.settings-theme-toggle__slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  transition: background-color 0.3s ease;
+  background-color: var(--st-track-dark);
+}
+
+.settings-theme-toggle__checkbox:checked ~ .settings-theme-toggle__slider {
+  background-color: var(--st-track-light);
+}
+
+.settings-theme-toggle__slider::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  box-shadow: inset 11px -4px 0 0 var(--st-knob-moon);
+  background-color: var(--st-track-dark);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.settings-theme-toggle__checkbox:checked ~ .settings-theme-toggle__slider::before {
+  transform: translateX(48px);
+  background-color: var(--st-knob-solid);
+  box-shadow: none;
+}
+
+[data-reduce-motion="true"] .settings-theme-toggle__slider,
+[data-reduce-motion="true"] .settings-theme-toggle__slider::before {
+  transition: none !important;
+}
+
+/* ── Sidebar nav: hover + click feedback ─ */
+.sidebar-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition:
+    transform 0.22s ease,
+    background-color 0.22s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.22s ease;
+}
+
+.sidebar-nav-link:hover {
+  transform: translateX(5px);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.sidebar-nav-link:active {
+  transform: translateX(3px) scale(0.97);
+  transition-duration: 0.08s;
+}
+
+.sidebar-nav-link svg {
+  flex-shrink: 0;
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.sidebar-nav-link:hover svg {
+  transform: scale(1.1);
+  color: var(--accent);
+}
+
+.sidebar-nav-link--active {
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--accent-dim);
+  border-left-color: var(--accent);
+}
+
+.sidebar-nav-link--active svg {
+  color: var(--accent);
+}
+
+.sidebar-nav-link--active:hover {
+  background-color: color-mix(in srgb, var(--accent-dim) 88%, var(--accent) 12%);
+}
+
+.sidebar-nav-link--bottom {
+  border-left-color: transparent;
+}
+
+.sidebar-nav-link--bottom.sidebar-nav-link--active {
+  border-left-color: var(--accent);
+}
+
+.sidebar-topbar-btn,
+.sidebar-close-btn {
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  border-radius: 8px;
+}
+
+.sidebar-topbar-btn:hover,
+.sidebar-close-btn:hover {
+  transform: scale(1.06);
+  background-color: var(--bg-tertiary);
+}
+
+.sidebar-topbar-btn:active,
+.sidebar-close-btn:active {
+  transform: scale(0.94);
+}
+
+[data-reduce-motion="true"] .sidebar-nav-link:hover,
+[data-reduce-motion="true"] .sidebar-nav-link:active {
+  transform: none;
+}
+
+[data-reduce-motion="true"] .sidebar-nav-link:hover svg {
+  transform: none;
+}
+
+[data-reduce-motion="true"] .sidebar-topbar-btn:hover,
+[data-reduce-motion="true"] .sidebar-topbar-btn:active,
+[data-reduce-motion="true"] .sidebar-close-btn:hover,
+[data-reduce-motion="true"] .sidebar-close-btn:active {
+  transform: none;
 }
 
 /* ── Sidebar scrollbar ──────────────────────────────── */

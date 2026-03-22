@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Moon, Sun } from 'lucide-react'
 import { loadSettings, saveSettings, applySettings, DEFAULT_SETTINGS, type AppSettings, type AccentColor, type Theme } from '../../utils/settings'
 import Footer from '../../Components/Footer'
 
@@ -69,32 +68,24 @@ function SectionCard({ title, children }: { title: string; children: React.React
   )
 }
 
-// ── Theme selector ───────────────────────────────────────────────────
+// ── Theme toggle (Madflows / Uiverse.io style) ─────────────────────────
 
-function ThemeSelector({ value, onChange }: { value: Theme; onChange: (v: Theme) => void }) {
-  const options: { id: Theme; label: string; Icon: React.ElementType }[] = [
-    { id: 'dark',  label: 'Dark',  Icon: Moon },
-    { id: 'light', label: 'Light', Icon: Sun },
-  ]
+function ThemeToggleSwitch({ value, onChange }: { value: Theme; onChange: (v: Theme) => void }) {
+  const isLight = value === 'light'
   return (
-    <div style={{ display: 'flex', gap: 8 }}>
-      {options.map(o => (
-        <button
-          key={o.id}
-          onClick={() => onChange(o.id)}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '7px 14px', borderRadius: 8, cursor: 'pointer',
-            border: value === o.id ? '1px solid var(--active-border)' : '1px solid var(--border)',
-            background: value === o.id ? 'var(--active-bg)' : 'transparent',
-            color: value === o.id ? 'var(--text-primary)' : 'var(--text-muted)',
-            ...sans, fontSize: 13, fontWeight: value === o.id ? 600 : 400,
-            transition: 'all 0.15s',
-          }}
-        >
-          <o.Icon size={14} /> {o.label}
-        </button>
-      ))}
+    <div className="settings-theme-toggle" title={isLight ? 'Light theme' : 'Dark theme'}>
+      <label className="settings-theme-toggle__label" htmlFor="gitgitaw-theme-toggle">
+        <span className="sr-only">Piliin ang light o dark theme</span>
+        <input
+          id="gitgitaw-theme-toggle"
+          type="checkbox"
+          className="settings-theme-toggle__checkbox"
+          checked={isLight}
+          onChange={(e) => onChange(e.target.checked ? 'light' : 'dark')}
+          aria-label={isLight ? 'Naka-light theme; i-off para sa dark' : 'Naka-dark theme; i-on para sa light'}
+        />
+        <span className="settings-theme-toggle__slider" aria-hidden />
+      </label>
     </div>
   )
 }
@@ -167,7 +158,12 @@ export default function SettingsPage() {
             title="Theme"
             desc="Piliin ang dark o light na kulay ng app."
           >
-            <ThemeSelector value={settings.theme} onChange={v => update('theme', v)} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <ThemeToggleSwitch value={settings.theme} onChange={v => update('theme', v)} />
+              <span style={{ ...sans, fontSize: 13, color: 'var(--text-muted)' }}>
+                {settings.theme === 'light' ? 'Light' : 'Dark'}
+              </span>
+            </div>
           </SettingRow>
           <SettingRow
             title="Accent Color"

@@ -204,6 +204,57 @@ function QuizSection() {
   )
 }
 
+// ── Code Review — equal-width grid + Uiverse-style glow cards ───────────
+
+type CodeReviewCardDef = { Icon: React.ElementType; title: string; desc: string }
+
+const CODE_REVIEW_REVIEWER_CARDS: CodeReviewCardDef[] = [
+  { Icon: Target,        title: 'Maging Specific',       desc: "Huwag lang sabihing 'Mali ito.' Sabihin kung bakit at ano ang mas mainam na gawin." },
+  { Icon: MessageSquare, title: 'Maging Constructive',   desc: 'Ang layunin ay mapabuti ang code, hindi mapahiya ang author. Magbigay ng suggestions, hindi criticisms.' },
+  { Icon: CheckCircle2,  title: 'Approve Kapag Handa',   desc: 'Huwag mag-nitpick ng walang halaga. Kapag okay na ang code at safe na i-merge, i-approve na.' },
+  { Icon: Search,        title: 'Tingnan ang Logic',     desc: 'Huwag lang tingnan ang style — tingnan din ang logic, edge cases, at performance.' },
+]
+
+const CODE_REVIEW_AUTHOR_CARDS: CodeReviewCardDef[] = [
+  { Icon: Heart,        title: 'Huwag Maging Defensive',     desc: 'Ang review ay tungkol sa code, hindi sa iyo. Tanggapin ang feedback nang bukas ang isip.' },
+  { Icon: Lightbulb,    title: 'Magtanong Kung Hindi Malinaw', desc: 'Kung hindi mo maintindihan ang comment ng reviewer, magtanong. Mas magaling ang nagtatanong kaysa sa nagtatago ng ignorance.' },
+  { Icon: CheckCircle2, title: 'Mark as Resolved',           desc: "Pagkatapos ayusin ang binago, i-mark ang conversation bilang 'Resolved' para malaman ng reviewer na naalagaan na ito." },
+  { Icon: RefreshCw,    title: 'Be Open to Changes',         desc: 'Minsan, mas magaling ang reviewer sa isang partikular na area. Maging bukas sa mas magandang solusyon.' },
+]
+
+function CodeReviewGlowCard({ Icon: I, title, desc }: CodeReviewCardDef) {
+  return (
+    <div className="uiverse-review-card">
+      <div className="uiverse-notiborderglow" aria-hidden />
+      <div className="uiverse-notiglow" aria-hidden />
+      <div className="uiverse-review-card__content">
+        <I size={18} strokeWidth={1.75} />
+        <h4 className="uiverse-notititle">{title}</h4>
+        <p className="uiverse-notibody">{desc}</p>
+      </div>
+    </div>
+  )
+}
+
+function CollaborationCodeReviewCards() {
+  return (
+    <div className="code-review-pairs-grid">
+      <h3 className="cr-col-head">Para sa Reviewers</h3>
+      <h3 className="cr-col-head">Para sa PR Author</h3>
+      {CODE_REVIEW_REVIEWER_CARDS.map((c, i) => (
+        <React.Fragment key={c.title}>
+          <CodeReviewGlowCard Icon={c.Icon} title={c.title} desc={c.desc} />
+          <CodeReviewGlowCard
+            Icon={CODE_REVIEW_AUTHOR_CARDS[i].Icon}
+            title={CODE_REVIEW_AUTHOR_CARDS[i].title}
+            desc={CODE_REVIEW_AUTHOR_CARDS[i].desc}
+          />
+        </React.Fragment>
+      ))}
+    </div>
+  )
+}
+
 // ── Page ──────────────────────────────────────────────────────────────
 
 export default function Collaboration() {
@@ -455,65 +506,7 @@ Nag-implement ng [feature name] para sa [reason].
           Ang code review ay ang proseso ng pagsusuri ng code ng ibang developer bago ito i-merge. Ito ay isa sa pinakamahalagang bahagi ng collaboration.
         </p>
 
-        {(() => {
-          const reviewerCards = [
-            { Icon: Target,        title: 'Maging Specific',       desc: "Huwag lang sabihing 'Mali ito.' Sabihin kung bakit at ano ang mas mainam na gawin." },
-            { Icon: MessageSquare, title: 'Maging Constructive',   desc: 'Ang layunin ay mapabuti ang code, hindi mapahiya ang author. Magbigay ng suggestions, hindi criticisms.' },
-            { Icon: CheckCircle2,  title: 'Approve Kapag Handa',   desc: 'Huwag mag-nitpick ng walang halaga. Kapag okay na ang code at safe na i-merge, i-approve na.' },
-            { Icon: Search,        title: 'Tingnan ang Logic',     desc: 'Huwag lang tingnan ang style — tingnan din ang logic, edge cases, at performance.' },
-          ] as { Icon: React.ElementType; title: string; desc: string }[]
-          const authorCards = [
-            { Icon: Heart,        title: 'Huwag Maging Defensive',     desc: 'Ang review ay tungkol sa code, hindi sa iyo. Tanggapin ang feedback nang bukas ang isip.' },
-            { Icon: Lightbulb,    title: 'Magtanong Kung Hindi Malinaw', desc: 'Kung hindi mo maintindihan ang comment ng reviewer, magtanong. Mas magaling ang nagtatanong kaysa sa nagtatago ng ignorance.' },
-            { Icon: CheckCircle2, title: 'Mark as Resolved',           desc: "Pagkatapos ayusin ang binago, i-mark ang conversation bilang 'Resolved' para malaman ng reviewer na naalagaan na ito." },
-            { Icon: RefreshCw,    title: 'Be Open to Changes',         desc: 'Minsan, mas magaling ang reviewer sa isang partikular na area. Maging bukas sa mas magandang solusyon.' },
-          ] as { Icon: React.ElementType; title: string; desc: string }[]
-
-          const cardShell: React.CSSProperties = {
-            background: 'var(--bg-secondary)',
-            border: '1px solid var(--border)',
-            borderRadius: 12,
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 10,
-            height: '100%',
-            minHeight: 0,
-          }
-
-          return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-end' }}>
-                <h3 style={{ ...sans, fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: 0, flex: '1 1 200px' }}>Para sa Reviewers</h3>
-                <h3 style={{ ...sans, fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: 0, flex: '1 1 200px' }}>Para sa PR Author</h3>
-              </div>
-              {reviewerCards.map((c, i) => {
-                const a = authorCards[i]
-                return (
-                  <div
-                    key={c.title}
-                    style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'stretch' }}
-                  >
-                    <div style={{ flex: '1 1 280px', display: 'flex', minWidth: 0 }}>
-                      <div style={cardShell}>
-                        <c.Icon size={18} style={{ color: 'var(--accent-dim)', flexShrink: 0 }} />
-                        <h4 style={{ ...sans, fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{c.title}</h4>
-                        <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>{c.desc}</p>
-                      </div>
-                    </div>
-                    <div style={{ flex: '1 1 280px', display: 'flex', minWidth: 0 }}>
-                      <div style={cardShell}>
-                        <a.Icon size={18} style={{ color: 'var(--accent-dim)', flexShrink: 0 }} />
-                        <h4 style={{ ...sans, fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{a.title}</h4>
-                        <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>{a.desc}</p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )
-        })()}
+        <CollaborationCodeReviewCards />
       </section>
 
       {/* Sec6 — Forking */}

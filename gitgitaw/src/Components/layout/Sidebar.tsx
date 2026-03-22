@@ -40,8 +40,9 @@ export default function Sidebar() {
         style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}
       >
         <button
+          type="button"
           onClick={() => setIsOpen(true)}
-          className="flex items-center p-1 cursor-pointer bg-transparent border-none"
+          className="sidebar-topbar-btn flex items-center p-1 cursor-pointer bg-transparent border-none"
           style={{ color: 'var(--text-primary)' }}
         >
           <Menu size={22} />
@@ -83,8 +84,9 @@ export default function Sidebar() {
             </div>
             {/* Close button — mobile only */}
             <button
+              type="button"
               onClick={close}
-              className="md:hidden flex items-center p-1 cursor-pointer bg-transparent border-none"
+              className="sidebar-close-btn md:hidden flex items-center p-1 cursor-pointer bg-transparent border-none"
               style={{ color: 'var(--text-muted)' }}
             >
               <X size={18} />
@@ -133,13 +135,9 @@ export default function Sidebar() {
               key={to}
               to={to}
               onClick={close}
-              style={{
-                ...mono,
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '10px 16px', borderRadius: 6,
-                fontSize: 14, color: 'var(--text-muted)',
-                textDecoration: 'none',
-              }}
+              className={({ isActive }) =>
+                `sidebar-nav-link sidebar-nav-link--bottom ${isActive ? 'sidebar-nav-link--active' : ''}`.trim()
+              }
             >
               <Icon size={18} />
               {label}

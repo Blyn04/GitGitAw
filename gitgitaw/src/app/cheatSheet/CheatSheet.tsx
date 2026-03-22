@@ -46,7 +46,44 @@ export default function CheatSheet() {
 
   // ─── Print / PDF: clean “document” layout (readable like a simple Word handout) ───
   const printCss = `
+    .cheat-print-brand {
+      display: none !important;
+    }
+
     @media print {
+      .cheat-print-brand {
+        display: block !important;
+        margin: 0 0 16px !important;
+        padding: 0 0 14px !important;
+        border-bottom: 2px solid #1a1a1a !important;
+        text-align: center !important;
+      }
+
+      .cheat-print-brand strong {
+        display: block !important;
+        font-family: 'Segoe UI', 'Inter', Arial, sans-serif !important;
+        font-size: 18pt !important;
+        font-weight: 700 !important;
+        color: #111111 !important;
+        letter-spacing: -0.02em !important;
+      }
+
+      .cheat-print-brand__sub {
+        display: block !important;
+        margin-top: 4px !important;
+        font-family: 'Segoe UI', 'Inter', Arial, sans-serif !important;
+        font-size: 11pt !important;
+        font-weight: 500 !important;
+        color: #444444 !important;
+      }
+
+      .cheat-print-brand__url {
+        display: block !important;
+        margin-top: 2px !important;
+        font-size: 9pt !important;
+        color: #666666 !important;
+        font-family: Consolas, 'Courier New', monospace !important;
+      }
       @page {
         size: A4 portrait;
         margin: 18mm 16mm;
@@ -182,6 +219,13 @@ export default function CheatSheet() {
   return (
     <div className="lesson-page cheat-sheet-page">
       <style>{printCss}</style>
+
+      {/* Branding — visible only in print / Save as PDF */}
+      <div className="cheat-print-brand" aria-hidden="true">
+        <strong>GitGit Aw</strong>
+        <span className="cheat-print-brand__sub">Command Cheat Sheet</span>
+        <span className="cheat-print-brand__url">Learn Git the Pinoy way</span>
+      </div>
 
       {/* Breadcrumb — hidden in print */}
       <div className="no-print" style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 12 }}>

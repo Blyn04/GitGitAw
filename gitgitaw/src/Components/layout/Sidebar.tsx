@@ -3,9 +3,8 @@ import { NavLink } from "react-router-dom"
 import {
   Home, Rocket, BookOpen, GitBranch, Github, Users, Zap,
   Terminal, FileText, Target, Trophy, MessageCircle, BookMarked,
-  Settings, Menu, X, Moon, Sun,
+  Settings, Menu, X,
 } from "lucide-react"
-import { loadSettings, saveSettings, applySettings } from "../../utils/settings"
 
 const navItems = [
   { label: 'Home',                 to: '/',                             icon: Home },
@@ -31,16 +30,6 @@ const mono = { fontFamily: 'JetBrains Mono, monospace' }
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
-
-  const [isDark, setIsDark] = useState(() => loadSettings().theme === 'dark')
-
-  function toggleTheme() {
-    const next = { ...loadSettings(), theme: isDark ? 'light' as const : 'dark' as const }
-    saveSettings(next)
-    applySettings(next)
-    setIsDark(!isDark)
-  }
-
   const close = () => setIsOpen(false)
 
   return (
@@ -156,36 +145,6 @@ export default function Sidebar() {
               {label}
             </NavLink>
           ))}
-
-          {/* Dark Mode toggle — extra padding so text and toggle aren't cramped */}
-          <button
-            onClick={toggleTheme}
-            className="flex items-center justify-between w-full py-3 px-5 rounded-md cursor-pointer bg-transparent border-none min-w-0"
-            style={{ gap: 12 }}
-          >
-            <span className="flex items-center gap-2.5 min-w-0 truncate" style={{ ...mono, fontSize: 14, color: 'var(--text-muted)' }}>
-              {isDark ? <Moon size={14} className="shrink-0" /> : <Sun size={14} className="shrink-0" />}
-              <span className="truncate">{isDark ? 'Dark Mode' : 'Light Mode'}</span>
-            </span>
-
-            {/* Toggle pill */}
-            <div
-              className="relative shrink-0 rounded-full transition-colors duration-300"
-              style={{
-                width: 44, height: 24,
-                background: isDark ? 'var(--accent-dim)' : 'var(--border)',
-                padding: 2,
-              }}
-            >
-              <div
-                className="absolute top-0.5 rounded-full bg-white transition-all duration-300"
-                style={{
-                  width: 20, height: 20,
-                  left: isDark ? 'calc(100% - 22px)' : 2,
-                }}
-              />
-            </div>
-          </button>
         </nav>
       </aside>
     </>

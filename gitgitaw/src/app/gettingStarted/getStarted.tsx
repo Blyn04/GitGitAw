@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 import gitHubLogo from '../../assets/github-60.svg'
@@ -973,8 +974,8 @@ function FreeResources() {
           >
             Susunod na hakbang: ang unang tunay mong Git workflow.
           </p>
-          <a
-            href="#"
+          <Link
+            to="/lessons/the-basics"
             style={{
               marginTop: 4,
               padding: '10px 22px',
@@ -988,7 +989,7 @@ function FreeResources() {
             }}
           >
             Dumiretso na sa “The Basics”
-          </a>
+          </Link>
         </div>
       </>
     )

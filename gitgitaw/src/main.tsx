@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ScrollToTop from './Components/ScrollToTop'
 import './index.css'
 import { loadSettings, applySettings } from './utils/settings'
 import AppLayout from './Components/layout/AppLayout'
@@ -24,6 +25,7 @@ applySettings(loadSettings())
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />

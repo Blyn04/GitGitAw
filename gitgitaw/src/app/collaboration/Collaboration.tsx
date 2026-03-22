@@ -97,12 +97,24 @@ const QUESTIONS = [
 function QuizSection() {
   const [answers, setAnswers] = useState<(number | null)[]>([null, null, null])
   const [submitted, setSubmitted] = useState(false)
+  const [showValidation, setShowValidation] = useState(false)
 
-  const score = submitted ? answers.filter((a, i) => a !== null && QUESTIONS[i].opts[a].correct).length : 0
+  const allAnswered = answers.every(a => a !== null)
+  const score = submitted ? answers.filter((a, i) => a !== null && QUESTIONS[i].opts[a!].correct).length : 0
 
   function pick(qi: number, oi: number) {
     if (submitted) return
+    setShowValidation(false)
     setAnswers(prev => prev.map((v, i) => (i === qi ? oi : v)))
+  }
+
+  function handleSubmit() {
+    if (!allAnswered) {
+      setShowValidation(true)
+      return
+    }
+    
+    setSubmitted(true)
   }
 
   return (
@@ -156,18 +168,26 @@ function QuizSection() {
       ))}
 
       {!submitted ? (
-        <button
-          type="button"
-          onClick={() => setSubmitted(true)}
-          style={{
-            ...sans, fontSize: 14, fontWeight: 700, cursor: 'pointer',
-            padding: '12px 24px', borderRadius: 8,
-            background: 'var(--accent-dim)', color: 'var(--text-on-accent)',
-            border: 'none', alignSelf: 'flex-start',
-          }}
-        >
-          I-submit ang Answers
-        </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {showValidation && (
+            <p style={{ ...sans, fontSize: 13, color: 'var(--text-warning)', margin: 0 }}>
+              Paki-pili muna ang sagot sa lahat ng tanong bago mag-submit.
+            </p>
+          )}
+          <button
+            type="button"
+            onClick={handleSubmit}
+            style={{
+              ...sans, fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              padding: '12px 24px', borderRadius: 8,
+              background: allAnswered ? 'var(--accent-dim)' : 'var(--bg-tertiary)',
+              color: allAnswered ? 'var(--text-on-accent)' : 'var(--text-muted)',
+              border: 'none', alignSelf: 'flex-start',
+            }}
+          >
+            I-submit ang Answers
+          </button>
+        </div>
       ) : (
         <div style={{ background: 'var(--active-bg)', border: '1px solid var(--accent-dim)', borderRadius: 12, padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
           <span style={{ ...sans, fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>

@@ -11,6 +11,7 @@ const ACCENT_META: { id: AccentColor; label: string; dark: string; light: string
   { id: 'blue',   label: 'Blue',   dark: '#79c0ff', light: '#0969da' },
   { id: 'purple', label: 'Purple', dark: '#d2a8ff', light: '#8250df' },
   { id: 'orange', label: 'Orange', dark: '#ffa657', light: '#bc4c00' },
+  { id: 'yellow', label: 'Yellow', dark: '#e3b341', light: '#9a6700' },
 ]
 
 // ── Small reusable primitives ────────────────────────────────────────

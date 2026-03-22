@@ -1,5 +1,5 @@
 export type Theme       = 'dark' | 'light'
-export type AccentColor = 'green' | 'blue' | 'purple' | 'orange'
+export type AccentColor = 'green' | 'blue' | 'purple' | 'orange' | 'yellow'
 
 export interface AppSettings {
   theme:         Theme
@@ -35,6 +35,10 @@ const ACCENT_PRESETS: Record<AccentColor, Record<Theme, {
   orange: {
     dark:  { accent: '#ffa657', dim: '#e16d2a', activeBg: '#3d1f07', activeBorder: '#e16d2a', bgTip: 'rgba(225,109,42,0.10)', codeBg: '#161b22', codeCmd: '#ffa657', bgDarkGreen: '#3d1f07' },
     light: { accent: '#bc4c00', dim: '#953800', activeBg: '#fff1e5', activeBorder: '#bc4c00', bgTip: '#fff1e5',               codeBg: '#161b22', codeCmd: '#ffa657', bgDarkGreen: '#3d1f07' },
+  },
+  yellow: {
+    dark:  { accent: '#e3b341', dim: '#d4a72c', activeBg: '#3d3507', activeBorder: '#d4a72c', bgTip: 'rgba(227,179,65,0.12)', codeBg: '#161b22', codeCmd: '#e3b341', bgDarkGreen: '#3d3507' },
+    light: { accent: '#9a6700', dim: '#9a6700', activeBg: '#fff8dc', activeBorder: '#9a6700', bgTip: '#fff8dc',               codeBg: '#161b22', codeCmd: '#b08600', bgDarkGreen: '#fff8dc' },
   },
 }
 

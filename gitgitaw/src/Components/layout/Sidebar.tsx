@@ -73,12 +73,15 @@ export default function Sidebar() {
         style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}
       >
 
-        {/* Logo */}
-        <div className="flex flex-col gap-1.5 px-5 pt-6 pb-6 shrink-0">
+        {/* Logo — hover matches nav gradient accent */}
+        <div className="sidebar-brand-block flex flex-col gap-1.5 px-5 pt-6 pb-6 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <Github size={20} style={{ color: 'var(--text-primary)' }} />
-              <span style={{ ...mono, fontWeight: 700, fontSize: 17, color: 'var(--text-primary)' }}>
+              <Github size={20} className="sidebar-brand-icon" style={{ color: 'var(--text-primary)' }} />
+              <span
+                className="sidebar-brand-title"
+                style={{ ...mono, fontWeight: 700, fontSize: 17, color: 'var(--text-primary)' }}
+              >
                 GitGit Aw
               </span>
             </div>
@@ -107,18 +110,21 @@ export default function Sidebar() {
               to={to}
               end={to === '/'}
               onClick={close}
-              style={({ isActive }) => ({
-                ...mono,
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '10px 16px', borderRadius: 6,
-                fontSize: 14,
-                fontWeight: isActive ? 600 : 400,
-                color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
-                background: isActive ? 'var(--accent-dim)' : 'transparent',
-                borderLeft: isActive ? '3px solid var(--accent)' : '3px solid transparent',
-                textDecoration: 'none',
-                transition: 'background 0.15s, color 0.15s',
-              })}
+              // style={({ isActive }) => ({
+              //   ...mono,
+              //   display: 'flex', alignItems: 'center', gap: 12,
+              //   padding: '10px 16px', borderRadius: 6,
+              //   fontSize: 14,
+              //   fontWeight: isActive ? 600 : 400,
+              //   color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
+              //   background: isActive ? 'var(--accent-dim)' : 'transparent',
+              //   borderLeft: isActive ? '3px solid var(--accent)' : '3px solid transparent',
+              //   textDecoration: 'none',
+              //   transition: 'background 0.15s, color 0.15s',
+              // })}
+              className={({ isActive }) =>
+                `sidebar-nav-link ${isActive ? 'sidebar-nav-link--active' : ''}`
+              }
             >
               <Icon size={18} />
               {label}

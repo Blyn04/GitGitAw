@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Rocket, Flag, Code2, GraduationCap, Zap, Wrench, Monitor, GitCommit, Upload, Users } from 'lucide-react'
 import Footer from '../../Components/Footer'
+import mascotGif from '../../assets/images/GitGItAw_GIF.gif'
 
 /** Attaches IntersectionObserver to add "is-visible" when element enters viewport */
 function useReveal(ref: React.RefObject<HTMLElement | null>) {
@@ -201,8 +202,17 @@ function HeroSection() {
           </div>
         </div>
 
+        {/* Mascot GIF */}
+        <div className="hero-animate hero-d2" style={{ display: 'flex', alignSelf: 'flex-start' }}>
+          <img
+            src={mascotGif}
+            alt="GitGitAw Mascot"
+            style={{ height: 130, objectFit: 'contain', filter: 'drop-shadow(0 4px 16px rgba(0,0,0,0.4))' }}
+          />
+        </div>
+
         {/* Heading */}
-        <h1 className="hero-animate hero-d2 hero-heading">
+        <h1 className="hero-animate hero-d3 hero-heading">
           Handa ka na bang<br />
           <span style={{ color: 'var(--accent)' }}>matuto ng Git?</span>
         </h1>

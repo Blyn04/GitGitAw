@@ -1,4 +1,5 @@
 import React from 'react'
+import encouragementPose from '../../assets/images/GitGitAw_Mascot/Encouragement Pose.png'
 import {
   Trophy, Target, Zap, GitBranch, GitMerge, GitCommit,
   Clock, CheckCircle2, Terminal, Search, RefreshCw,
@@ -190,16 +191,19 @@ export default function Challenges() {
           borderRadius: 16, padding: '36px 40px',
           display: 'flex', flexDirection: 'column', gap: 16,
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Trophy size={32} style={{ color: 'var(--text-warning)' }} strokeWidth={1.5} />
-            <div>
-              <h1 className="lesson-page-title" style={{ margin: 0 }}>
-                Git Challenges
-              </h1>
-              <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', margin: '4px 0 0' }}>
-                I-test ang iyong Git skills sa real-world scenarios
-              </p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <Trophy size={32} style={{ color: 'var(--text-warning)' }} strokeWidth={1.5} />
+              <div>
+                <h1 className="lesson-page-title" style={{ margin: 0 }}>
+                  Git Challenges
+                </h1>
+                <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', margin: '4px 0 0' }}>
+                  I-test ang iyong Git skills sa real-world scenarios
+                </p>
+              </div>
             </div>
+            <img src={encouragementPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
           </div>
 
           <p style={{ ...sans, fontSize: 15, color: 'var(--text-primary)', lineHeight: 1.7, margin: 0, maxWidth: 680 }}>

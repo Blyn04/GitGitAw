@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
+import tutorPose from '../../assets/images/GitGitAw_Mascot/Tutor Pose.png'
 
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
@@ -118,11 +119,14 @@ function BreadcrumbSection() {
 
 function HeaderSection() {
   return (
-    <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>The Basics</h1>
-      <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
-        Ang pinaka-importanteng konsepto ng Git. Malinaw at praktikal.
-      </p>
+    <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>The Basics</h1>
+        <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+          Ang pinaka-importanteng konsepto ng Git. Malinaw at praktikal.
+        </p>
+      </div>
+      <img src={tutorPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
     </header>
   )
 }

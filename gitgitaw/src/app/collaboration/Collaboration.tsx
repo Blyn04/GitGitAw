@@ -3,12 +3,14 @@ import {
   Users, Shield, FileText, Zap,
   Briefcase, GitFork, Lightbulb, Lock, Trophy,
   GitBranch, GitMerge, Tag, Target, Search, MessageSquare,
+
   CheckCircle2, Clock, RefreshCw, Trash2, BarChart2, Calendar,
   User, ClipboardList, Layers, GitCommit,
   BookOpen, Heart, LayoutList, CheckCheck,
 } from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
+import mascotPose from '../../assets/images/GitGitAw_Mascot/Mascot.png'
 
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
@@ -270,13 +272,16 @@ export default function Collaboration() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-          Collaboration
-        </h1>
-        <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
-          Pag-aralan kung paano magtulungan ang mga developer gamit ang Git at GitHub para sa mas epektibong software development.
-        </p>
+      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+            Collaboration
+          </h1>
+          <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+            Pag-aralan kung paano magtulungan ang mga developer gamit ang Git at GitHub para sa mas epektibong software development.
+          </p>
+        </div>
+        <img src={mascotPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* Sec1 — Bakit Mahalaga */}

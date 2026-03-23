@@ -1,24 +1,25 @@
 import React, { useState } from 'react'
 import {
-  GitMerge, 
-  AlertTriangle, 
+  GitMerge,
+  AlertTriangle,
   Wrench,
-  RefreshCw, 
-  Scissors, 
-  MessageSquare, 
-  GitBranch, 
-  FileText, 
+  RefreshCw,
+  Scissors,
+  MessageSquare,
+  GitBranch,
+  FileText,
   Zap,
-  CheckCircle2, 
-  Terminal, 
-  Layers, 
+  CheckCircle2,
+  Terminal,
+  Layers,
   BookOpen,
-  Trophy, 
-  Lightbulb, 
+  Trophy,
+  Lightbulb,
   Monitor,
 } from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
+import oopsButOptimisticPose from '../../assets/images/GitGitAw_Mascot/Oops but Optimistic Pose.png'
 
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
@@ -289,13 +290,16 @@ export default function MergeConflicts() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-          Merge Conflicts
-        </h1>
-        <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
-          Huwag matakot - normal na parte ng buhay ng developer ang merge conflict. Ayusin natin ito step by step.
-        </p>
+      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+            Merge Conflicts
+          </h1>
+          <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+            Huwag matakot - normal na parte ng buhay ng developer ang merge conflict. Ayusin natin ito step by step.
+          </p>
+        </div>
+        <img src={oopsButOptimisticPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* Sec1 - Ano ang Merge Conflict */}

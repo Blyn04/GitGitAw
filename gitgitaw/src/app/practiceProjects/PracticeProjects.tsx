@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import friendlyGuidePose from '../../assets/images/GitGitAw_Mascot/Friendly Guide Pose.png'
 import {
   ListChecks, TrendingUp, Trophy,
   Clock, Play, ChevronDown, ChevronUp,
@@ -316,7 +317,8 @@ export default function PracticeProjects() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
           Practice Projects
         </h1>
@@ -324,6 +326,8 @@ export default function PracticeProjects() {
           Matuto ng Git sa pamamagitan ng actual practice.<br />
           Subukan ang mga guided projects na ito para masanay sa real Git workflows.
         </p>
+        </div>
+        <img src={friendlyGuidePose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* ── S1 — Bakit Kailangan ng Practice ── */}

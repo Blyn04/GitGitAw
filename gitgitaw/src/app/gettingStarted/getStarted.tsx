@@ -7,6 +7,7 @@ import gitLogo from '../../assets/git.svg'
 import windowsLogo from '../../assets/windows.svg'
 import macLogo from '../../assets/mac-60.svg'
 import linuxLogo from '../../assets/linux.svg'
+import welcomeHeroPose from '../../assets/images/GitGitAw_Mascot/Welcome Hero Pose.png'
 
 function copyToClipboard(text: string): Promise<void> {
   return navigator.clipboard.writeText(text)
@@ -77,14 +78,16 @@ function BreadcrumbSection() {
 
 function PageHeaderSection() {
   return (
-    <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <h1 className="lesson-page-title" style={{ fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
-        Getting Started
-      </h1>
-      
-      <p style={{ fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.6, fontFamily: 'Inter, sans-serif', margin: 0 }}>
-        Simulan natin. Step by step, malinaw ang bawat proseso.
-      </p>
+    <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <h1 className="lesson-page-title" style={{ fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
+          Getting Started
+        </h1>
+        <p style={{ fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.6, fontFamily: 'Inter, sans-serif', margin: 0 }}>
+          Simulan natin. Step by step, malinaw ang bawat proseso.
+        </p>
+      </div>
+      <img src={welcomeHeroPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
     </header>
   )
 }

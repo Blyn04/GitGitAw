@@ -2,6 +2,7 @@ import React from 'react'
 import { Printer } from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
+import restingIconPose from '../../assets/images/GitGitAw_Mascot/Resting Icon Pose.png'
 
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
@@ -235,31 +236,34 @@ export default function CheatSheet() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-          <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: '#e6edf3', margin: 0 }}>
-            Command Cheat Sheet
-          </h1>
-          {/* Download button — hidden in print (it calls window.print() which opens the browser's Save as PDF dialog) */}
-          <button
-            type="button"
-            className="no-print"
-            onClick={() => window.print()}
-            style={{
-              ...sans, fontSize: 13, fontWeight: 600,
-              display: 'flex', alignItems: 'center', gap: 8,
-              padding: '10px 16px', borderRadius: 8, cursor: 'pointer',
-              background: '#161b22', border: '1px solid #30363d',
-              color: '#e6edf3', flexShrink: 0,
-            }}
-          >
-            <Printer size={15} />
-            Download/Print
-          </button>
+      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+            <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: '#e6edf3', margin: 0 }}>
+              Command Cheat Sheet
+            </h1>
+            {/* Download button — hidden in print (it calls window.print() which opens the browser's Save as PDF dialog) */}
+            <button
+              type="button"
+              className="no-print"
+              onClick={() => window.print()}
+              style={{
+                ...sans, fontSize: 13, fontWeight: 600,
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 16px', borderRadius: 8, cursor: 'pointer',
+                background: '#161b22', border: '1px solid #30363d',
+                color: '#e6edf3', flexShrink: 0,
+              }}
+            >
+              <Printer size={15} />
+              Download/Print
+            </button>
+          </div>
+          <p style={{ ...sans, fontSize: 16, color: '#8b949e', lineHeight: 1.5, margin: 0 }}>
+            Lahat ng Git at GitHub commands na kailangan mo — sa isang lugar.
+          </p>
         </div>
-        <p style={{ ...sans, fontSize: 16, color: '#8b949e', lineHeight: 1.5, margin: 0 }}>
-          Lahat ng Git at GitHub commands na kailangan mo — sa isang lugar.
-        </p>
+        <img src={restingIconPose} alt="GitGitAw Mascot" className="no-print" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* ── Print Page 1 ── Setup / Basic Workflow / Branching / Remote ── */}

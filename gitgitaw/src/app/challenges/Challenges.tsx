@@ -9,6 +9,8 @@ import {
 } from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
+import { useGameProgress } from '../../hooks/useGameProgress'
+import GameHeader from '../../Components/GameHeader'
 
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
@@ -59,22 +61,27 @@ interface ChallengeCardProps {
   icon: React.ElementType
   terminalLink?: string
   isLocked?: boolean
+  xpReward?: number
+  isCompleted?: boolean
+  onComplete?: () => void
 }
 
 function ChallengeCard({
   num, title, tagline, description, level, skills, icon: Icon, terminalLink, isLocked,
+  xpReward = 50, isCompleted = false, onComplete,
 }: ChallengeCardProps) {
   const d = DIFF[level]
   return (
     <div style={{
       background: 'var(--bg-secondary)',
-      border: `1px solid var(--border)`,
+      border: isCompleted ? '1px solid #3fb950' : `1px solid var(--border)`,
       borderRadius: 12,
       padding: '20px',
       display: 'flex', flexDirection: 'column', gap: 14,
       flex: 1, minWidth: 0,
       opacity: isLocked ? 0.6 : 1,
       transition: 'border-color 0.2s, box-shadow 0.2s',
+      boxShadow: isCompleted ? '0 0 12px #3fb95025' : 'none',
     }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
@@ -100,6 +107,16 @@ function ChallengeCard({
           </div>
         </div>
         <DiffBadge level={level} />
+        {isCompleted && (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 4,
+            background: '#1a3a1a', border: '1px solid #3fb950',
+            borderRadius: 20, padding: '3px 10px', flexShrink: 0,
+          }}>
+            <CheckCircle2 size={12} color="#3fb950" />
+            <span style={{ ...sans, fontSize: 11, fontWeight: 600, color: '#3fb950' }}>Done</span>
+          </div>
+        )}
       </div>
 
       {/* Tagline */}
@@ -118,7 +135,7 @@ function ChallengeCard({
       </div>
 
       {/* CTA */}
-      <div style={{ marginTop: 'auto' }}>
+      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
         {isLocked ? (
           <div style={{
             ...sans, fontSize: 12, color: 'var(--text-muted)',
@@ -128,26 +145,57 @@ function ChallengeCard({
           }}>
             <Lock size={12} /> Complete previous challenges to unlock
           </div>
-        ) : terminalLink ? (
-          <a href={terminalLink} style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '9px 14px', borderRadius: 8,
-            background: d.bg, border: `1px solid ${d.color}55`,
-            color: d.color, ...sans, fontSize: 13, fontWeight: 600,
-            textDecoration: 'none',
-          }}>
-            <Terminal size={13} /> Start in Terminal <ChevronRight size={13} />
-          </a>
-        ) : (
+        ) : isCompleted ? (
           <div style={{
-            ...sans, fontSize: 12, color: 'var(--text-muted)',
+            ...sans, fontSize: 12, color: '#3fb950',
             display: 'flex', alignItems: 'center', gap: 6,
             padding: '8px 12px', borderRadius: 8,
-            background: 'var(--bg-tertiary)', border: '1px solid var(--border)',
+            background: '#1a3a1a', border: '1px solid #3fb95044',
           }}>
-            <BookOpen size={12} /> Read the challenge and try it on your own machine
+            <CheckCircle2 size={12} /> Challenge complete!
           </div>
+        ) : (
+          <>
+            {terminalLink && (
+              <a href={terminalLink} style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                padding: '9px 14px', borderRadius: 8,
+                background: d.bg, border: `1px solid ${d.color}55`,
+                color: d.color, ...sans, fontSize: 13, fontWeight: 600,
+                textDecoration: 'none',
+              }}>
+                <Terminal size={13} /> Start in Terminal <ChevronRight size={13} />
+              </a>
+            )}
+            {!terminalLink && (
+              <div style={{
+                ...sans, fontSize: 12, color: 'var(--text-muted)',
+                display: 'flex', alignItems: 'center', gap: 6,
+                padding: '8px 12px', borderRadius: 8,
+                background: 'var(--bg-tertiary)', border: '1px solid var(--border)',
+              }}>
+                <BookOpen size={12} /> Read the challenge and try it on your own machine
+              </div>
+            )}
+            <button
+              onClick={onComplete}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                padding: '9px 14px', borderRadius: 8,
+                background: '#1a3a1a', border: '1px solid #3fb95055',
+                color: '#3fb950', ...sans, fontSize: 13, fontWeight: 600,
+                cursor: 'pointer', width: '100%',
+              }}
+            >
+              <CheckCircle2 size={13} /> Mark as Done &nbsp;+{xpReward} XP
+            </button>
+          </>
         )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ ...mono, fontSize: 11, color: '#e3b341', display: 'flex', alignItems: 'center', gap: 3 }}>
+            <Zap size={10} /> +{xpReward} XP
+          </span>
+        </div>
       </div>
     </div>
   )
@@ -180,6 +228,20 @@ function SectionHeader({ Icon, title, subtitle, color }: {
 
 export default function Challenges() {
   const { showBackToTop, scrollToTop } = useBackToTop()
+  const { progress, levelInfo, markChallengeComplete } = useGameProgress()
+  const [justCompleted, setJustCompleted] = React.useState<{ num: number; xp: number } | null>(null)
+
+  function handleDone(num: number, level: keyof typeof DIFF) {
+    const xp = { beginner: 50, intermediate: 75, advanced: 100 }[level]
+    markChallengeComplete(String(num), level)
+    setJustCompleted({ num, xp })
+    setTimeout(() => setJustCompleted(null), 2500)
+  }
+
+  const beginnerDone = Object.entries(progress.projects).filter(([id, r]) => r.completed && Number(id) <= 3).length
+  const intermediateDone = Object.entries(progress.projects).filter(([id, r]) => r.completed && Number(id) >= 4 && Number(id) <= 6).length
+  const intermediateUnlocked = beginnerDone >= 3
+  const advancedUnlocked = intermediateDone >= 3
 
   return (
     <div className="lesson-page">
@@ -224,6 +286,8 @@ export default function Challenges() {
             ))}
           </div>
         </div>
+
+        <GameHeader xp={progress.xp} streak={progress.streak} levelInfo={levelInfo} />
 
         {/* ── How it works ── */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -294,6 +358,9 @@ export default function Challenges() {
               description="May nagbago ng isang file sa repo at hindi alam kung sino. Gamitin ang git log, git show, at git blame para mahanap ang culprit at alamin ang eksaktong linya na binago."
               skills={['git log', 'git show', 'git blame', 'git diff']}
               terminalLink="/lessons/practice/1"
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['1']?.completed}
+              onComplete={() => handleDone(1, 'beginner')}
             />
             <ChallengeCard
               num={2}
@@ -304,6 +371,9 @@ export default function Challenges() {
               description="Gumawa ng bagong repo para sa isang todo app. Mag-commit ng exactly 5 files gamit ang tamang Conventional Commits format — feat:, style:, docs:, fix:, at chore: — tig-isa bawat isa."
               skills={['git init', 'git add', 'git commit', 'conventional commits']}
               terminalLink="/lessons/practice/2"
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['2']?.completed}
+              onComplete={() => handleDone(2, 'beginner')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -316,6 +386,9 @@ export default function Challenges() {
               description="Gumawa ng repo na may main branch. Mula doon, gumawa ng 3 feature branches, mag-commit ng iba-ibang files sa bawat isa, at i-merge ang lahat pabalik sa main nang walang conflicts."
               skills={['git branch', 'git switch', 'git merge', 'git log --graph']}
               terminalLink="/lessons/practice/3"
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['3']?.completed}
+              onComplete={() => handleDone(3, 'beginner')}
             />
             <ChallengeCard
               num={4}
@@ -325,6 +398,9 @@ export default function Challenges() {
               tagline="I-undo ang mga pagkakamali nang tama"
               description="Gumawa ng 5 commits sa isang repo. Pagkatapos: (1) i-undo ang pinakabago gamit ang git revert, (2) i-unstage ang isang file gamit ang git restore, (3) i-amend ang commit message ng huli."
               skills={['git revert', 'git restore', 'git commit --amend', 'git reset']}
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['4']?.completed}
+              onComplete={() => handleDone(4, 'beginner')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -336,6 +412,9 @@ export default function Challenges() {
               tagline="Protektahan ang repo mula sa hindi dapat i-track na files"
               description="Gumawa ng Node.js project na may node_modules/, .env, at dist/ folder. I-set up ang tamang .gitignore para hindi ma-commit ang mga ito. I-verify gamit ang git status at git check-ignore."
               skills={['.gitignore', 'git check-ignore', 'git rm --cached', 'git status']}
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['13']?.completed}
+              onComplete={() => handleDone(13, 'beginner')}
             />
             <ChallengeCard
               num={14}
@@ -345,6 +424,9 @@ export default function Challenges() {
               tagline="Master ang iba't ibang paraan ng pagtingin sa Git history"
               description="Sa isang repo na may 10+ commits, gamitin ang git log sa 5 iba't ibang paraan: --oneline, --graph --all, --author, --since='1 week ago', at --format='%h %s'. I-document ang output ng bawat isa."
               skills={['git log --oneline', 'git log --graph', 'git log --author', 'git log --format']}
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['14']?.completed}
+              onComplete={() => handleDone(14, 'beginner')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -356,6 +438,9 @@ export default function Challenges() {
               tagline="Kumpletuhin ang buong PR workflow mula umpisa hanggang merge"
               description="I-fork ang isang sample repo sa GitHub, i-clone locally, gumawa ng feature branch, mag-commit ng change, i-push, at i-open ang Pull Request. Sagutin ang code review comment bago i-merge."
               skills={['git fork', 'git clone', 'git push -u', 'pull request', 'code review']}
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['15']?.completed}
+              onComplete={() => handleDone(15, 'beginner')}
             />
             <ChallengeCard
               num={16}
@@ -365,12 +450,27 @@ export default function Challenges() {
               tagline="I-customize ang Git para mas mabilis ang iyong workflow"
               description="I-set up ang 5 Git aliases: st para sa status, co para sa checkout, br para sa branch, lg para sa log --oneline --graph, at unstage para sa restore --staged. Gamitin ang lahat ng 5 sa isang session."
               skills={['git config --global alias', 'git aliases', '.gitconfig']}
+              xpReward={50}
+              isCompleted={!!progress.challenges?.['16']?.completed}
+              onComplete={() => handleDone(16, 'beginner')}
             />
           </div>
         </section>
 
         {/* ── Intermediate Challenges ── */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {!intermediateUnlocked && (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              background: '#1a1a1a', border: '1px solid var(--border)',
+              borderRadius: 8, padding: '12px 16px', marginBottom: 8,
+            }}>
+              <Lock size={15} color="var(--text-muted)" />
+              <span style={{ ...sans, fontSize: 13, color: 'var(--text-muted)' }}>
+                I-complete ang 3 Beginner projects para ma-unlock ang Intermediate challenges.
+              </span>
+            </div>
+          )}
           <SectionHeader
             Icon={Zap}
             title="Intermediate Challenges"
@@ -388,6 +488,10 @@ export default function Challenges() {
               description="Gumawa ng dalawang branches na parehong nagbago ng styles.css, index.html, at script.js. I-merge ang dalawa at resolbahin ang tatlong conflicts. Ang final code ay dapat gumana nang maayos."
               skills={['git merge', 'conflict markers', 'git add', 'git commit']}
               terminalLink="/lessons/practice/5"
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['5']?.completed}
+              onComplete={() => handleDone(5, 'intermediate')}
             />
             <ChallengeCard
               num={6}
@@ -398,6 +502,10 @@ export default function Challenges() {
               description="I-fork ang isang public repo, i-clone ito, i-add ang original bilang upstream, mag-fetch ng latest changes, gumawa ng feature branch, at i-push para sa Pull Request. Complete open source flow."
               skills={['git remote', 'git fetch', 'git push', 'git pull', 'upstream']}
               terminalLink="/lessons/practice/7"
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['6']?.completed}
+              onComplete={() => handleDone(6, 'intermediate')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -410,6 +518,10 @@ export default function Challenges() {
               description="Gumawa ng repo na may 5+ commits. I-create ang v1.0.0 at v1.1.0 tags — isa lightweight, isa annotated. I-push ang lahat ng tags sa remote at alamin ang difference ng dalawa."
               skills={['git tag', 'git tag -a', 'git push --tags', 'semantic versioning']}
               terminalLink="/lessons/practice/6"
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['7']?.completed}
+              onComplete={() => handleDone(7, 'intermediate')}
             />
             <ChallengeCard
               num={8}
@@ -419,6 +531,10 @@ export default function Challenges() {
               tagline="Mag-juggle ng multiple work-in-progress"
               description="Habang nag-wowork sa isang feature, may dumating na urgent bug fix. Gamitin ang git stash para i-save ang WIP work, mag-switch, i-fix ang bug, at i-restore ang original work nang tama."
               skills={['git stash', 'git stash pop', 'git stash list', 'git stash apply']}
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['8']?.completed}
+              onComplete={() => handleDone(8, 'intermediate')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -430,6 +546,10 @@ export default function Challenges() {
               tagline="Kunin lang ang commits na kailangan mo"
               description="May develop branch na may 6 commits. Ang main branch ay kailangan lang ng 2 specific commits — hindi lahat. Gamitin ang git cherry-pick para ilipat ang exact commits na gusto mo nang hindi nag-me-merge ng buong branch."
               skills={['git cherry-pick', 'git cherry-pick -n', 'git log', 'commit hashes']}
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['17']?.completed}
+              onComplete={() => handleDone(17, 'intermediate')}
             />
             <ChallengeCard
               num={18}
@@ -439,6 +559,10 @@ export default function Challenges() {
               tagline="Pag-aralan ang changes sa iba't ibang paraan"
               description="Sa isang repo na may maraming branches at staged/unstaged changes, gamitin ang git diff sa 4 scenarios: working tree vs staged, staged vs last commit, between two branches, at between two commits. Intindihin ang output ng bawat isa."
               skills={['git diff', 'git diff --staged', 'git diff branch1..branch2', 'git diff HEAD~2']}
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['18']?.completed}
+              onComplete={() => handleDone(18, 'intermediate')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -450,6 +574,10 @@ export default function Challenges() {
               tagline="I-automate ang validation gamit ang Git hooks"
               description="I-create ang dalawang Git hooks: (1) pre-commit hook na nag-re-reject ng commit kung may trailing whitespace sa files, (2) commit-msg hook na nag-e-enforce ng Conventional Commits format. I-test ang pareho sa valid at invalid na commits."
               skills={['git hooks', 'pre-commit', 'commit-msg', '.git/hooks', 'bash scripting']}
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['19']?.completed}
+              onComplete={() => handleDone(19, 'intermediate')}
             />
             <ChallengeCard
               num={20}
@@ -459,12 +587,28 @@ export default function Challenges() {
               tagline="Alamin ang pagkakaiba ng merge, squash, at rebase"
               description="Gumawa ng tatlong magkaparehong branches. I-integrate ang una gamit ang regular merge, ang ikalawa gamit ang --squash, at ang ikatlo gamit ang rebase. Tingnan ang git log --graph pagkatapos ng bawat isa at intindihin kung bakit iba ang history."
               skills={['git merge', 'git merge --squash', 'git rebase', 'merge strategies']}
+              isLocked={!intermediateUnlocked}
+              xpReward={75}
+              isCompleted={!!progress.challenges?.['20']?.completed}
+              onComplete={() => handleDone(20, 'intermediate')}
             />
           </div>
         </section>
 
         {/* ── Advanced Challenges ── */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {!advancedUnlocked && (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              background: '#1a1a1a', border: '1px solid var(--border)',
+              borderRadius: 8, padding: '12px 16px', marginBottom: 8,
+            }}>
+              <Lock size={15} color="var(--text-muted)" />
+              <span style={{ ...sans, fontSize: 13, color: 'var(--text-muted)' }}>
+                I-complete ang 3 Intermediate projects para ma-unlock ang Advanced challenges.
+              </span>
+            </div>
+          )}
           <SectionHeader
             Icon={Flame}
             title="Advanced Challenges"
@@ -481,6 +625,10 @@ export default function Challenges() {
               tagline="Hanapin ang exact commit na nag-break ng app"
               description="May repo na may 20 commits — isa sa mga ito ang nag-introduce ng isang bug. Gamitin ang git bisect para ma-pinpoint ang exact commit na may problema gamit ang binary search. Goal: less than 6 steps."
               skills={['git bisect', 'git bisect start', 'git bisect good/bad', 'git bisect reset']}
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['9']?.completed}
+              onComplete={() => handleDone(9, 'advanced')}
             />
             <ChallengeCard
               num={10}
@@ -491,6 +639,10 @@ export default function Challenges() {
               description="Set up ang proper Git Flow para sa isang app: main, develop, feature/*, release/*, hotfix/* branches. Simulate ang buong lifecycle mula sa feature development hanggang sa production release."
               skills={['git flow', 'release branches', 'hotfix', 'tagging', 'merge strategy']}
               terminalLink="/lessons/practice/8"
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['10']?.completed}
+              onComplete={() => handleDone(10, 'advanced')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -503,6 +655,10 @@ export default function Challenges() {
               description="Gumawa ng GitHub Actions workflow na: (1) nag-ru-run ng tests sa bawat PR, (2) nag-de-deploy sa staging kapag nag-merge sa develop, (3) nag-re-release sa production kapag nag-push ng tag."
               skills={['GitHub Actions', 'YAML', 'workflow triggers', 'environment secrets']}
               terminalLink="/lessons/practice/9"
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['11']?.completed}
+              onComplete={() => handleDone(11, 'advanced')}
             />
             <ChallengeCard
               num={12}
@@ -512,6 +668,10 @@ export default function Challenges() {
               tagline="Rewrite history para sa clean Pull Requests"
               description="May feature branch na may 8 messy commits — typos, 'WIP' messages, at duplicate work. Gamitin ang git rebase -i para i-squash, reorder, at reword ang commits para maging 3 malinaw na commits."
               skills={['git rebase -i', 'squash', 'reword', 'fixup', 'force push']}
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['12']?.completed}
+              onComplete={() => handleDone(12, 'advanced')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -523,6 +683,10 @@ export default function Challenges() {
               tagline="I-set up ang isang production-ready monorepo"
               description="Gumawa ng monorepo na may 3 packages: frontend/, backend/, at shared/. I-set up ang tamang .gitignore para sa bawat package type, gumawa ng root-level package.json na may workspaces, at mag-commit gamit ang scoped conventional commits — e.g. feat(frontend):, fix(api):."
               skills={['monorepo', 'workspaces', 'scoped commits', '.gitignore patterns', 'git log --all']}
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['21']?.completed}
+              onComplete={() => handleDone(21, 'advanced')}
             />
             <ChallengeCard
               num={22}
@@ -532,6 +696,10 @@ export default function Challenges() {
               tagline="Mag-work sa maraming branches nang sabay-sabay"
               description="May critical hotfix na kailangan i-deploy habang nasa kalagitnaan ka ng isang malaking feature. Gamitin ang git worktree para mag-checkout ng hotfix branch sa ibang folder nang hindi inaaalis ang iyong current work. I-fix, i-merge, at i-cleanup ang worktree."
               skills={['git worktree add', 'git worktree list', 'git worktree remove', 'parallel branches']}
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['22']?.completed}
+              onComplete={() => handleDone(22, 'advanced')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -543,6 +711,10 @@ export default function Challenges() {
               tagline="I-share ang changes nang walang remote repository"
               description="Mag-generate ng patch file mula sa 3 commits gamit ang git format-patch. I-send (simulate) ang patch sa ibang developer. I-apply ang patch sa isang bagong clone gamit ang git am. I-verify na tama ang lahat ng commits at messages."
               skills={['git format-patch', 'git am', 'git apply', 'git bundle']}
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['23']?.completed}
+              onComplete={() => handleDone(23, 'advanced')}
             />
             <ChallengeCard
               num={24}
@@ -552,7 +724,10 @@ export default function Challenges() {
               tagline="I-manage ang external dependencies bilang Git submodules"
               description="I-add ang isang external library bilang git submodule sa iyong project. I-clone ang parent repo kasama ang submodule gamit ang --recurse-submodules. I-update ang submodule sa pinakabagong version at i-commit ang pointer update sa parent repo."
               skills={['git submodule add', 'git submodule update', '--recurse-submodules', 'submodule init']}
-              isLocked
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['24']?.completed}
+              onComplete={() => handleDone(24, 'advanced')}
             />
           </div>
           <div className="lesson-cards-row">
@@ -564,7 +739,10 @@ export default function Challenges() {
               tagline="I-verify ang authenticity ng iyong commits gamit ang GPG"
               description="I-set up ang GPG key signing para sa iyong Git commits. I-configure ang Git para laging mag-sign ng commits at tags. I-verify ang signature gamit ang git verify-commit at git verify-tag. Tingnan kung paano ito nagpapakita sa GitHub bilang 'Verified'."
               skills={['GPG signing', 'git commit -S', 'git verify-commit', 'git config gpg.program']}
-              isLocked
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['25']?.completed}
+              onComplete={() => handleDone(25, 'advanced')}
             />
             <ChallengeCard
               num={26}
@@ -574,6 +752,10 @@ export default function Challenges() {
               tagline="I-recover ang 'nawalang' commits gamit ang git reflog"
               description="Sadyang i-delete ang isang branch na may 3 important commits. Gamitin ang git reflog para mahanap ang commit hash ng deleted branch tip. I-recover ang lahat ng commits sa isang bagong branch at i-verify na kumpleto ang lahat ng data."
               skills={['git reflog', 'git checkout -b', 'git reset --hard', 'commit recovery']}
+              isLocked={!advancedUnlocked}
+              xpReward={100}
+              isCompleted={!!progress.challenges?.['26']?.completed}
+              onComplete={() => handleDone(26, 'advanced')}
             />
           </div>
         </section>
@@ -655,6 +837,32 @@ export default function Challenges() {
 
       <Footer />
       <BackToTopButton show={showBackToTop} onClick={scrollToTop} />
+
+      {/* Completion toast */}
+      {justCompleted && (
+        <div style={{
+          position: 'fixed', bottom: 32, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 1000,
+          background: 'var(--bg-secondary)',
+          border: '1px solid #3fb950',
+          borderRadius: 12,
+          padding: '16px 20px',
+          display: 'flex', alignItems: 'center', gap: 12,
+          animation: 'slideUp 0.3s ease',
+          boxShadow: '0 8px 32px #0008',
+          pointerEvents: 'none',
+        }}>
+          <CheckCircle2 size={24} color="#3fb950" />
+          <div>
+            <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+              Challenge Complete!
+            </div>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: '#e3b341' }}>
+              +{justCompleted.xp} XP
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

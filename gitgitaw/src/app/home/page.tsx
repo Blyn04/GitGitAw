@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Rocket, Flag, Code2, GraduationCap, Zap, Wrench, Monitor, GitCommit, Upload, Users } from 'lucide-react'
 import Footer from '../../Components/Footer'
+import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 import mascotGif from '../../assets/images/GitGItAw_GIF.gif'
 import mascotStatic from '../../assets/images/GitGitAw_Mascot/Welcome Hero Pose.png'
 
@@ -63,12 +64,14 @@ function useRevealChildren(ref: React.RefObject<HTMLElement | null>) {
 }
 
 export default function HomePage() {
+  const { showBackToTop, scrollToTop } = useBackToTop()
   return (
     <div className="home-page">
       <HeroSection />
       <FeaturesSection />
       <QuickPathSection />
       <Footer />
+      <BackToTopButton show={showBackToTop} onClick={scrollToTop} />
     </div>
   )
 }

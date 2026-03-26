@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
@@ -25,6 +25,44 @@ import {
   Link2,
   AlertCircle,
 } from 'lucide-react'
+
+/** Fade-up reveal when element scrolls into view */
+function useReveal(ref: React.RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add('is-visible'); obs.disconnect() } },
+      { threshold: 0.1 }
+    )
+    el.classList.add('reveal')
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [ref])
+}
+
+/** Staggered reveal for direct children of a container */
+function useRevealChildren(ref: React.RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const children = Array.from(el.children) as HTMLElement[]
+    children.forEach((child, i) => {
+      child.classList.add('reveal', `reveal-d${Math.min(i + 1, 5)}`)
+    })
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          children.forEach(child => child.classList.add('is-visible'))
+          obs.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [ref])
+}
 
 function copyToClipboard(text: string): Promise<void> {
   return navigator.clipboard.writeText(text)
@@ -98,13 +136,18 @@ function PageHeaderSection() {
 }
 
 function GitVsGitHubSection() {
+  const cardsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  useRevealChildren(cardsRef)
+  useReveal(sectionRef)
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div ref={sectionRef} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
         Ano ang Git at GitHub?
       </h2>
 
-      <div className="lesson-cards-row">
+      <div className="lesson-cards-row" ref={cardsRef}>
         {gitCards.map((card) => (
           <div
             key={card.title}
@@ -175,13 +218,18 @@ const requirements = [
 ]
 
 function RequirementsSection() {
+  const cardsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  useRevealChildren(cardsRef)
+  useReveal(sectionRef)
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div ref={sectionRef} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
         Ano ang kailangan mo?
       </h2>
 
-      <div className="lesson-cards-row">
+      <div className="lesson-cards-row" ref={cardsRef}>
         {requirements.map((req) => (
           <div
             key={req.title}
@@ -267,6 +315,10 @@ function InstallGitSection() {
   const [copiedBlock, setCopiedBlock] = useState<string | null>(null)
   const [selectedDownloadOs, setSelectedDownloadOs] = useState<OsChoice | null>(null)
   const [selectedStep2Os, setSelectedStep2Os] = useState<OsChoice>('windows')
+  const stepsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  useRevealChildren(stepsRef)
+  useReveal(sectionRef)
 
   const handleCopy = (text: string, blockId: string) => {
     copyToClipboard(text).then(() => {
@@ -276,7 +328,7 @@ function InstallGitSection() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div ref={sectionRef} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div>
         <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
           I-install ang Git
@@ -285,6 +337,8 @@ function InstallGitSection() {
           Sundan ang tatlong steps na ito para mai-setup ang Git sa iyong computer.
         </p>
       </div>
+
+      <div ref={stepsRef} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
       {/* STEP 1 - Download */}
       <div
@@ -624,20 +678,26 @@ function InstallGitSection() {
           </p>
         </div>
       </div>
+
+      </div>{/* end stepsRef wrapper */}
     </div>
   )
 }
 
 function CreateGitHubAccountSection() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const stepsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  useRevealChildren(stepsRef)
+  useReveal(sectionRef)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div ref={sectionRef} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
         Gumawa ng GitHub Account
       </h2>
 
-      <div className="lesson-steps-row">
+      <div className="lesson-steps-row" ref={stepsRef}>
         {gitCardsSteps.map((card, index) => (
           <React.Fragment key={card.number}>
             <div
@@ -771,9 +831,13 @@ function CreateGitHubAccountSection() {
 
 function ConnectToGitHub() {
   const [hoverProtocol, setHoverProtocol] = useState<'https' | 'ssh' | null>(null)
+  const cardsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  useRevealChildren(cardsRef)
+  useReveal(sectionRef)
 
   return (
-      <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div ref={sectionRef} style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
           I-connect ang Git sa GitHub
         </h2>
@@ -781,7 +845,7 @@ function ConnectToGitHub() {
           Para makapag-push ng code mula sa computer mo papunta sa GitHub, kailangan mong i-connect ang dalawa.
         </p>
 
-        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+        <div ref={cardsRef} style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <div
             onMouseEnter={() => setHoverProtocol('https')}
             onMouseLeave={() => setHoverProtocol(null)}
@@ -894,9 +958,14 @@ function ConnectToGitHub() {
 }
 
 function FreeResources() {
-    return (
+  const cardsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  useRevealChildren(cardsRef)
+  useReveal(sectionRef)
+
+  return (
       <>
-        <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div ref={sectionRef} style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
             Free Resources para Matuto Pa
           </h2>
@@ -904,7 +973,7 @@ function FreeResources() {
             Mga libreng resources na makakatulong sa pag-practice ng Git at GitHub.
           </p>
 
-          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+          <div ref={cardsRef} style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
             {[
               {
                 Icon: Globe,

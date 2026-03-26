@@ -6,8 +6,11 @@ import {
   Target, Loader, Zap,
 } from 'lucide-react'
 import Footer from '../../Components/Footer'
+import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 import { getProject } from './projectData'
 import type { ProjectStep } from './projectData'
+import { useGameProgress } from '../../hooks/useGameProgress'
+import type { Difficulty } from '../../hooks/useGameProgress'
 
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
@@ -485,43 +488,139 @@ function DifficultyBadge({ label, color, bg }: { label: string; color: string; b
   )
 }
 
+function StarIcon({ filled, size = 32, delay = 0 }: { filled: boolean; size?: number; delay?: number }) {
+  return (
+    <div
+      className={filled ? 'star-icon star-icon--filled' : 'star-icon'}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? '#e3b341' : 'none'} stroke={filled ? '#e3b341' : 'var(--border)'} strokeWidth={1.5}>
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+      </svg>
+    </div>
+  )
+}
+
 // ── Completion screen ────────────────────────────────────────────────────────
 
 function CompletionScreen({
-  projectId, projectTitle, difficulty, difficultyColor, difficultyBg, commandCount, onRestart,
+  projectId, projectTitle, difficulty, difficultyColor, difficultyBg,
+  commandCount, hintsUsed, skipsUsed, onRestart,
 }: {
   projectId: number; projectTitle: string; difficulty: string
-  difficultyColor: string; difficultyBg: string; commandCount: number; onRestart: () => void
+  difficultyColor: string; difficultyBg: string
+  commandCount: number; hintsUsed: number; skipsUsed: number
+  onRestart: () => void
 }) {
+  const { markProjectComplete, levelInfo } = useGameProgress()
+  const [prevLevelNum] = React.useState(levelInfo.level)
+
+  // Stars formula
+  const stars: 1 | 2 | 3 = hintsUsed === 0 && skipsUsed === 0 ? 3
+    : hintsUsed <= 2 && skipsUsed === 0 ? 2
+    : 1
+
+  const diffKey: Difficulty = difficulty === 'Intermediate' ? 'intermediate'
+    : difficulty === 'Advanced' ? 'advanced' : 'beginner'
+
+  const XP_BY_DIFF: Record<string, Record<number, number>> = {
+    beginner:     { 1: 50,  2: 75,  3: 100 },
+    intermediate: { 1: 75,  2: 112, 3: 150 },
+    advanced:     { 1: 100, 2: 150, 3: 200 },
+  }
+  const xpEarned = XP_BY_DIFF[diffKey]?.[stars] ?? 50
+
+  // Mark complete on first render of this screen
+  const [marked, setMarked] = React.useState(false)
+  React.useEffect(() => {
+    if (!marked) {
+      markProjectComplete(String(projectId), stars, diffKey)
+      setMarked(true)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const didLevelUp = marked && levelInfo.level > prevLevelNum
+
   const nextId = projectId < 9 ? projectId + 1 : null
+
   return (
     <div style={{
       flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32,
     }}>
       <div style={{
         background: 'var(--bg-secondary)', border: `1.5px solid ${difficultyColor}`,
-        borderRadius: 16, padding: 'clamp(20px, 5vw, 40px) clamp(16px, 4vw, 32px)', maxWidth: 440, width: '100%',
+        borderRadius: 16, padding: 'clamp(20px, 5vw, 40px) clamp(16px, 4vw, 32px)', maxWidth: 460, width: '100%',
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20,
         textAlign: 'center', animation: 'completePulse 0.7s ease',
         boxShadow: `0 0 40px ${difficultyColor}30`,
       }}>
-        <Trophy size={52} style={{ color: difficultyColor }} strokeWidth={1.5} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {/* Stars row */}
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginTop: 4 }}>
+          <StarIcon filled={stars >= 1} size={40} delay={100} />
+          <StarIcon filled={stars >= 2} size={48} delay={300} />
+          <StarIcon filled={stars >= 3} size={40} delay={500} />
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <DifficultyBadge label={difficulty} color={difficultyColor} bg={difficultyBg} />
           <h2 style={{ ...sans, fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Project Complete!
           </h2>
           <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', margin: 0 }}>{projectTitle}</p>
         </div>
-        <div style={{ display: 'flex', gap: 28 }}>
+
+        {/* Stats row */}
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', width: '100%' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-            <span style={{ ...sans, fontSize: 30, fontWeight: 700, color: difficultyColor }}>{commandCount}</span>
-            <span style={{ ...sans, fontSize: 11, color: 'var(--text-muted)' }}>commands ran</span>
+            <span style={{ ...sans, fontSize: 28, fontWeight: 700, color: difficultyColor }}>{commandCount}</span>
+            <span style={{ ...sans, fontSize: 11, color: 'var(--text-muted)' }}>commands</span>
+          </div>
+          <div style={{ width: 1, background: 'var(--border)' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <span style={{ ...sans, fontSize: 28, fontWeight: 700, color: '#e3b341' }}>+{xpEarned}</span>
+            <span style={{ ...sans, fontSize: 11, color: 'var(--text-muted)' }}>XP earned</span>
+          </div>
+          <div style={{ width: 1, background: 'var(--border)' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <span style={{ ...sans, fontSize: 28, fontWeight: 700, color: hintsUsed === 0 ? 'var(--accent)' : 'var(--text-muted)' }}>
+              {hintsUsed}
+            </span>
+            <span style={{ ...sans, fontSize: 11, color: 'var(--text-muted)' }}>hints used</span>
           </div>
         </div>
-        <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
-          Natapos mo na ang lahat ng steps! Ang mga commands na ito ay gagamitin mo sa tunay na Git workflow.
-        </p>
+
+        {/* Stars breakdown */}
+        <div style={{
+          background: 'var(--bg-tertiary)', borderRadius: 8, padding: '10px 16px',
+          fontSize: 13, color: 'var(--text-muted)', ...sans, lineHeight: 1.5,
+          width: '100%', textAlign: 'left',
+        }}>
+          {stars === 3 && '⭐⭐⭐ Perfect run! Walang hints o skips.'}
+          {stars === 2 && `⭐⭐ Magaling! ${hintsUsed} hint${hintsUsed !== 1 ? 's' : ''} ginamit.`}
+          {stars === 1 && '⭐ Natapos mo — try ulit para sa mas mataas na score!'}
+        </div>
+
+        {/* Level-up banner */}
+        {didLevelUp && (
+          <div style={{
+            background: 'linear-gradient(135deg, #e3b34122, #e3b34108)',
+            border: '1px solid #e3b34160',
+            borderRadius: 12,
+            padding: '16px 24px',
+            display: 'flex', alignItems: 'center', gap: 12,
+            width: '100%',
+            animation: 'completePulse 0.7s ease',
+          }}>
+            <span style={{ fontSize: 28 }}>✨</span>
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ ...sans, fontSize: 16, fontWeight: 700, color: '#e3b341' }}>LEVEL UP!</div>
+              <div style={{ ...sans, fontSize: 13, color: 'var(--text-muted)' }}>
+                You are now a {levelInfo.name}!
+              </div>
+            </div>
+          </div>
+        )}
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
           {nextId && (
             <a href={`/lessons/practice/${nextId}`} style={{
@@ -560,6 +659,7 @@ export default function ProjectPage() {
   const { projectId } = useParams<{ projectId: string }>()
   const navigate = useNavigate()
   const project = getProject(Number(projectId))
+  const { showBackToTop, scrollToTop } = useBackToTop()
 
   useEffect(() => {
     if (!project) navigate('/lessons/practice', { replace: true })
@@ -581,6 +681,8 @@ export default function ProjectPage() {
   const [commandCount, setCommandCount] = useState(0)
   const [isAnimating, setIsAnimating]   = useState(false)
   const [hintRevealed, setHintRevealed] = useState<string | null>(null)
+  const [hintsUsed, setHintsUsed]   = useState(0)
+  const [skipsUsed, setSkipsUsed]   = useState(0)
 
   const outputRef  = useRef<HTMLDivElement>(null)
   const inputRef   = useRef<HTMLInputElement>(null)
@@ -666,6 +768,7 @@ export default function ProjectPage() {
         const hintText = os === 'windows' && step.windowsHint ? step.windowsHint : step.hint
         pushEntries({ kind: 'command', text: cmd }, { kind: 'hint', text: hintText })
         setHintRevealed(hintText)
+        setHintsUsed(h => h + 1)
       }
       return
     }
@@ -678,6 +781,7 @@ export default function ProjectPage() {
           { kind: 'command', text: cmd },
           { kind: 'info', text: `Skipped. The command was: ${hintText}` },
         )
+        setSkipsUsed(s => s + 1)
         processCorrectStep(step)
       }
       return
@@ -726,6 +830,8 @@ export default function ProjectPage() {
     setCmdHistoryIdx(-1)
     setIsAnimating(false)
     setHintRevealed(null)
+    setHintsUsed(0)
+    setSkipsUsed(0)
     setHistory([{ kind: 'info', text: '─── Restarting project ───' }])
   }
 
@@ -759,17 +865,17 @@ export default function ProjectPage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', width: '100%', overflowX: 'hidden' }}>
 
       {/* ── Header ── */}
       <div className="project-page-header">
         {/* Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 11 }}>
-          <a href="/lessons/practice" style={{ color: 'var(--text-link)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div className="project-breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 11 }}>
+          <a href="/lessons/practice" style={{ color: 'var(--text-link)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
             <ArrowLeft size={12} /> Practice Projects
           </a>
-          <span style={{ color: 'var(--text-muted)' }}>{'>'}</span>
-          <span style={{ color: 'var(--text-muted)' }}>Project {project.id}: {project.title}</span>
+          <span style={{ color: 'var(--text-muted)', flexShrink: 0 }}>{'>'}</span>
+          <span className="project-breadcrumb-title" style={{ color: 'var(--text-muted)' }}>Project {project.id}: {project.title}</span>
         </div>
 
         {/* Title + badges */}
@@ -836,6 +942,7 @@ export default function ProjectPage() {
                 const hintText = os === 'windows' && step.windowsHint ? step.windowsHint : step.hint
                 pushEntries({ kind: 'hint', text: hintText })
                 setHintRevealed(hintText)
+                setHintsUsed(h => h + 1)
               }}
               onSkip={() => {
                 if (isAnimating) return
@@ -846,6 +953,7 @@ export default function ProjectPage() {
                   ...(step.output ? [{ kind: 'output' as EntryKind, text: step.output }] : []),
                   { kind: 'success', text: `Skipped → ${step.successMsg}` },
                 )
+                setSkipsUsed(s => s + 1)
                 if (step.newDir) setCurrentDir(step.newDir)
                 advanceStep()
               }}
@@ -1009,6 +1117,8 @@ export default function ProjectPage() {
               difficultyColor={accentColor}
               difficultyBg={project.difficultyBg}
               commandCount={commandCount}
+              hintsUsed={hintsUsed}
+              skipsUsed={skipsUsed}
               onRestart={handleRestart}
             />
           )}
@@ -1016,6 +1126,7 @@ export default function ProjectPage() {
       </div>
 
       <Footer />
+      <BackToTopButton show={showBackToTop} onClick={scrollToTop} />
     </div>
   )
 }

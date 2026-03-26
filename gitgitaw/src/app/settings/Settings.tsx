@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { loadSettings, saveSettings, applySettings, DEFAULT_SETTINGS, type AppSettings, type AccentColor, type Theme } from '../../utils/settings'
 import Footer from '../../Components/Footer'
+import { useGameProgress } from '../../hooks/useGameProgress'
 
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
@@ -43,7 +44,7 @@ function SettingRow({ title, desc, children, divider = true }: {
 }) {
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, padding: '18px 0' }}>
+      <div className="settings-row">
         <div>
           <p style={{ ...sans, fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{title}</p>
           <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', margin: '3px 0 0' }}>{desc}</p>
@@ -124,6 +125,8 @@ function AccentPicker({ value, theme, onChange }: { value: AccentColor; theme: T
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<AppSettings>(loadSettings)
+  const [confirmReset, setConfirmReset] = useState(false)
+  const { resetProgress } = useGameProgress()
 
   function update<K extends keyof AppSettings>(key: K, value: AppSettings[K]) {
     const next = { ...settings, [key]: value }
@@ -140,11 +143,11 @@ export default function SettingsPage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 64, padding: '48px 56px' }}>
+    <div className="settings-page">
 
       {/* Header */}
       <header style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <h1 style={{ ...sans, fontSize: 36, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Settings</h1>
+        <h1 className="settings-h1" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Settings</h1>
         <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', margin: 0 }}>
           I-customize ang iyong experience sa GitGit Aw.
         </p>
@@ -239,6 +242,45 @@ export default function SettingsPage() {
           </div>
         </div>
 
+      </div>
+
+      {/* Danger Zone */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 680 }}>
+        <h2 style={{ ...sans, fontSize: 12, fontWeight: 700, color: '#cf222e', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 4px' }}>
+          Danger Zone
+        </h2>
+        <div style={{ background: 'var(--bg-secondary)', border: '1px solid #cf222e', borderRadius: 12, padding: '20px' }}>
+          <div className="settings-danger-row">
+            <div>
+              <p style={{ ...sans, fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>Reset Game Progress</p>
+              <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', margin: '3px 0 0' }}>
+                Clears all XP, stars, completed projects and challenges. This cannot be undone.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                if (confirmReset) {
+                  resetProgress()
+                  setConfirmReset(false)
+                } else {
+                  setConfirmReset(true)
+                }
+              }}
+              style={{
+                ...sans, fontSize: 13, cursor: 'pointer',
+                padding: '7px 16px', borderRadius: 8,
+                border: `1px solid ${confirmReset ? '#cf222e' : '#cf222e88'}`,
+                background: confirmReset ? '#cf222e' : 'transparent',
+                color: confirmReset ? '#fff' : '#cf222e',
+                transition: 'all 0.15s',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {confirmReset ? 'Click again to confirm' : 'Reset Progress'}
+            </button>
+          </div>
+        </div>
       </div>
 
       <Footer />

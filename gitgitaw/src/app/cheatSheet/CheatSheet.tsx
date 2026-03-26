@@ -1,5 +1,7 @@
 import React from 'react'
-import { Printer } from 'lucide-react'
+import {
+  Printer, Settings, GitBranch, Globe, Undo2, Search, FolderOpen, Archive, History, Database, FileCode, Eye
+} from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 import restingIconPose from '../../assets/images/GitGitAw_Mascot/Resting Icon Pose.png'
@@ -10,12 +12,13 @@ const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
 type CmdRow = { cmd: string; desc: string }
 
 function CheatCard({
-  tag, title, accent, commands,
+  tag, title, accent, commands, Icon,
 }: {
   tag: string
   title: string
   accent: string
   commands: CmdRow[]
+  Icon?: React.ElementType
 }) {
   return (
     // cheat-card → print CSS keeps one section together; cheat-card-row = table-like rows when printing
@@ -29,6 +32,11 @@ function CheatCard({
       gap: 14,
       borderLeft: `4px solid ${accent}`,
     }}>
+      {Icon && (
+        <div style={{ width: 36, height: 36, borderRadius: 8, background: `${accent}22`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon size={18} style={{ color: accent }} />
+        </div>
+      )}
       <span className="cheat-card-tag" style={{ ...mono, fontSize: 10, fontWeight: 700, color: accent }}>{tag}</span>
       <h3 className="cheat-card-title" style={{ ...sans, fontSize: 18, fontWeight: 700, color: '#e6edf3', margin: 0 }}>{title}</h3>
       <div className="cheat-card-divider" style={{ height: 1, background: '#30363d' }} />
@@ -236,8 +244,9 @@ export default function CheatSheet() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <header className="lesson-header">
+        <img src={restingIconPose} alt="GitGitAw Mascot" className="no-print page-mascot" style={{ flexShrink: 0 }} />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
             <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: '#e6edf3', margin: 0 }}>
               Command Cheat Sheet
@@ -263,7 +272,6 @@ export default function CheatSheet() {
             Lahat ng Git at GitHub commands na kailangan mo — sa isang lugar.
           </p>
         </div>
-        <img src={restingIconPose} alt="GitGitAw Mascot" className="no-print" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* ── Print Page 1 ── Setup / Basic Workflow / Branching / Remote ── */}
@@ -274,6 +282,7 @@ export default function CheatSheet() {
             tag="SETUP & CONFIG"
             title="Setup & Config"
             accent="#58a6ff"
+            Icon={Settings}
             commands={[
               { cmd: 'git config --global user.name', desc: 'Set your name globally' },
               { cmd: 'git config --global user.email', desc: 'Set your email globally' },
@@ -286,6 +295,7 @@ export default function CheatSheet() {
             tag="BASIC WORKFLOW"
             title="Basic Workflow"
             accent="#3fb950"
+            Icon={FileCode}
             commands={[
               { cmd: 'git status', desc: 'Show working tree status' },
               { cmd: 'git add .', desc: 'Stage all changes' },
@@ -304,6 +314,7 @@ export default function CheatSheet() {
             tag="BRANCHING"
             title="Branching"
             accent="#bc8cff"
+            Icon={GitBranch}
             commands={[
               { cmd: 'git branch', desc: 'List all local branches' },
               { cmd: 'git switch -c [name]', desc: 'Create and switch to new branch' },
@@ -318,6 +329,7 @@ export default function CheatSheet() {
             tag="REMOTE & GITHUB"
             title="Remote & GitHub"
             accent="#ffa657"
+            Icon={Globe}
             commands={[
               { cmd: 'git remote add origin [url]', desc: 'Link local repo to remote' },
               { cmd: 'git push -u origin main', desc: 'Push and set upstream tracking' },
@@ -337,6 +349,7 @@ export default function CheatSheet() {
             tag="UNDOING CHANGES"
             title="Undoing Changes"
             accent="#f85149"
+            Icon={Undo2}
             commands={[
               { cmd: 'git restore [file]', desc: 'Discard working directory changes' },
               { cmd: 'git restore --staged [file]', desc: 'Unstage a file, keep changes' },
@@ -349,6 +362,7 @@ export default function CheatSheet() {
             tag="INSPECTION & LOGS"
             title="Inspection & Logs"
             accent="#39d353"
+            Icon={Eye}
             commands={[
               { cmd: 'git log --oneline', desc: 'Compact commit history view' },
               { cmd: 'git diff', desc: 'Show unstaged file changes' },
@@ -367,6 +381,7 @@ export default function CheatSheet() {
             tag="TRACKING PATH CHANGES"
             title="Tracking Path Changes"
             accent="#e3b341"
+            Icon={FolderOpen}
             commands={[
               { cmd: 'git rm [file]', desc: 'Delete file from project and stage removal' },
               { cmd: 'git mv [existing-path] [new-path]', desc: 'Change file path and stage the move' },
@@ -377,6 +392,7 @@ export default function CheatSheet() {
             tag="REWRITE HISTORY"
             title="Rewrite History"
             accent="#d2a8ff"
+            Icon={History}
             commands={[
               { cmd: 'git rebase [branch]', desc: 'Apply current branch commits ahead of specified one' },
               { cmd: 'git reset --hard [commit]', desc: 'Clear staging area, rewrite tree from commit' },
@@ -393,6 +409,7 @@ export default function CheatSheet() {
             tag="STASH COMMANDS"
             title="Stash Commands"
             accent="#79c0ff"
+            Icon={Database}
             commands={[
               { cmd: 'git stash', desc: 'Save modified and staged changes temporarily' },
               { cmd: 'git stash list', desc: 'List all stashed changesets' },
@@ -404,6 +421,7 @@ export default function CheatSheet() {
             tag="IGNORING PATTERNS"
             title="Ignoring Patterns"
             accent="#6e7681"
+            Icon={Archive}
             commands={[
               { cmd: 'git config --global core.excludesfile [file]', desc: 'System-wide ignore pattern for all local repos' },
               { cmd: '.gitignore', desc: 'Save glob patterns (logs/, *.notes, pattern*/) to ignore unintentional staging' },

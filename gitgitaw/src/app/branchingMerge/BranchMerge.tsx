@@ -1,4 +1,9 @@
 import React, { useState } from 'react'
+import {
+  GitBranch, Bug, Zap, Wrench,
+  AlertTriangle, Lightbulb, Info,
+  CheckCircle2, GitMerge, Trash2,
+} from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 import celebrationPose from '../../assets/images/GitGitAw_Mascot/Celebration Pose.png'
@@ -50,7 +55,8 @@ export default function BranchMerge() {
       </div>
 
       {/* Page header */}
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <header className="lesson-header">
+        <img src={celebrationPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Branching & Merging
@@ -59,7 +65,6 @@ export default function BranchMerge() {
             Mag-experiment nang walang takot — yan ang advantage ng branches.
           </p>
         </div>
-        <img src={celebrationPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* Sec1 Ano ang Branch */}
@@ -82,10 +87,10 @@ export default function BranchMerge() {
 
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           {[
-            { icon: '', name: 'main', desc: 'Production-ready code. Palaging gumagana at stable. Dito nagsisimula ang lahat ng commits.', badge: '● production', borderColor: 'var(--accent-dim)' },
-            { icon: '', name: 'feature/*', desc: 'Hiwalay na branch para sa bagong features. Safe mag-experiment dito nang hindi naaapektuhan ang main.', badge: '● development', borderColor: '#388bfd' },
-            { icon: '', name: 'bugfix/*', desc: 'Branch para sa pag-aayos ng bugs. I-merge pabalik sa main kapag tapos na ang fix.', badge: '● fixing', borderColor: '#f85149' },
-            { icon: '', name: 'hotfix/*', desc: 'Emergency fixes para sa production bugs. Direkta mula sa main branch, mabilis na solusyon.', badge: '● urgent', borderColor: '#d29922' },
+            { Icon: GitBranch, name: 'main', desc: 'Production-ready code. Palaging gumagana at stable. Dito nagsisimula ang lahat ng commits.', badge: '● production', borderColor: 'var(--accent-dim)' },
+            { Icon: Zap, name: 'feature/*', desc: 'Hiwalay na branch para sa bagong features. Safe mag-experiment dito nang hindi naaapektuhan ang main.', badge: '● development', borderColor: '#388bfd' },
+            { Icon: Bug, name: 'bugfix/*', desc: 'Branch para sa pag-aayos ng bugs. I-merge pabalik sa main kapag tapos na ang fix.', badge: '● fixing', borderColor: '#f85149' },
+            { Icon: Wrench, name: 'hotfix/*', desc: 'Emergency fixes para sa production bugs. Direkta mula sa main branch, mabilis na solusyon.', badge: '● urgent', borderColor: '#d29922' },
           ].map((c) => (
             <div
               key={c.name}
@@ -100,7 +105,7 @@ export default function BranchMerge() {
                 gap: 12,
               }}
             >
-              <span style={{ fontSize: 28 }}>{c.icon}</span>
+              <c.Icon size={24} style={{ color: c.borderColor }} />
               <span style={{ ...mono, fontSize: 15, fontWeight: 700, color: c.borderColor }}>{c.name}</span>
               <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>{c.desc}</p>
               <div style={{ background: 'var(--active-bg)', borderRadius: 20, padding: '4px 10px', alignSelf: 'flex-start' }}>
@@ -110,9 +115,10 @@ export default function BranchMerge() {
           ))}
         </div>
 
-        <div style={{ background: 'var(--active-bg)', border: '1px solid var(--accent-dim)', borderRadius: 8, padding: '14px 16px' }}>
+        <div style={{ background: 'var(--active-bg)', border: '1px solid var(--accent-dim)', borderRadius: 8, padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+          <Lightbulb size={15} style={{ color: 'var(--accent-dim)', flexShrink: 0, marginTop: 1 }} />
           <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
-            💡 Ang main branch ay patuloy na nag-iipon ng commits. Ang feature branch ay nagsisimula sa isang commit point, may sariling history, at maaaring bumalik sa main.
+            Ang main branch ay patuloy na nag-iipon ng commits. Ang feature branch ay nagsisimula sa isang commit point, may sariling history, at maaaring bumalik sa main.
           </p>
         </div>
       </section>
@@ -217,7 +223,7 @@ export default function BranchMerge() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <h3 style={{ ...sans, fontSize: 18, fontWeight: 400, color: 'var(--text-primary)', margin: 0 }}>Switch branch warning</h3>
           <div style={{ background: 'var(--active-bg)', border: '1px solid #f0ad4e', borderRadius: 8, padding: '14px 16px', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-            <span style={{ fontSize: 16 }}>⚠️</span>
+            <AlertTriangle size={15} style={{ color: '#f0ad4e', flexShrink: 0, marginTop: 1 }} />
             <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', margin: 0 }}>Siguraduhing naka-commit o naka-stash ang changes bago lumipat ng branch.</p>
           </div>
         </div>
@@ -237,7 +243,10 @@ export default function BranchMerge() {
         </h2>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <div style={{ flex: '1 1 280px', background: 'var(--active-bg)', border: '2px solid var(--accent-dim)', borderRadius: 12, padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <span style={{ ...sans, fontSize: 18, color: 'var(--accent-dim)' }}>DO</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <CheckCircle2 size={18} style={{ color: 'var(--accent-dim)' }} />
+              <span style={{ ...sans, fontSize: 18, color: 'var(--accent-dim)' }}>DO</span>
+            </div>
             <pre style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8, margin: 0, whiteSpace: 'pre-wrap' }}>{`•  Use descriptive names
 •  Follow type/description format
 •  Use lowercase letters
@@ -245,7 +254,10 @@ export default function BranchMerge() {
 •  Keep names concise but clear`}</pre>
           </div>
           <div style={{ flex: '1 1 280px', background: 'var(--active-bg)', border: '2px solid #d29922', borderRadius: 12, padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <span style={{ ...sans, fontSize: 18, color: '#d29922' }}>DON'T</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <AlertTriangle size={18} style={{ color: '#d29922' }} />
+              <span style={{ ...sans, fontSize: 18, color: '#d29922' }}>DON'T</span>
+            </div>
             <pre style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8, margin: 0, whiteSpace: 'pre-wrap' }}>{`•  Use generic names (test, temp, new)
 •  Use uppercase letters
 •  Use spaces in names
@@ -284,10 +296,14 @@ export default function BranchMerge() {
           { title: 'Step 5 — Optional cleanup', code: 'git branch -d feature/add-login\ngit push origin --delete feature/add-login' },
         ].map((step, i) => (
           <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <h4 style={{ ...sans, fontSize: 16, fontWeight: 400, color: 'var(--text-primary)', margin: 0 }}>{step.title}</h4>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ ...mono, fontSize: 11, fontWeight: 600, color: 'var(--accent-dim)', background: 'var(--bg-tertiary)', borderRadius: 4, padding: '2px 6px' }}>{`${i + 1}`}</span>
+              <h4 style={{ ...sans, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{step.title}</h4>
+            </div>
             <CodeBlock code={step.code} />
             {step.tip && (
-              <div style={{ background: 'var(--active-bg)', borderRadius: 8, padding: '14px 16px' }}>
+              <div style={{ background: 'var(--active-bg)', borderRadius: 8, padding: '14px 16px', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                <Lightbulb size={14} style={{ color: 'var(--accent-dim)', flexShrink: 0, marginTop: 1 }} />
                 <p style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', margin: 0 }}>{step.tip}</p>
               </div>
             )}
@@ -316,8 +332,14 @@ export default function BranchMerge() {
           <span style={{ ...mono, fontSize: 13, color: '#d29922' }}>{'>>>>>>> feature/add-login'}</span>
         </div>
         <div style={{ background: 'var(--active-bg)', borderRadius: 8, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <span style={{ ...sans, fontSize: 14, color: '#d29922' }}>🔴 HEAD: Changes from current branch</span>
-          <span style={{ ...sans, fontSize: 14, color: '#f0ad4e' }}>🟡 Feature: Changes from incoming branch</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#f85149', flexShrink: 0 }} />
+            <span style={{ ...sans, fontSize: 14, color: '#f85149' }}>HEAD: Changes from current branch</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#e3b341', flexShrink: 0 }} />
+            <span style={{ ...sans, fontSize: 14, color: '#e3b341' }}>Feature: Changes from incoming branch</span>
+          </div>
         </div>
         <p style={{ ...sans, fontSize: 16, color: 'var(--text-primary)', margin: 0 }}>How to resolve:</p>
         <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>

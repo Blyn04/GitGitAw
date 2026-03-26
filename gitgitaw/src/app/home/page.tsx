@@ -2,6 +2,28 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Rocket, Flag, Code2, GraduationCap, Zap, Wrench, Monitor, GitCommit, Upload, Users } from 'lucide-react'
 import Footer from '../../Components/Footer'
 import mascotGif from '../../assets/images/GitGItAw_GIF.gif'
+import mascotStatic from '../../assets/images/GitGitAw_Mascot/Welcome Hero Pose.png'
+
+/** Returns true if either the system OR the in-app reduce-motion preference is active. */
+function getReduceMotion(): boolean {
+  if (typeof window === 'undefined') return false
+  return (
+    document.documentElement.dataset.reduceMotion === 'true' ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
+/** Reactive version — updates when the OS media query changes. */
+function useReduceMotion(): boolean {
+  const [val, setVal] = useState(getReduceMotion)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => setVal(getReduceMotion())
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+  return val
+}
 
 /** Attaches IntersectionObserver to add "is-visible" when element enters viewport */
 function useReveal(ref: React.RefObject<HTMLElement | null>) {
@@ -73,7 +95,7 @@ const CHAR_DELAYS = [38, 44, 50, 42, 48, 36, 52, 46, 40, 54]
 function charDelay(i: number) { return CHAR_DELAYS[i % CHAR_DELAYS.length] }
 
 function TerminalBlock() {
-  const reduceMotion = document.documentElement.dataset.reduceMotion === 'true'
+  const reduceMotion = getReduceMotion()
   const [shown, setShown]   = useState<TermLine[]>(reduceMotion ? TERMINAL_SCRIPT : [])
   const [typing, setTyping] = useState('')
   const [idle, setIdle]     = useState(reduceMotion)
@@ -123,7 +145,7 @@ function TerminalBlock() {
   }
 
   return (
-    <div className="hero-animate hero-d5 hero-terminal">
+    <div className="hero-terminal">
       {/* Title bar */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
@@ -176,6 +198,31 @@ function TerminalBlock() {
   )
 }
 
+/** Shows the mascot GIF or a static PNG when reduced-motion is active. */
+function MascotImage() {
+  const noMotion = useReduceMotion()
+  return (
+    <img
+      src={noMotion ? mascotStatic : mascotGif}
+      alt="GitGitAw mascot waving hello"
+      className="page-mascot"
+    />
+  )
+}
+
+/** Wraps the terminal with the glow card frame. */
+function HeroMedia() {
+  return (
+    <div
+      className="hero-animate hero-d5 hero-media-wrapper"
+      role="img"
+      aria-label="Animated terminal showing Git init, commit, and push commands"
+    >
+      <TerminalBlock />
+    </div>
+  )
+}
+
 function HeroSection() {
   return (
     <div className="hero-layout">
@@ -184,17 +231,18 @@ function HeroSection() {
         {/* Badge */}
         <div className="hero-animate hero-d1" style={{ display: 'inline-flex', alignSelf: 'flex-start' }}>
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '5px 12px 5px 6px',
+            display: 'flex', alignItems: 'center', gap: 8,
+            padding: '5px 14px 5px 8px',
             background: 'var(--active-bg)',
             border: '1px solid var(--active-border)',
             borderRadius: 999,
           }}>
+            <span className="hero-badge-dot" aria-hidden="true" />
             <span style={{
               background: 'var(--accent-dim)', borderRadius: 999,
               padding: '2px 8px',
               fontFamily: 'JetBrains Mono, monospace', fontSize: 10, fontWeight: 700,
-              color: 'var(--text-on-accent)', letterSpacing: '0.04em', textTransform: 'uppercase',
+              color: 'var(--text-on-accent)', letterSpacing: '0.05em', textTransform: 'uppercase',
             }}>Open Source</span>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--accent)' }}>
               Libre at walang bayad
@@ -202,64 +250,44 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Mascot GIF */}
-        <div className="hero-animate hero-d2" style={{ display: 'flex', alignSelf: 'flex-start' }}>
-          <img
-            src={mascotGif}
-            alt="GitGitAw Mascot"
-            style={{ height: 130, objectFit: 'contain', filter: 'drop-shadow(0 4px 16px rgba(0,0,0,0.4))' }}
-          />
+        {/* Mascot (left) + Heading & Subtitle (right) — side-by-side row */}
+        <div className="hero-mascot-heading-row">
+          <div className="hero-animate hero-d2" style={{ flexShrink: 0 }}>
+            <MascotImage />
+          </div>
+          <div className="hero-heading-text">
+            <h1 className="hero-animate hero-d3 hero-heading">
+              Handa ka na bang<br />
+              <span style={{ color: 'var(--accent)' }}>matuto ng Git?</span>
+            </h1>
+            <p className="hero-animate hero-d3 hero-subtitle">
+              Step-by-step guide para sa mga Pinoy developers.
+              Walang judgement, puro aral lang!
+            </p>
+          </div>
         </div>
-
-        {/* Heading */}
-        <h1 className="hero-animate hero-d3 hero-heading">
-          Handa ka na bang<br />
-          <span style={{ color: 'var(--accent)' }}>matuto ng Git?</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="hero-animate hero-d3" style={{
-          fontSize: 17, color: 'var(--text-muted)', lineHeight: 1.7,
-          fontFamily: 'Inter, sans-serif', maxWidth: 420, margin: 0,
-        }}>
-          Step-by-step guide para sa mga Pinoy developers.
-          Walang judgement, puro aral lang!
-        </p>
 
         {/* CTAs */}
         <div className="hero-animate hero-d4 hero-ctas">
           <a
             href="/lessons/getting-started"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '13px 26px',
-              background: 'var(--accent-dim)', color: 'var(--text-on-accent)',
-              borderRadius: 8, fontWeight: 600, fontSize: 14,
-              fontFamily: 'Inter, sans-serif', textDecoration: 'none',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
-            }}
+            className="hero-cta-primary"
+            aria-label="Simulan ang pag-aaral ng Git"
           >
-            <Rocket size={15} /> Magsimula Na
+            <Rocket size={15} aria-hidden="true" /> Magsimula Na
           </a>
           <a
             href="#features"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '13px 24px',
-              border: '1px solid var(--border)',
-              color: 'var(--text-muted)',
-              borderRadius: 8, fontWeight: 500, fontSize: 14,
-              fontFamily: 'Inter, sans-serif', textDecoration: 'none',
-              background: 'transparent',
-            }}
+            className="hero-cta-secondary"
+            aria-label="Alamin kung ano ang Git"
           >
-            Ano ang Git? →
+            Ano ang Git? <span aria-hidden="true">→</span>
           </a>
         </div>
 
         {/* Social proof */}
-        <div className="hero-animate hero-d4" style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: -4 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div className="hero-animate hero-d4" style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: -4 }}>
+          <div style={{ display: 'flex', alignItems: 'center' }} aria-hidden="true">
             {([Flag, Code2, GraduationCap] as React.ElementType[]).map((Icon, i) => (
               <span key={i} style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
@@ -275,7 +303,7 @@ function HeroSection() {
         </div>
       </div>
 
-      <TerminalBlock />
+      <HeroMedia />
     </div>
   )
 }

@@ -146,7 +146,8 @@ export default function ConventionalCommits() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <header className="lesson-header">
+        <img src={readyToBuildPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Conventional Commits
@@ -155,12 +156,11 @@ export default function ConventionalCommits() {
             Ang secret ng mga professional developers — malinaw, consistent, at madaling basahin na commit messages!
           </p>
         </div>
-        <img src={readyToBuildPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* ── Sec 1 — Bakit Mahalaga ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
           Bakit Mahalaga ang Commit Messages?
         </h2>
 
@@ -208,7 +208,7 @@ export default function ConventionalCommits() {
 
       {/* ── Sec 2 — Ang Format ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Ang Format</h2>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Ang Format</h2>
         <p style={{ ...sans, fontSize: 15, color: 'var(--text-muted)', margin: 0 }}>
           Ito ang official format ng Conventional Commits:
         </p>
@@ -258,7 +258,7 @@ export default function ConventionalCommits() {
 
       {/* ── Sec 3 — Ang Mga Types ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Ang Mga Types</h2>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Ang Mga Types</h2>
         <p style={{ ...sans, fontSize: 15, color: 'var(--text-muted)', margin: 0 }}>
           Ito ang mga official commit types at kung kailan sila ginagamit:
         </p>
@@ -300,7 +300,7 @@ export default function ConventionalCommits() {
 
       {/* ── Sec 5 — Writing Good Descriptions ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
           Writing Good Descriptions
         </h2>
         <p style={{ ...sans, fontSize: 15, color: 'var(--text-muted)', margin: 0 }}>
@@ -339,7 +339,7 @@ export default function ConventionalCommits() {
         </h3>
 
         {/* Comparison table */}
-        <div style={{ borderRadius: 8, overflow: 'hidden', display: 'flex', gap: 1, background: 'var(--border)' }}>
+        <div style={{ borderRadius: 8, overflow: 'hidden', display: 'flex', gap: 1, background: 'var(--border)', overflowX: 'auto' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'var(--bg-secondary)' }}>
             <div style={{ background: 'rgba(248,81,73,.08)', padding: '10px 14px', borderBottom: '1px solid #f85149', display: 'flex', alignItems: 'center', gap: 6 }}>
               <XCircle size={13} style={{ color: '#f85149' }} />
@@ -357,7 +357,7 @@ export default function ConventionalCommits() {
               <span style={{ ...sans, fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>GOOD</span>
             </div>
             <div style={{ padding: '12px 14px' }}>
-              <pre style={{ ...mono, fontSize: 12, color: 'var(--text-link)', lineHeight: 2, margin: 0 }}>
+              <pre style={{ ...mono, fontSize: 12, color: 'var(--text-link)', lineHeight: 2, margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {`fix(auth): resolve null pointer on logout\nstyle(nav): fix mobile hamburger alignment\nfeat(cart): add quantity selector to product card\nfeat(checkout): add payment form validation\nrefactor(api): extract validation logic to module\nfix(build): resolve webpack path resolution error\nchore(release): bump version to 2.0.0`}
               </pre>
             </div>
@@ -367,7 +367,7 @@ export default function ConventionalCommits() {
 
       {/* ── Sec 6 — The Body ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>The Body</h2>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>The Body</h2>
 
         <CalloutBox Icon={Info} label="Kailan Gamitin ang Body?" variant="blue">
           Hindi laging kailangan ang body. Ginagamit lang ito kapag kailangan ng mas maraming context.
@@ -392,7 +392,7 @@ Closes #234`}
 
       {/* ── Sec 7 — Breaking Changes ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Breaking Changes</h2>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Breaking Changes</h2>
 
         <CalloutBox Icon={AlertTriangle} label="Ano ang BREAKING CHANGE?" variant="red">
           Ang BREAKING CHANGE ay isang pagbabago na hindi na compatible sa previous version.
@@ -439,7 +439,7 @@ Closes #456`}
 
       {/* ── Sec 9 — Real Project Examples ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
           Real Project Examples (Pinoy Context)
         </h2>
 
@@ -459,9 +459,10 @@ chore(deps): update payment gateway SDK to v3.0`}
 
       {/* ── Sec 15 — Quick Reference ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Quick Reference</h2>
+        <h2 style={{ ...sans, fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Quick Reference</h2>
 
-        <div style={{ borderRadius: 10, overflow: 'hidden', display: 'flex', gap: 1, background: 'var(--border)' }}>
+        <div style={{ overflowX: 'auto', borderRadius: 10, border: '1px solid var(--border)' }}>
+        <div style={{ borderRadius: 10, overflow: 'hidden', display: 'flex', gap: 1, background: 'var(--border)', minWidth: 480 }}>
           {/* Type */}
           <div style={{ flex: '0 0 100px', display: 'flex', flexDirection: 'column', background: 'var(--bg-secondary)' }}>
             <div style={{ background: 'var(--bg-tertiary)', padding: '10px 14px', borderBottom: '1px solid var(--border)' }}>
@@ -496,16 +497,17 @@ chore(deps): update payment gateway SDK to v3.0`}
             </div>
           </div>
         </div>
+        </div>
       </section>
 
       {/* ── Sec 17 — Next Steps ── */}
       <div style={{
         background: 'var(--accent-dim)',
-        borderRadius: 16, padding: '40px 32px',
+        borderRadius: 16, padding: 'clamp(20px, 5vw, 40px) clamp(16px, 4vw, 32px)',
         display: 'flex', flexDirection: 'column', gap: 16,
       }}>
         <Trophy size={40} style={{ color: '#ffffff' }} strokeWidth={1.5} />
-        <h3 style={{ ...sans, fontSize: 28, fontWeight: 700, color: '#ffffff', margin: 0 }}>
+        <h3 style={{ ...sans, fontSize: 'clamp(18px, 5vw, 28px)', fontWeight: 700, color: '#ffffff', margin: 0 }}>
           Ayos! Conventional Commits pro ka na!
         </h3>
         <p style={{ ...sans, fontSize: 16, color: '#b5f5c0', lineHeight: 1.5, margin: 0 }}>

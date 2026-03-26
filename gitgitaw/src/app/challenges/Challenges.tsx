@@ -167,7 +167,7 @@ function SectionHeader({ Icon, title, subtitle, color }: {
         <Icon size={22} style={{ color }} />
       </div>
       <div>
-        <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px' }}>
+        <h2 style={{ ...sans, fontSize: 'clamp(17px, 4vw, 22px)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px' }}>
           {title}
         </h2>
         <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', margin: 0 }}>{subtitle}</p>
@@ -185,15 +185,11 @@ export default function Challenges() {
     <div className="lesson-page">
 
         {/* ── Hero ── */}
-        <div style={{
-          background: 'var(--bg-secondary)',
-          border: '1px solid var(--border)',
-          borderRadius: 16, padding: '36px 40px',
-          display: 'flex', flexDirection: 'column', gap: 16,
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <Trophy size={32} style={{ color: 'var(--text-warning)' }} strokeWidth={1.5} />
+        <div className="challenges-hero">
+          <div className="lesson-header">
+            <img src={encouragementPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
+            <div className="challenges-title-row">
+              <Trophy size={28} style={{ color: 'var(--text-warning)', flexShrink: 0 }} strokeWidth={1.5} />
               <div>
                 <h1 className="lesson-page-title" style={{ margin: 0 }}>
                   Git Challenges
@@ -203,7 +199,6 @@ export default function Challenges() {
                 </p>
               </div>
             </div>
-            <img src={encouragementPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
           </div>
 
           <p style={{ ...sans, fontSize: 15, color: 'var(--text-primary)', lineHeight: 1.7, margin: 0, maxWidth: 680 }}>

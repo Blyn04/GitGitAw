@@ -8,6 +8,23 @@ import windowsLogo from '../../assets/windows.svg'
 import macLogo from '../../assets/mac-60.svg'
 import linuxLogo from '../../assets/linux.svg'
 import welcomeHeroPose from '../../assets/images/GitGitAw_Mascot/Welcome Hero Pose.png'
+import {
+  Monitor,
+  Wifi,
+  Sparkles,
+  Globe,
+  BookOpen,
+  GitBranch,
+  Dumbbell,
+  ShieldCheck,
+  Info,
+  Lightbulb,
+  CheckCircle2,
+  UserCircle,
+  Mail,
+  Link2,
+  AlertCircle,
+} from 'lucide-react'
 
 function copyToClipboard(text: string): Promise<void> {
   return navigator.clipboard.writeText(text)
@@ -48,22 +65,10 @@ const gitCards = [
 ]
 
 const gitCardsSteps = [
-  {
-    number: '01',
-    desc: 'Pumunta sa github.com.',
-  },
-  {
-    number: '02',
-    desc: 'I-click ang Sign Up.',
-  },
-  {
-    number: '03',
-    desc: 'Piliin ang Free Plan.',
-  },
-  {
-    number: '04',
-    desc: 'I-verify ang inyong email.',
-  },
+  { number: '01', desc: 'Pumunta sa github.com.', Icon: Globe },
+  { number: '02', desc: 'I-click ang Sign Up.', Icon: UserCircle },
+  { number: '03', desc: 'Piliin ang Free Plan.', Icon: CheckCircle2 },
+  { number: '04', desc: 'I-verify ang inyong email.', Icon: Mail },
 ]
 
 function BreadcrumbSection() {
@@ -78,7 +83,8 @@ function BreadcrumbSection() {
 
 function PageHeaderSection() {
   return (
-    <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+    <header className="lesson-header">
+      <img src={welcomeHeroPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <h1 className="lesson-page-title" style={{ fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
           Getting Started
@@ -87,7 +93,6 @@ function PageHeaderSection() {
           Simulan natin. Step by step, malinaw ang bawat proseso.
         </p>
       </div>
-      <img src={welcomeHeroPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
     </header>
   )
 }
@@ -149,8 +154,12 @@ function GitVsGitHubSection() {
           border: '1px solid var(--accent-dim)',
           borderRadius: 8,
           padding: '14px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
         }}
       >
+        <Info size={16} color="var(--accent-dim)" style={{ flexShrink: 0 }} />
         <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif', margin: 0 }}>
           Simple lang: Git = tool sa computer mo. GitHub = website para sa online storage at collaboration.
         </p>
@@ -160,9 +169,9 @@ function GitVsGitHubSection() {
 }
 
 const requirements = [
-  { icon: '', title: 'Isang Computer', desc: 'Windows, Mac, o Linux. Pwede lahat!' },
-  { icon: '', title: 'Internet Connection', desc: 'Para ma-download ang Git at ma-access ang GitHub' },
-  { icon: '', title: 'Willingness to Learn', desc: 'Huwag matakot sa terminal. Mas madali ito kaysa sa iniisip mo.' },
+  { Icon: Monitor, title: 'Isang Computer', desc: 'Windows, Mac, o Linux. Pwede lahat!' },
+  { Icon: Wifi, title: 'Internet Connection', desc: 'Para ma-download ang Git at ma-access ang GitHub' },
+  { Icon: Sparkles, title: 'Willingness to Learn', desc: 'Huwag matakot sa terminal. Mas madali ito kaysa sa iniisip mo.' },
 ]
 
 function RequirementsSection() {
@@ -187,8 +196,11 @@ function RequirementsSection() {
               gap: 10,
             }}
           >
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <req.Icon size={20} color="var(--accent)" />
+            </div>
             <h3 style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
-              {req.icon}  {req.title}
+              {req.title}
             </h3>
             <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif', margin: 0 }}>
               {req.desc}
@@ -338,8 +350,12 @@ function InstallGitSection() {
             background: 'var(--bg-secondary)',
             borderRadius: 6,
             padding: '10px 14px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
           }}
         >
+          <Info size={14} color="var(--text-muted)" style={{ flexShrink: 0 }} />
           <p style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
             Kung hindi ka sigurado, kadalasan Windows ang gamit ng karamihan.
           </p>
@@ -456,8 +472,12 @@ function InstallGitSection() {
             border: '1px solid var(--accent-dim)',
             padding: '10px 14px',
             background: 'var(--bg-tip)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 10,
           }}
         >
+          <CheckCircle2 size={15} color="var(--accent-dim)" style={{ flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
             Kapag may lumabas na <code style={{ fontFamily: 'JetBrains Mono, monospace' }}>git version 2.x.x</code>, ibig sabihin naka-install na ang Git sa iyong
             computer.
@@ -593,8 +613,12 @@ function InstallGitSection() {
             border: '1px solid var(--accent-dim)',
             padding: '10px 14px',
             background: 'var(--bg-tip)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 10,
           }}
         >
+          <Lightbulb size={15} color="var(--accent-dim)" style={{ flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', margin: 0 }}>
             Tip: Gumamit ng email na ginagamit mo rin sa GitHub para tumama ang mga commits sa tamang account.
           </p>
@@ -628,13 +652,25 @@ function CreateGitHubAccountSection() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 14,
+                gap: 12,
               }}
             >
+              <div style={{
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                background: hoveredCard === card.number ? 'var(--accent-dim)' : 'var(--bg-tertiary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'background 0.2s',
+              }}>
+                <card.Icon size={22} color={hoveredCard === card.number ? 'var(--text-primary)' : 'var(--accent)'} />
+              </div>
               <h3
                 style={{
                   fontWeight: 600,
-                  fontSize: 36,
+                  fontSize: 28,
                   color: hoveredCard === card.number ? 'var(--accent)' : 'var(--text-primary)',
                   fontFamily: 'Inter, sans-serif',
                   margin: 0,
@@ -676,34 +712,32 @@ function CreateGitHubAccountSection() {
           gap: 10,
         }}
       >
-        <h3
-          style={{
-            fontWeight: 600,
-            fontSize: 18,
-            color: 'var(--text-primary)',
-            fontFamily: 'Inter, sans-serif',
-            margin: 0,
-          }}
-        >
-          Tips para sa GitHub profile mo
-        </h3>
-        <ul
-          style={{
-            margin: 0,
-            paddingLeft: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 6,
-            fontSize: 14,
-            color: 'var(--text-muted)',
-            lineHeight: 1.5,
-            fontFamily: 'Inter, sans-serif',
-          }}
-        >
-          <li>Pumili ng username na professional at madaling tandaan.</li>
-          <li>Maglagay ng malinaw na profile picture at maikling bio tungkol sa ginagawa mo.</li>
-          <li>Optional pero maganda: i-link ang portfolio website o LinkedIn kung meron.</li>
-        </ul>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Lightbulb size={18} color="var(--accent)" />
+          <h3
+            style={{
+              fontWeight: 600,
+              fontSize: 18,
+              color: 'var(--text-primary)',
+              fontFamily: 'Inter, sans-serif',
+              margin: 0,
+            }}
+          >
+            Tips para sa GitHub profile mo
+          </h3>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            { Icon: UserCircle, text: 'Pumili ng username na professional at madaling tandaan.' },
+            { Icon: CheckCircle2, text: 'Maglagay ng malinaw na profile picture at maikling bio tungkol sa ginagawa mo.' },
+            { Icon: Link2, text: 'Optional pero maganda: i-link ang portfolio website o LinkedIn kung meron.' },
+          ].map(({ Icon, text }) => (
+            <div key={text} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <Icon size={15} color="var(--accent-dim)" style={{ flexShrink: 0, marginTop: 2 }} />
+              <span style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>{text}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div
@@ -713,8 +747,12 @@ function CreateGitHubAccountSection() {
           borderRadius: 8,
           background: 'var(--bg-warning)',
           border: '1px solid var(--border-warning)',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 10,
         }}
       >
+        <AlertCircle size={16} color="var(--text-warning)" style={{ flexShrink: 0, marginTop: 1 }} />
         <p
           style={{
             margin: 0,
@@ -759,17 +797,22 @@ function ConnectToGitHub() {
               gap: 8,
             }}
           >
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
+              <Globe size={20} color={hoverProtocol === 'https' ? 'var(--accent)' : 'var(--text-muted)'} />
+            </div>
             <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                padding: '6px 10px',
-                borderRadius: 8,
-                background: 'var(--bg-secondary)',
+                padding: '4px 10px',
+                borderRadius: 6,
+                background: 'var(--bg-tertiary)',
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: 17,
+                fontSize: 13,
+                fontWeight: 600,
                 color: hoverProtocol === 'https' ? 'var(--accent)' : 'var(--text-muted)',
+                width: 'fit-content',
               }}
             >
               HTTPS
@@ -799,17 +842,22 @@ function ConnectToGitHub() {
               gap: 8,
             }}
           >
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
+              <ShieldCheck size={20} color={hoverProtocol === 'ssh' ? 'var(--accent)' : 'var(--text-muted)'} />
+            </div>
             <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                padding: '6px 10px',
-                borderRadius: 8,
-                background: 'var(--bg-secondary)',
+                padding: '4px 10px',
+                borderRadius: 6,
+                background: 'var(--bg-tertiary)',
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: 17,
+                fontSize: 13,
+                fontWeight: 600,
                 color: hoverProtocol === 'ssh' ? 'var(--accent)' : 'var(--text-muted)',
+                width: 'fit-content',
               }}
             >
               SSH
@@ -830,8 +878,12 @@ function ConnectToGitHub() {
             border: '1px solid var(--accent-dim)',
             padding: '10px 14px',
             background: 'var(--bg-darkGreen)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 10,
           }}
         >
+          <Info size={15} color="var(--accent-dim)" style={{ flexShrink: 0, marginTop: 1 }} />
           <p style={{ margin: 0, fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif' }}>
             Sa ngayon, sapat na ang HTTPS. Pag kumportable ka na sa Git, pwede nating i-setup ang SSH keys sa susunod na
             module.
@@ -853,92 +905,53 @@ function FreeResources() {
           </p>
 
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-            <div
-              style={{
-                flex: 1,
-                minWidth: 260,
-                background: 'var(--bg-secondary)',
-                border: '1px solid var(--border)',
-                borderRadius: 12,
-                padding: 20,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
-            >
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
-                YouTube 
-              </h3>
-              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
-                Hanap ng mga Tagalog o English tutorials tungkol sa Git basics at GitHub workflow.
-              </p>
-            </div>
-
-            <div
-              style={{
-                flex: 1,
-                minWidth: 260,
-                background: 'var(--bg-secondary)',
-                border: '1px solid var(--border)',
-                borderRadius: 12,
-                padding: 20,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
-            >
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
-                Pro Git Book
-              </h3>
-
-              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
-                Libreng online book na talagang malalim magturo ng Git. Perfect kapag gusto mo nang mag-advance.
-              </p>
-            </div>
-
-            <div
-              style={{
-                flex: 1,
-                minWidth: 260,
-                background: 'var(--bg-secondary)',
-                border: '1px solid var(--border)',
-                borderRadius: 12,
-                padding: 20,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
-            >
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
-                Learn Git Branching
-              </h3>
-
-              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
-                Mga website tulad ng Git Kata at iba pa kung saan pwede kang mag-practice ng Git commands.
-              </p>
-            </div>
-
-            <div
-              style={{
-                flex: 1,
-                minWidth: 260,
-                background: 'var(--bg-secondary)',
-                border: '1px solid var(--border)',
-                borderRadius: 12,
-                padding: 20,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
-            >
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
-                Git Practice Sites
-              </h3>
-
-              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
-                Mga website tulad ng Git Kata at iba pa kung saan pwede kang mag-practice ng Git commands.
-              </p>
-            </div>
+            {[
+              {
+                Icon: Globe,
+                title: 'YouTube',
+                desc: 'Hanap ng mga Tagalog o English tutorials tungkol sa Git basics at GitHub workflow.',
+              },
+              {
+                Icon: BookOpen,
+                title: 'Pro Git Book',
+                desc: 'Libreng online book na talagang malalim magturo ng Git. Perfect kapag gusto mo nang mag-advance.',
+              },
+              {
+                Icon: GitBranch,
+                title: 'Learn Git Branching',
+                desc: 'Interactive visual na paraan para matuto ng Git branching concepts. Libre at fun gamitin.',
+              },
+              {
+                Icon: Dumbbell,
+                title: 'Git Practice Sites',
+                desc: 'Mga website tulad ng Git Kata at iba pa kung saan pwede kang mag-practice ng Git commands.',
+              },
+            ].map(({ Icon, title, desc }) => (
+              <div
+                key={title}
+                style={{
+                  flex: 1,
+                  minWidth: 220,
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 12,
+                  padding: 20,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 10,
+                }}
+              >
+                <div style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon size={18} color="var(--accent)" />
+                </div>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
+                  {title}
+                </h3>
+                <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'Inter, sans-serif' }}>
+                  {desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 

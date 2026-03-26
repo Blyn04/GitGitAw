@@ -81,7 +81,7 @@ function BeginnerProject({
       border: '1px solid var(--accent)',
     }}>
       {/* Header row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+      <div className="practice-proj-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <LevelBadge level="🟢 Beginner" color="#3fb950" bg="#1a3a1a" />
           <span style={{ ...sans, fontSize: 11, color: 'var(--text-muted)', background: 'var(--bg-tertiary)', borderRadius: 12, padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -317,27 +317,27 @@ export default function PracticeProjects() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <header className="lesson-header">
+        <img src={friendlyGuidePose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-          Practice Projects
-        </h1>
-        <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.7, margin: 0 }}>
-          Matuto ng Git sa pamamagitan ng actual practice.<br />
-          Subukan ang mga guided projects na ito para masanay sa real Git workflows.
-        </p>
+          <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+            Practice Projects
+          </h1>
+          <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.7, margin: 0 }}>
+            Matuto ng Git sa pamamagitan ng actual practice.<br />
+            Subukan ang mga guided projects na ito para masanay sa real Git workflows.
+          </p>
         </div>
-        <img src={friendlyGuidePose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* ── S1 — Bakit Kailangan ng Practice ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-        <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+        <h2 className="practice-section-h2" style={{ ...sans, color: 'var(--text-primary)' }}>
           Bakit Kailangan ng Practice?
         </h2>
 
         {/* Story card */}
-        <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 28, display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
           <span style={{ ...sans, fontSize: 13, fontWeight: 600, color: 'var(--text-link)', display: 'flex', alignItems: 'center', gap: 6 }}>
             <BookOpen size={14} /> Bakit Kailangan ng Practice?
           </span>
@@ -373,7 +373,7 @@ export default function PracticeProjects() {
 
       {/* ── S2 — Difficulty Levels ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-        <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Difficulty Levels</h2>
+        <h2 className="practice-section-h2" style={{ ...sans, color: 'var(--text-primary)' }}>Difficulty Levels</h2>
         <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', margin: 0 }}>
           Piliin ang level na angkop sa iyong experience.
         </p>
@@ -399,7 +399,7 @@ export default function PracticeProjects() {
       {/* ── S3 — Beginner Projects ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div>
-          <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: '#3fb950', margin: '0 0 6px' }}>
+          <h2 className="practice-section-h2" style={{ ...sans, color: '#3fb950' }}>
             <Target size={18} style={{ display: 'inline', marginRight: 8, verticalAlign: 'middle' }} />
             Beginner Projects
           </h2>
@@ -491,7 +491,7 @@ export default function PracticeProjects() {
       {/* ── S4 — Intermediate Projects ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div>
-          <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: '#58a6ff', margin: '0 0 6px' }}>
+          <h2 className="practice-section-h2" style={{ ...sans, color: '#58a6ff' }}>
             <GitBranch size={18} style={{ display: 'inline', marginRight: 8, verticalAlign: 'middle' }} />
             Intermediate Projects
           </h2>
@@ -529,7 +529,7 @@ export default function PracticeProjects() {
       {/* ── S5 — Advanced Projects ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div>
-          <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: '#bc8cff', margin: '0 0 6px' }}>
+          <h2 className="practice-section-h2" style={{ ...sans, color: '#bc8cff' }}>
             <Trophy size={18} style={{ display: 'inline', marginRight: 8, verticalAlign: 'middle' }} />
             Advanced Projects
           </h2>
@@ -567,7 +567,7 @@ export default function PracticeProjects() {
       {/* ── S6 — Bonus Challenges ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         <div>
-          <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: 'var(--text-warning)', margin: '0 0 6px' }}>
+          <h2 className="practice-section-h2" style={{ ...sans, color: 'var(--text-warning)' }}>
             🌟 Bonus Challenges
           </h2>
           <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', margin: 0 }}>Optional challenges para sa gustong mag-explore pa.</p>
@@ -584,10 +584,10 @@ export default function PracticeProjects() {
       </section>
 
       {/* ── S7 — I-share ang Iyong Projects ── */}
-      <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 32, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div className="practice-card-lg" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Trophy size={28} style={{ color: 'var(--text-warning)' }} strokeWidth={1.5} />
-          <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>I-share ang Iyong Projects</h2>
+          <h2 className="practice-section-h2" style={{ ...sans, color: 'var(--text-primary)' }}>I-share ang Iyong Projects</h2>
         </div>
         <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
           Kapag natapos mo ang isang project, maaari mo itong i-share sa GitGit Aw community para makakuha ng
@@ -614,7 +614,7 @@ export default function PracticeProjects() {
 
       {/* ── S8 — Learning Path Tracker ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+        <h2 className="practice-section-h2" style={{ ...sans, color: 'var(--text-primary)' }}>
           Learning Path Tracker
         </h2>
 
@@ -660,7 +660,7 @@ export default function PracticeProjects() {
 
       {/* ── S9 — Recommended Resources ── */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-        <h2 style={{ ...sans, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Recommended Resources</h2>
+        <h2 className="practice-section-h2" style={{ ...sans, color: 'var(--text-primary)' }}>Recommended Resources</h2>
 
         <div className="lesson-cards-row">
           <ResourceCard
@@ -694,8 +694,8 @@ export default function PracticeProjects() {
       </section>
 
       {/* ── S10 — Next Steps CTA ── */}
-      <div style={{ background: '#1a3a1a', border: '1px solid var(--accent)', borderRadius: 12, padding: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <h3 style={{ ...sans, fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+      <div className="practice-card-lg" style={{ background: '#1a3a1a', border: '1px solid var(--accent)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <h3 style={{ ...sans, fontSize: 'clamp(16px, 4vw, 20px)', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
           Handa ka nang mag-practice ng Git workflows.
         </h3>
         <p style={{ ...sans, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>

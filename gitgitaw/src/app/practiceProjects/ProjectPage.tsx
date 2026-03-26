@@ -93,7 +93,7 @@ function PromptDisplay({ dir, os, size = 13 }: { dir: string; os: OS; size?: num
 
   if (os === 'windows') {
     return (
-      <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+      <span style={{ whiteSpace: 'nowrap', flexShrink: 0, maxWidth: '55vw', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         <span style={{ ...ff, color: t.promptUser }}>PS </span>
         <span style={{ ...ff, color: t.promptPath }}>{getWinPath(dir)}</span>
         <span style={{ ...ff, color: t.promptSym }}>{'> '}</span>
@@ -102,7 +102,7 @@ function PromptDisplay({ dir, os, size = 13 }: { dir: string; os: OS; size?: num
   }
   if (os === 'linux') {
     return (
-      <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+      <span style={{ whiteSpace: 'nowrap', flexShrink: 0, maxWidth: '55vw', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         <span style={{ ...ff, color: t.promptUser }}>gitgitaw@ubuntu</span>
         <span style={{ ...ff, color: t.promptSym }}>:</span>
         <span style={{ ...ff, color: t.promptPath }}>{dir}</span>
@@ -110,11 +110,11 @@ function PromptDisplay({ dir, os, size = 13 }: { dir: string; os: OS; size?: num
       </span>
     )
   }
-  // macOS
+  // macOS — shorten user@host on mobile
   const shortDir = dir === '~' ? '~' : (dir.split('/').pop() || dir)
   return (
-    <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
-      <span style={{ ...ff, color: t.promptUser }}>gitgitaw@MacBook-Pro </span>
+    <span style={{ whiteSpace: 'nowrap', flexShrink: 0, maxWidth: '55vw', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+      <span style={{ ...ff, color: t.promptUser }}>gitgitaw </span>
       <span style={{ ...ff, color: t.promptPath }}>{shortDir} </span>
       <span style={{ ...ff, color: t.promptSym }}>{'% '}</span>
     </span>
@@ -500,7 +500,7 @@ function CompletionScreen({
     }}>
       <div style={{
         background: 'var(--bg-secondary)', border: `1.5px solid ${difficultyColor}`,
-        borderRadius: 16, padding: '40px 32px', maxWidth: 440, width: '100%',
+        borderRadius: 16, padding: 'clamp(20px, 5vw, 40px) clamp(16px, 4vw, 32px)', maxWidth: 440, width: '100%',
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20,
         textAlign: 'center', animation: 'completePulse 0.7s ease',
         boxShadow: `0 0 40px ${difficultyColor}30`,
@@ -762,12 +762,7 @@ export default function ProjectPage() {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
 
       {/* ── Header ── */}
-      <div style={{
-        padding: '16px 28px 14px',
-        borderBottom: '1px solid var(--border)',
-        background: 'var(--bg-secondary)',
-        display: 'flex', flexDirection: 'column', gap: 10, flexShrink: 0,
-      }}>
+      <div className="project-page-header">
         {/* Breadcrumb */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 11 }}>
           <a href="/lessons/practice" style={{ color: 'var(--text-link)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -823,20 +818,10 @@ export default function ProjectPage() {
       </div>
 
       {/* ── Body: left panel + terminal ── */}
-      <div style={{
-        display: 'flex', flex: 1, gap: 20,
-        padding: '20px 28px',
-        alignItems: 'flex-start',
-      }}>
+      <div className="project-page-body">
 
         {/* Left: Objective + Quest Log */}
-        <div style={{
-          width: 300, flexShrink: 0,
-          display: 'flex', flexDirection: 'column', gap: 12,
-          position: 'sticky', top: 20,
-          maxHeight: 'calc(100vh - 160px)',
-          overflowY: 'auto',
-        }}>
+        <div className="project-page-sidebar">
           {!completed && currentStep < totalSteps ? (
             <ObjectiveCard
               key={currentStep}
@@ -891,7 +876,7 @@ export default function ProjectPage() {
         </div>
 
         {/* Right: Terminal */}
-        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="project-page-terminal">
 
           {/* Terminal window */}
           <div style={{
@@ -993,7 +978,7 @@ export default function ProjectPage() {
 
           {/* Keyboard tips */}
           {!completed && (
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', padding: '2px 2px' }}>
+            <div className="project-keyboard-tips" style={{ display: 'flex', gap: 16, flexWrap: 'wrap', padding: '2px 2px' }}>
               {[
                 { key: 'Enter',  desc: 'Run command' },
                 { key: '↑ / ↓', desc: 'Command history' },

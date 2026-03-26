@@ -53,7 +53,8 @@ export default function GitHubEssentials() {
       </div>
 
       {/* Page header */}
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <header className="lesson-header">
+        <img src={focusPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             GitHub Essentials
@@ -62,7 +63,6 @@ export default function GitHubEssentials() {
             Ang GitHub ang pinakasikat na platform para sa pag-store, pag-share, at pag-collaborate sa code.
           </p>
         </div>
-        <img src={focusPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* Sec1 — Bakit Mahalaga ang GitHub? */}

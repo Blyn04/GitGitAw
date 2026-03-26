@@ -87,6 +87,19 @@ body {
   animation-duration:  0ms !important;
 }
 
+/* Also respect the OS-level preference for users who haven't touched app settings */
+@media (prefers-reduced-motion: reduce) {
+  .hero-animate {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .reveal {
+    transition: none !important;
+  }
+}
+
 /* ── Route / page transition (AppLayout outlet wrapper) ─ */
 @keyframes pageOutletEnter {
   from {
@@ -826,6 +839,285 @@ body {
   100% { background: transparent; }
 }
 
+/* ── Page mascot image — shared across all lesson pages ─ */
+.page-mascot {
+  height: 450px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.3));
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .page-mascot {
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-mascot {
+    height: 140px;
+  }
+}
+
+/* ── Challenges page hero card ────────────────────────── */
+
+.challenges-hero {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.challenges-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .challenges-hero {
+    padding: 20px 16px;
+  }
+
+  /* Stack mascot above title on narrow screens */
+  .challenges-hero .lesson-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .challenges-hero .page-mascot {
+    height: 100px;
+    align-self: center;
+  }
+
+  .challenges-title-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Smaller h1 so "Git Challenges" fits */
+  .challenges-hero .lesson-page-title {
+    font-size: 24px !important;
+  }
+}
+
+/* ── Site Footer ──────────────────────────────────────── */
+
+.site-footer {
+  background: var(--bg-footer);
+  border-top: 2px solid var(--accent-dim);
+  padding: 48px 56px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin: 0 -56px -48px;
+}
+
+.footer-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  width: 280px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 32px 20px 24px;
+    margin: 0 -16px -24px;
+    gap: 20px;
+  }
+
+  .footer-columns {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .footer-brand {
+    width: 100%;
+    min-width: unset;
+  }
+
+  /* Prevent long URLs from overflowing */
+  .footer-col a,
+  .footer-brand a {
+    word-break: break-all;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* ── Project Page (interactive terminal) ─────────────── */
+
+.project-page-header {
+  padding: 16px 28px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.project-page-body {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  padding: 20px 28px;
+  align-items: flex-start;
+}
+
+.project-page-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+}
+
+.project-page-terminal {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .project-page-header {
+    padding: 12px 16px;
+  }
+
+  .project-page-body {
+    flex-direction: column;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .project-page-sidebar {
+    width: 100%;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  /* Shrink terminal text slightly so commands don't wrap */
+  .project-page-terminal pre,
+  .project-page-terminal span,
+  .project-page-terminal input {
+    font-size: 11px !important;
+  }
+
+  /* Hide keyboard shortcut tips on mobile — not usable on touch devices */
+  .project-keyboard-tips {
+    display: none !important;
+  }
+}
+
+/* ── Practice Projects page — responsive helpers ─────── */
+
+/* Large section cards (S7 / S10 CTAs) */
+.practice-card-lg {
+  padding: 32px;
+}
+
+/* Section-level h2 titles with inline fontSize */
+.practice-section-h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+/* BeginnerProject badge/time/button row */
+.practice-proj-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .practice-card-lg {
+    padding: 20px;
+  }
+
+  .practice-section-h2 {
+    font-size: 18px;
+  }
+
+  /* Wrap the badge row so the Start button drops below on tiny screens */
+  .practice-proj-header {
+    flex-wrap: wrap;
+  }
+
+  /* Stop SkillChips from overflowing on very narrow screens */
+  .practice-skill-chips {
+    flex-wrap: wrap;
+  }
+}
+
+/* ── Lesson page header: mascot left, title right (mirrors home hero) ── */
+.lesson-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .lesson-header {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Stack mascot above title so long titles get full width */
+  .lesson-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Text column takes full width when stacked */
+  .lesson-header > div {
+    width: 100%;
+  }
+}
+
 /* ── Shared lesson page layout ───────────────────────── */
 .lesson-page {
   display: flex;
@@ -940,6 +1232,19 @@ body {
   align-items: center;
 }
 
+/* Mascot GIF sits to the left of the heading + subtitle */
+.hero-mascot-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.hero-heading-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .hero-left {
   flex: 1;
   display: flex;
@@ -957,14 +1262,44 @@ body {
   margin: 0;
 }
 
-.hero-terminal {
+.hero-media-wrapper {
+  position: relative;
   width: 500px;
   flex-shrink: 0;
+  /* Accent glow around the card — subtle green halo */
+  filter:
+    drop-shadow(0 0 28px color-mix(in srgb, var(--accent) 14%, transparent))
+    drop-shadow(0 16px 48px rgba(0,0,0,0.5));
+}
+
+.hero-terminal {
+  width: 100%;
   background: var(--bg-code);
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent),
+    0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* Reduced glow in light mode (accent colour is much darker there) */
+[data-theme="light"] .hero-media-wrapper {
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+}
+
+[data-theme="light"] .hero-terminal {
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.hero-subtitle {
+  font-size: 17px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  font-family: Inter, sans-serif;
+  max-width: 420px;
+  margin: 0;
 }
 
 .hero-ctas {
@@ -972,6 +1307,100 @@ body {
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+/* ── Hero CTA buttons ──────────────────────────────── */
+.hero-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  background: var(--accent-dim);
+  color: var(--text-on-accent);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  transition: background-color 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+  cursor: pointer;
+}
+
+.hero-cta-primary:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 20px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 1px 4px rgba(0,0,0,0.3);
+}
+
+.hero-cta-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.hero-cta-primary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 22px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  text-decoration: none;
+  background: transparent;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+  cursor: pointer;
+}
+
+.hero-cta-secondary:hover {
+  border-color: color-mix(in srgb, var(--text-muted) 70%, transparent);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--bg-tertiary) 55%, transparent);
+}
+
+.hero-cta-secondary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ── Hero badge pulse dot ──────────────────────────── */
+.hero-badge-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: heroBadgePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes heroBadgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  50%       { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+
+[data-reduce-motion="true"] .hero-badge-dot,
+[data-reduce-motion="true"] .hero-badge-dot {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-badge-dot { animation: none; }
+  .hero-cta-primary:hover  { transform: none; }
+  .hero-cta-secondary:hover { transform: none; }
 }
 
 .features-grid {
@@ -991,6 +1420,29 @@ body {
   flex-shrink: 0;
 }
 
+/* ── Tablet (769 – 1100px): shrink terminal, tighten heading ── */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .home-page {
+    padding: 40px 32px;
+  }
+
+  .hero-layout {
+    gap: 36px;
+  }
+
+  .hero-media-wrapper {
+    width: 400px;
+  }
+
+  .hero-heading {
+    font-size: 42px;
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .home-page {
     padding: 24px 16px;
@@ -1005,6 +1457,16 @@ body {
 
   .hero-heading {
     font-size: 36px;
+  }
+
+  .hero-mascot-heading-row {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .hero-media-wrapper {
+    width: 100%;
+    flex-shrink: 1;
   }
 
   .hero-terminal {
@@ -1031,6 +1493,15 @@ body {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+/* Very small screens: stack mascot above heading */
+@media (max-width: 480px) {
+  .hero-mascot-heading-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 }
 

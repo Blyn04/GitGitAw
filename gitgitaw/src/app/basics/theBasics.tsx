@@ -3,7 +3,7 @@ import {
   Camera, RotateCcw, GitBranch, Folder, GitCommit, GitMerge,
   Download, Upload, ArrowDown, Layers, FolderOpen, HardDrive,
   Github, Lightbulb, Check, X, Copy, CheckCircle2,
-  ThumbsUp, Trophy, MessageSquare,
+  ThumbsUp, Trophy, MessageSquare, Terminal,
 } from 'lucide-react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
@@ -119,14 +119,14 @@ function BreadcrumbSection() {
 
 function HeaderSection() {
   return (
-    <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+    <header className="lesson-header">
+      <img src={tutorPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>The Basics</h1>
         <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
           Ang pinaka-importanteng konsepto ng Git. Malinaw at praktikal.
         </p>
       </div>
-      <img src={tutorPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
     </header>
   )
 }
@@ -358,7 +358,8 @@ function Sec5Commands() {
       <SectionHeader title="Mga Basic Commands" subtitle="Mga commands na madalas mong gagamitin:" />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {commands.map(c => (
-          <div key={c.cmd} className="basics-cmd-row" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 8, padding: '14px 20px' }}>
+          <div key={c.cmd} className="basics-cmd-row" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 8, padding: '14px 20px', alignItems: 'center' }}>
+            <Terminal size={14} style={{ color: 'var(--accent-dim)', flexShrink: 0 }} />
             <code style={{ ...mono, fontSize: 13, color: 'var(--text-link)', whiteSpace: 'nowrap' }}>{c.cmd}</code>
             <span style={{ ...sans, fontSize: 13, color: 'var(--text-muted)', flex: 1 }}>{c.desc}</span>
           </div>

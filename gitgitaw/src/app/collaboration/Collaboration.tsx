@@ -272,7 +272,8 @@ export default function Collaboration() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <header className="lesson-header">
+        <img src={mascotPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Collaboration
@@ -281,7 +282,6 @@ export default function Collaboration() {
             Pag-aralan kung paano magtulungan ang mga developer gamit ang Git at GitHub para sa mas epektibong software development.
           </p>
         </div>
-        <img src={mascotPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* Sec1 — Bakit Mahalaga */}

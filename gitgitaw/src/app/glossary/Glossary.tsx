@@ -106,7 +106,7 @@ export default function GlossaryPage() {
             Mga termino sa Git, GitHub, at collaboration — batay sa nilalaman ng GitGit Aw.
           </p>
         </div>
-        <img src={fullBodyPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
+        <img src={fullBodyPose} alt="GitGitAw Mascot" className="page-mascot" />
       </header>
 
       <div style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 20 }}>

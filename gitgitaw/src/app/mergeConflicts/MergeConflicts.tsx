@@ -290,7 +290,8 @@ export default function MergeConflicts() {
       </div>
 
       {/* Page Header */}
-      <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+      <header className="lesson-header">
+        <img src={oopsButOptimisticPose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Merge Conflicts
@@ -299,7 +300,6 @@ export default function MergeConflicts() {
             Huwag matakot - normal na parte ng buhay ng developer ang merge conflict. Ayusin natin ito step by step.
           </p>
         </div>
-        <img src={oopsButOptimisticPose} alt="GitGitAw Mascot" style={{ height: 110, objectFit: 'contain', flexShrink: 0 }} />
       </header>
 
       {/* Sec1 - Ano ang Merge Conflict */}

@@ -19,6 +19,7 @@ import ProjectPage from './app/practiceProjects/ProjectPage'
 import SettingsPage from './app/settings/Settings'
 import Challenges from './app/challenges/Challenges'
 import GlossaryPage from './app/glossary/Glossary'
+import CommunityRedirect from './app/community/CommunityRedirect'
 
 // Apply persisted settings before first render
 applySettings(loadSettings())
@@ -42,6 +43,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="lessons/practice/:projectId"  element={<ProjectPage />} />
           <Route path="lessons/challenges"             element={<Challenges />} />
           <Route path="glossary"                     element={<GlossaryPage />} />
+          <Route path="community"                   element={<CommunityRedirect />} />
           <Route path="settings"                     element={<SettingsPage />} />
         </Route>
       </Routes>

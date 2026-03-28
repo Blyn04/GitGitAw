@@ -21,31 +21,41 @@ function CheatCard({
   Icon?: React.ElementType
 }) {
   return (
-    // cheat-card → print CSS keeps one section together; cheat-card-row = table-like rows when printing
-    <div className="cheat-card" style={{
-      flex: 1,
-      background: '#161b22',
-      borderRadius: 12,
-      padding: '24px 20px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 14,
-      borderLeft: `4px solid ${accent}`,
-    }}>
-      {Icon && (
-        <div style={{ width: 36, height: 36, borderRadius: 8, background: `${accent}22`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Icon size={18} style={{ color: accent }} />
+    <div className="uiverse-review-card uiverse-review-card--cheat">
+      <div className="uiverse-notiborderglow" aria-hidden />
+      <div className="uiverse-notiglow" aria-hidden />
+      <div
+        className="uiverse-review-card__content uiverse-review-card__content--cheat cheat-card"
+        style={{
+          flex: 1,
+          background: 'var(--bg-code)',
+          borderRadius: 12,
+          padding: '32px 28px 36px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 22,
+          borderLeft: `4px solid ${accent}`,
+        }}
+      >
+        <div className="cheat-card-header">
+          {Icon && (
+            <div style={{ width: 44, height: 44, borderRadius: 10, background: `${accent}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon size={20} style={{ color: accent }} />
+            </div>
+          )}
+          <div className="cheat-card-header-meta">
+            <span className="cheat-card-tag" style={{ ...mono, fontSize: 10, fontWeight: 700, color: accent }}>{tag}</span>
+            <h3 className="cheat-card-title" style={{ ...sans, fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{title}</h3>
+          </div>
         </div>
-      )}
-      <span className="cheat-card-tag" style={{ ...mono, fontSize: 10, fontWeight: 700, color: accent }}>{tag}</span>
-      <h3 className="cheat-card-title" style={{ ...sans, fontSize: 18, fontWeight: 700, color: '#e6edf3', margin: 0 }}>{title}</h3>
-      <div className="cheat-card-divider" style={{ height: 1, background: '#30363d' }} />
-      {commands.map((row) => (
-        <div key={row.cmd} className="cheat-card-row" style={{ display: 'flex', gap: 12, width: '100%' }}>
-          <span className="cheat-cmd" style={{ ...mono, fontSize: 12, color: accent, flexShrink: 0, width: 210 }}>{row.cmd}</span>
-          <span className="cheat-desc" style={{ ...sans, fontSize: 12, color: '#8b949e' }}>{row.desc}</span>
-        </div>
-      ))}
+        <div className="cheat-card-divider" style={{ height: 1, background: 'var(--border)' }} />
+        {commands.map((row) => (
+          <div key={row.cmd} className="cheat-card-row">
+            <span className="cheat-cmd" style={{ ...mono, fontSize: 12, color: accent }}>{row.cmd}</span>
+            <span className="cheat-desc" style={{ ...sans, fontSize: 12, color: 'var(--text-muted)' }}>{row.desc}</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -138,6 +148,23 @@ export default function CheatSheet() {
         gap: 14px !important;
         break-inside: auto !important;
         page-break-inside: auto !important;
+      }
+
+      .uiverse-review-card--cheat {
+        background: transparent !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        min-height: 0 !important;
+      }
+
+      .uiverse-review-card--cheat::before,
+      .uiverse-review-card--cheat::after {
+        display: none !important;
+      }
+
+      .uiverse-review-card--cheat .uiverse-notiglow,
+      .uiverse-review-card--cheat .uiverse-notiborderglow {
+        display: none !important;
       }
 
       .cheat-card {
@@ -238,9 +265,9 @@ export default function CheatSheet() {
 
       {/* Breadcrumb — hidden in print */}
       <div className="no-print" style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 12 }}>
-        <span style={{ color: '#238636' }}>Home</span>
-        <span style={{ color: '#8b949e' }}>{'>'}</span>
-        <span style={{ color: '#8b949e' }}>Command Cheat Sheet</span>
+        <span style={{ color: 'var(--accent-dim)' }}>Home</span>
+        <span style={{ color: 'var(--text-muted)' }}>{'>'}</span>
+        <span style={{ color: 'var(--text-muted)' }}>Command Cheat Sheet</span>
       </div>
 
       {/* Page Header */}
@@ -248,7 +275,7 @@ export default function CheatSheet() {
         <img src={restingIconPose} alt="GitGitAw Mascot" className="no-print page-mascot" style={{ flexShrink: 0 }} />
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-            <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: '#e6edf3', margin: 0 }}>
+            <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
               Command Cheat Sheet
             </h1>
             {/* Download button — hidden in print (it calls window.print() which opens the browser's Save as PDF dialog) */}
@@ -260,15 +287,15 @@ export default function CheatSheet() {
                 ...sans, fontSize: 13, fontWeight: 600,
                 display: 'flex', alignItems: 'center', gap: 8,
                 padding: '10px 16px', borderRadius: 8, cursor: 'pointer',
-                background: '#161b22', border: '1px solid #30363d',
-                color: '#e6edf3', flexShrink: 0,
+                background: 'var(--bg-secondary)', border: '1px solid var(--border)',
+                color: 'var(--text-primary)', flexShrink: 0,
               }}
             >
               <Printer size={15} />
               Download/Print
             </button>
           </div>
-          <p style={{ ...sans, fontSize: 16, color: '#8b949e', lineHeight: 1.5, margin: 0 }}>
+          <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
             Lahat ng Git at GitHub commands na kailangan mo — sa isang lugar.
           </p>
         </div>

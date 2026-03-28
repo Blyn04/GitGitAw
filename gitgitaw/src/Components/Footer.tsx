@@ -1,6 +1,8 @@
 import { Github, ExternalLink, Heart } from 'lucide-react'
+import { useCommunityModal } from '../context/CommunityModalContext'
 
 export default function Footer() {
+  const { openCommunity } = useCommunityModal()
   return (
     <footer className="site-footer">
       <div className="footer-columns">
@@ -42,11 +44,25 @@ export default function Footer() {
           <a href="#" style={{ fontSize: 13, color: 'var(--accent-dim)', fontFamily: 'Inter, sans-serif', textDecoration: 'none' }}>
             → Source Code
           </a>
+          <button
+            type="button"
+            onClick={() => openCommunity()}
+            style={{
+              fontSize: 13,
+              color: 'var(--accent-dim)',
+              fontFamily: 'Inter, sans-serif',
+              textDecoration: 'none',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              textAlign: 'left',
+            }}
+          >
+            → Community & Feedback
+          </button>
           <a href="#" style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', textDecoration: 'none' }}>
             → Apache-2.0 License
-          </a>
-          <a href="#" style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', textDecoration: 'none' }}>
-            → Report an Issue
           </a>
         </div>
 

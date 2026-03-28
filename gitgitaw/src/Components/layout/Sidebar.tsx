@@ -5,6 +5,8 @@ import {
   Terminal, FileText, Target, Trophy, MessageCircle, BookMarked,
   Settings, Menu, X,
 } from "lucide-react"
+import restingMascot from "../../assets/images/GitGitAw_Mascot/Resting Icon Pose.png"
+import { useCommunityModal } from "../../context/CommunityModalContext"
 
 const navItems = [
   { label: 'Home',                 to: '/',                             icon: Home },
@@ -21,12 +23,28 @@ const navItems = [
 ]
 
 const bottomItems = [
-  { label: 'Community', to: '/community', icon: MessageCircle },
   { label: 'Glossary',  to: '/glossary',  icon: BookMarked },
   { label: 'Settings',  to: '/settings',  icon: Settings },
 ]
 
 const mono = { fontFamily: 'JetBrains Mono, monospace' }
+
+function CommunityNavButton({ onActivate }: { onActivate: () => void }) {
+  const { openCommunity } = useCommunityModal()
+  return (
+    <button
+      type="button"
+      className="sidebar-nav-link sidebar-nav-link--bottom"
+      onClick={() => {
+        openCommunity()
+        onActivate()
+      }}
+    >
+      <MessageCircle size={18} />
+      Community
+    </button>
+  )
+}
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -48,7 +66,7 @@ export default function Sidebar() {
           <Menu size={22} />
         </button>
         <span style={{ ...mono, fontWeight: 700, fontSize: 16, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 7 }}>
-          <Github size={16} />
+          <img src={restingMascot} alt="" width={38} height={38} style={{ objectFit: 'contain', flexShrink: 0 }} />
           GitGit Aw
         </span>
       </div>
@@ -77,7 +95,14 @@ export default function Sidebar() {
         <div className="sidebar-brand-block flex flex-col gap-1.5 px-5 pt-6 pb-6 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <Github size={20} className="sidebar-brand-icon" style={{ color: 'var(--text-primary)' }} />
+              <img
+                src={restingMascot}
+                alt=""
+                width={44}
+                height={44}
+                className="sidebar-brand-mascot"
+                style={{ objectFit: 'contain', flexShrink: 0 }}
+              />
               <span
                 className="sidebar-brand-title"
                 style={{ ...mono, fontWeight: 700, fontSize: 17, color: 'var(--text-primary)' }}
@@ -95,7 +120,7 @@ export default function Sidebar() {
               <X size={18} />
             </button>
           </div>
-          <span style={{ ...mono, fontSize: 12, color: 'var(--text-muted)', marginLeft: 30 }}>
+          <span style={{ ...mono, fontSize: 12, color: 'var(--text-muted)', marginLeft: 46 }}>
             Learn Git the Pinoy way!
           </span>
         </div>
@@ -136,6 +161,7 @@ export default function Sidebar() {
 
         {/* Bottom nav — pinned to bottom of sidebar; extra horizontal padding so dark mode isn't cramped */}
         <nav className="flex flex-col gap-1.5 px-5 py-4 pb-5 shrink-0">
+          <CommunityNavButton onActivate={close} />
           {bottomItems.map(({ label, to, icon: Icon }) => (
             <NavLink
               key={to}

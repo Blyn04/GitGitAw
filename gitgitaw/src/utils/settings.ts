@@ -1,16 +1,20 @@
 export type Theme       = 'dark' | 'light'
 export type AccentColor = 'green' | 'blue' | 'purple' | 'orange' | 'yellow'
+/** UI language: English or Filipino (content where available). */
+export type AppLanguage = 'en' | 'tl'
 
 export interface AppSettings {
   theme:         Theme
   accentColor:   AccentColor
   reduceMotion:  boolean
+  language:      AppLanguage
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
   theme:        'dark',
   accentColor:  'green',
   reduceMotion: false,
+  language:     'tl',
 }
 
 const STORAGE_KEY = 'gitgitaw_settings'
@@ -58,6 +62,7 @@ export function loadSettings(): AppSettings {
 export function saveSettings(s: AppSettings): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(s))
   localStorage.setItem('theme', s.theme) // keep Sidebar in sync
+  window.dispatchEvent(new Event('gitgitaw-settings-changed'))
 }
 
 export function applySettings(s: AppSettings): void {
@@ -79,4 +84,7 @@ export function applySettings(s: AppSettings): void {
 
   // 3. Reduce motion
   root.dataset.reduceMotion = s.reduceMotion ? 'true' : 'false'
+
+  // 4. Language (for CSS / future use)
+  root.dataset.lang = s.language
 }

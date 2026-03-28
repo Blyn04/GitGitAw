@@ -1,0 +1,216 @@
+/* Uiverse-style card — colors from theme tokens (accent / surfaces) */
+
+.card {
+  width: 300px;
+  height: 200px;
+  background: color-mix(in srgb, var(--bg-secondary) 92%, var(--accent) 8%);
+  position: relative;
+  display: grid;
+  place-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  font: inherit;
+  text-align: center;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.logoMain {
+  height: 100%;
+  display: block;
+  fill: var(--accent);
+}
+
+.border {
+  position: absolute;
+  inset: 0px;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  transform: rotate(10deg);
+  transition: all 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.bottomText {
+  position: absolute;
+  left: 50%;
+  bottom: 13px;
+  transform: translateX(-50%);
+  font-size: 6px;
+  text-transform: uppercase;
+  padding: 0px 5px 0px 8px;
+  color: var(--accent);
+  background: var(--bg-secondary);
+  opacity: 0;
+  letter-spacing: 7px;
+  transition: all 0.5s ease-in-out;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.content {
+  transition: all 0.5s ease-in-out;
+}
+
+.content .logo {
+  height: 35px;
+  position: relative;
+  width: 33px;
+  overflow: hidden;
+  transition: all 1s ease-in-out;
+  margin: 0 auto;
+}
+
+.content .logo .logo1 {
+  height: 33px;
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--accent);
+}
+
+.content .logo .logo2 {
+  height: 33px;
+  position: absolute;
+  left: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.content .logo .trail {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+}
+
+.content .logoBottomText {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 30px;
+  color: var(--accent);
+  padding-left: 8px;
+  font-size: 11px;
+  opacity: 0;
+  letter-spacing: normal;
+  transition: all 0.5s ease-in-out 0.5s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.card:hover {
+  border-radius: 0;
+  transform: scale(1.06);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 14px 36px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.card:hover .logo {
+  width: 134px;
+  animation: opacity 1s ease-in-out;
+}
+
+.card:hover .border {
+  inset: 15px;
+  opacity: 1;
+  transform: rotate(0);
+}
+
+.card:hover .bottomText {
+  letter-spacing: 3px;
+  opacity: 1;
+  transform: translateX(-50%);
+}
+
+.card:hover .content .logoBottomText {
+  opacity: 1;
+  letter-spacing: 9.5px;
+}
+
+.card:hover .trail {
+  animation: trail 1s ease-in-out;
+}
+
+@keyframes opacity {
+  0% {
+    border-right: 1px solid transparent;
+  }
+
+  10% {
+    border-right: 1px solid var(--accent);
+  }
+
+  80% {
+    border-right: 1px solid var(--accent);
+  }
+
+  100% {
+    border-right: 1px solid transparent;
+  }
+}
+
+@keyframes trail {
+  0% {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 0%, transparent) 90%,
+      var(--accent) 100%
+    );
+    opacity: 0;
+  }
+
+  30% {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 0%, transparent) 70%,
+      var(--accent) 100%
+    );
+    opacity: 1;
+  }
+
+  70% {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 0%, transparent) 70%,
+      var(--accent) 100%
+    );
+    opacity: 1;
+  }
+
+  95% {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 0%, transparent) 90%,
+      var(--accent) 100%
+    );
+    opacity: 0;
+  }
+}
+
+.card:focus {
+  outline: none;
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+[data-reduce-motion="true"] .card:hover {
+  transform: none;
+}
+
+[data-reduce-motion="true"] .card:hover .trail {
+  animation: none;
+}

@@ -100,8 +100,8 @@ function MapNode({
         opacity: isLocked ? 0.45 : 1,
         position: 'relative',
         transition: 'border-color 0.2s, box-shadow 0.2s, transform 0.15s',
-        maxWidth: 480,
         width: '100%',
+        maxWidth: 'none',
         boxShadow: isDone ? `0 0 16px ${accentColor}30` : isAvailable ? `0 0 20px ${accentColor}25` : 'none',
       }}
     >
@@ -181,7 +181,9 @@ function ClusterHeader({
       background: bg,
       border: `1px solid ${color}40`,
       borderRadius: 12,
-      maxWidth: 480, width: '100%',
+      width: '100%',
+      maxWidth: 'none',
+      boxSizing: 'border-box',
       opacity: unlocked ? 1 : 0.5,
     }}>
       <div style={{
@@ -234,21 +236,29 @@ export default function PracticeProjects() {
         <span style={{ color: 'var(--text-muted)' }}>Practice Projects</span>
       </div>
 
-      {/* Page header */}
-      <header className="lesson-header">
-        <img src={friendlyGuidePose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-            Practice Projects
-          </h1>
-          <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
-            Kumpleto ang mga projects para makakuha ng XP at i-unlock ang mas mahirap na challenges.
-          </p>
+      {/* Page header + XP bar (progress directly under intro copy) */}
+      <header
+        className="lesson-header"
+        style={{
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          gap: 20,
+          width: '100%',
+        }}
+      >
+        <div className="practice-header-top">
+          <img src={friendlyGuidePose} alt="GitGitAw Mascot" className="page-mascot" style={{ flexShrink: 0 }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1, minWidth: 0 }}>
+            <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+              Practice Projects
+            </h1>
+            <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+              Kumpleto ang mga projects para makakuha ng XP at i-unlock ang mas mahirap na challenges.
+            </p>
+          </div>
         </div>
+        <GameHeader xp={progress.xp} streak={progress.streak} levelInfo={levelInfo} />
       </header>
-
-      {/* Game header */}
-      <GameHeader xp={progress.xp} streak={progress.streak} levelInfo={levelInfo} />
 
       {/* Streak goal banner */}
       {(() => {
@@ -291,14 +301,20 @@ export default function PracticeProjects() {
         return null
       })()}
 
-      {/* Quest map */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, paddingTop: 8 }}>
-        {tiers.map((tier, ti) => (
-          <React.Fragment key={tier.key}>
-            {/* Connector before cluster (except first) */}
-            {ti > 0 && <Connector done={tier.unlocked} />}
-
-            {/* Cluster header */}
+      {/* Quest map — three zones in a row on wide screens */}
+      <div className="practice-zones-grid">
+        {tiers.map((tier) => (
+          <div
+            key={tier.key}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+              gap: 0,
+              minWidth: 0,
+              width: '100%',
+            }}
+          >
             <ClusterHeader
               label={tier.cfg.label + ' Zone'}
               color={tier.cfg.color}
@@ -307,8 +323,6 @@ export default function PracticeProjects() {
               completedCount={tier.completedCount}
               total={tier.projects.length}
             />
-
-            {/* Nodes */}
             {tier.projects.map((project, pi) => {
               const state = getNodeState(project)
               const record = progress.projects[project.id]
@@ -326,9 +340,11 @@ export default function PracticeProjects() {
                 </React.Fragment>
               )
             })}
-          </React.Fragment>
+          </div>
         ))}
+      </div>
 
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         {/* All done CTA */}
         {MAP_PROJECTS.every(p => progress.projects[p.id]?.completed) && (
           <div style={{

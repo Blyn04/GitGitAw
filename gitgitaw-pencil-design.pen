@@ -38163,6 +38163,17 @@
           ]
         }
       ]
+    },
+    {
+      "type": "text",
+      "id": "juHgI",
+      "x": 0,
+      "y": 0,
+      "fill": "#000000",
+      "content": "836596",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
     }
   ]
 }

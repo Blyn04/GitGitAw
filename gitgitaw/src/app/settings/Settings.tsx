@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { loadSettings, saveSettings, applySettings, DEFAULT_SETTINGS, type AppSettings, type AccentColor, type Theme } from '../../utils/settings'
+import { loadSettings, saveSettings, applySettings, DEFAULT_SETTINGS, type AppSettings, type AccentColor, type Theme, type AppLanguage } from '../../utils/settings'
 import Footer from '../../Components/Footer'
 import { useGameProgress } from '../../hooks/useGameProgress'
 
@@ -93,6 +93,40 @@ function ThemeToggleSwitch({ value, onChange }: { value: Theme; onChange: (v: Th
 
 // ── Accent colour picker ─────────────────────────────────────────────
 
+function LanguagePicker({ value, onChange }: { value: AppLanguage; onChange: (v: AppLanguage) => void }) {
+  return (
+    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      {([
+        { id: 'tl' as const, label: 'Filipino' },
+        { id: 'en' as const, label: 'English' },
+      ]).map((opt) => {
+        const active = value === opt.id
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => onChange(opt.id)}
+            style={{
+              ...sans,
+              fontSize: 13,
+              fontWeight: active ? 600 : 400,
+              padding: '8px 16px',
+              borderRadius: 8,
+              cursor: 'pointer',
+              border: active ? '1px solid var(--active-border)' : '1px solid var(--border)',
+              background: active ? 'var(--active-bg)' : 'var(--bg-tertiary)',
+              color: active ? 'var(--text-primary)' : 'var(--text-muted)',
+              transition: 'background 0.15s, border-color 0.15s',
+            }}
+          >
+            {opt.label}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 function AccentPicker({ value, theme, onChange }: { value: AccentColor; theme: Theme; onChange: (v: AccentColor) => void }) {
   return (
     <div style={{ display: 'flex', gap: 10 }}>
@@ -171,9 +205,15 @@ export default function SettingsPage() {
           <SettingRow
             title="Accent Color"
             desc="Kulay ng mga active items, buttons, at highlights."
-            divider={false}
           >
             <AccentPicker value={settings.accentColor} theme={settings.theme} onChange={v => update('accentColor', v)} />
+          </SettingRow>
+          <SettingRow
+            title="Language"
+            desc="UI language para sa Community modal, Glossary labels, at search. (Ang mga definition sa Glossary ay Filipino pa rin sa ngayon.)"
+            divider={false}
+          >
+            <LanguagePicker value={settings.language} onChange={v => update('language', v)} />
           </SettingRow>
         </SectionCard>
 
@@ -233,6 +273,7 @@ export default function SettingsPage() {
             {[
               `theme: ${settings.theme}`,
               `accent: ${settings.accentColor}`,
+              `language: ${settings.language}`,
               `reduce-motion: ${settings.reduceMotion}`,
             ].map(tag => (
               <span key={tag} style={{ ...mono, fontSize: 11, color: 'var(--text-muted)', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 4, padding: '2px 8px' }}>

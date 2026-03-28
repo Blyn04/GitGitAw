@@ -2,20 +2,13 @@ import React, { useMemo, useState } from 'react'
 import Footer from '../../Components/Footer'
 import { useBackToTop, BackToTopButton } from '../../Components/BackToTop'
 import fullBodyPose from '../../assets/images/GitGitAw_Mascot/Full Body.png'
+import { useAppLanguage } from '../../hooks/useAppLanguage'
+import { getGlossaryUi, getTagFilters, type TagFilter } from './glossaryUi'
 
 const sans: React.CSSProperties = { fontFamily: 'Inter, sans-serif' }
 const mono: React.CSSProperties = { fontFamily: 'JetBrains Mono, monospace' }
 
 type Term = { term: string; def: string; tags?: string[] }
-
-type TagFilter = 'all' | 'git' | 'github' | 'collab'
-
-const TAG_FILTERS: { id: TagFilter; label: string; hint: string }[] = [
-  { id: 'all', label: 'Lahat', hint: 'Lahat ng termino' },
-  { id: 'git', label: 'Git', hint: 'Local commands, commits, branches' },
-  { id: 'github', label: 'GitHub', hint: 'PR, fork, remote sa GitHub' },
-  { id: 'collab', label: 'Collaboration', hint: 'Team workflow, code review' },
-]
 
 /** Mga termino mula sa mga lesson ng GitGit Aw (Git, GitHub, collaboration). */
 const GLOSSARY_TERMS: Term[] = [
@@ -58,6 +51,9 @@ function normalize(s: string) {
 }
 
 export default function GlossaryPage() {
+  const lang = useAppLanguage()
+  const ui = getGlossaryUi(lang)
+  const TAG_FILTERS = getTagFilters(lang)
   const { showBackToTop, scrollToTop } = useBackToTop()
   const [q, setQ] = useState('')
   const [tagFilter, setTagFilter] = useState<TagFilter>('all')
@@ -89,92 +85,106 @@ export default function GlossaryPage() {
     return [...map.entries()].sort(([a], [b]) => a.localeCompare(b))
   }, [filtered])
 
+  const filteredFlag = tagFilter !== 'all' || Boolean(q.trim())
+
   return (
     <div className="lesson-page">
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, ...mono, fontSize: 12 }}>
         <span style={{ color: 'var(--accent-dim)' }}>Home</span>
         <span style={{ color: 'var(--text-muted)' }}>{'>'}</span>
-        <span style={{ color: 'var(--text-muted)' }}>Glossary</span>
+        <span style={{ color: 'var(--text-muted)' }}>{ui.title}</span>
       </div>
 
       <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h1 className="lesson-page-title" style={{ ...sans, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-            Glossary
+            {ui.title}
           </h1>
           <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
-            Mga termino sa Git, GitHub, at collaboration — batay sa nilalaman ng GitGit Aw.
+            {ui.subtitle}
           </p>
         </div>
         <img src={fullBodyPose} alt="GitGitAw Mascot" className="page-mascot" />
       </header>
 
-      <div style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 20 }}>
-        <div>
-          <span style={{ ...sans, fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: 10 }}>
-            Salain ayon sa paksa
-          </span>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {TAG_FILTERS.map((f) => {
-              const active = tagFilter === f.id
-              return (
-                <button
-                  key={f.id}
-                  type="button"
-                  title={f.hint}
-                  onClick={() => setTagFilter(f.id)}
-                  style={{
-                    ...sans,
-                    fontSize: 13,
-                    fontWeight: active ? 600 : 500,
-                    padding: '8px 14px',
-                    borderRadius: 999,
-                    cursor: 'pointer',
-                    border: active ? '1px solid var(--active-border)' : '1px solid var(--border)',
-                    background: active ? 'var(--active-bg)' : 'var(--bg-secondary)',
-                    color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-                    transition: 'background 0.15s, border-color 0.15s, color 0.15s',
-                  }}
-                >
-                  {f.label}
-                </button>
-              )
-            })}
+      <div style={{ maxWidth: 900, display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'flex-start',
+            gap: 14,
+            rowGap: 16,
+          }}
+        >
+          <div style={{ flex: '1 1 220px', minWidth: 200 }}>
+            <label htmlFor="glossary-search" style={{ ...sans, fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: 8 }}>
+              {ui.searchLabel}
+            </label>
+            <input
+              id="glossary-search"
+              type="search"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder={ui.searchPlaceholder}
+              style={{
+                ...sans,
+                width: '100%',
+                padding: '12px 14px',
+                borderRadius: 8,
+                border: '1px solid var(--border)',
+                background: 'var(--bg-secondary)',
+                color: 'var(--text-primary)',
+                fontSize: 15,
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+          <div
+            style={{
+              flex: '2 1 280px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
+            }}
+          >
+            <span style={{ ...sans, fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>{ui.filterAria}</span>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+              {TAG_FILTERS.map((f) => {
+                const active = tagFilter === f.id
+                return (
+                  <button
+                    key={f.id}
+                    type="button"
+                    title={f.hint}
+                    onClick={() => setTagFilter(f.id)}
+                    style={{
+                      ...sans,
+                      fontSize: 13,
+                      fontWeight: active ? 600 : 500,
+                      padding: '8px 14px',
+                      borderRadius: 999,
+                      cursor: 'pointer',
+                      border: active ? '1px solid var(--active-border)' : '1px solid var(--border)',
+                      background: active ? 'var(--active-bg)' : 'var(--bg-secondary)',
+                      color: active ? 'var(--text-primary)' : 'var(--text-muted)',
+                      transition: 'background 0.15s, border-color 0.15s, color 0.15s',
+                    }}
+                  >
+                    {f.label}
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
 
-        <div>
-          <label htmlFor="glossary-search" style={{ ...sans, fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: 8 }}>
-            Hanapin sa teksto
-          </label>
-          <input
-            id="glossary-search"
-            type="search"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Hal. merge, PR, fork..."
-            style={{
-              ...sans,
-              width: '100%',
-              maxWidth: 400,
-              padding: '12px 14px',
-              borderRadius: 8,
-              border: '1px solid var(--border)',
-              background: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              fontSize: 15,
-            }}
-          />
-          <p style={{ ...mono, fontSize: 12, color: 'var(--text-muted)', margin: '10px 0 0' }}>
-            {filtered.length} na term
-            {tagFilter !== 'all' || q.trim()
-              ? ` (mula sa ${GLOSSARY_TERMS.length} kabuuan)`
-              : ''}
-          </p>
-        </div>
+        <p style={{ ...mono, fontSize: 12, color: 'var(--text-muted)', margin: 0 }}>
+          {ui.termCount(filtered.length, GLOSSARY_TERMS.length, filteredFlag)}
+        </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 32, marginTop: 8 }}>
         {grouped.map(([letter, terms]) => (
           <section key={letter}>
             <h2 style={{ ...sans, fontSize: 14, fontWeight: 700, color: 'var(--accent)', letterSpacing: '0.06em', margin: '0 0 12px', borderBottom: '1px solid var(--border)', paddingBottom: 6 }}>
@@ -202,10 +212,11 @@ export default function GlossaryPage() {
       </div>
 
       {filtered.length === 0 && (
-        <p style={{ ...sans, color: 'var(--text-muted)' }}>
-          Walang tumugma{q.trim() ? ` sa &quot;${q}&quot;` : ''}
-          {tagFilter !== 'all' ? ` sa filter na &quot;${TAG_FILTERS.find((x) => x.id === tagFilter)?.label}&quot;` : ''}.
-          Subukan ang ibang salita o piliin ang &quot;Lahat&quot;.
+        <p style={{ ...sans, color: 'var(--text-muted)', marginTop: 16 }}>
+          {ui.emptyState(
+            q,
+            tagFilter !== 'all' ? TAG_FILTERS.find((x) => x.id === tagFilter)?.label : undefined,
+          )}
         </p>
       )}
 

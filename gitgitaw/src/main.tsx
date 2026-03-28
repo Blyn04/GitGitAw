@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ScrollToTop from './Components/ScrollToTop'
 import './index.css'
 import { loadSettings, applySettings } from './utils/settings'
+import { LanguageProvider } from './context/LanguageContext'
 import AppLayout from './Components/layout/AppLayout'
 import HomePage from './app/home/page'
 import GetStarted from './app/gettingStarted/getStarted'
@@ -27,6 +28,7 @@ applySettings(loadSettings())
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
+      <LanguageProvider>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<AppLayout />}>
@@ -47,6 +49,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="settings"                     element={<SettingsPage />} />
         </Route>
       </Routes>
+      </LanguageProvider>
     </BrowserRouter>
   </StrictMode>
 )

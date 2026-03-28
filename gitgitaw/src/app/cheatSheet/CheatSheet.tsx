@@ -21,41 +21,39 @@ function CheatCard({
   Icon?: React.ElementType
 }) {
   return (
-    <div className="uiverse-review-card uiverse-review-card--cheat">
-      <div className="uiverse-notiborderglow" aria-hidden />
-      <div className="uiverse-notiglow" aria-hidden />
-      <div
-        className="uiverse-review-card__content uiverse-review-card__content--cheat cheat-card"
-        style={{
-          flex: 1,
-          background: 'var(--bg-code)',
-          borderRadius: 12,
-          padding: '32px 28px 36px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 22,
-          borderLeft: `4px solid ${accent}`,
-        }}
-      >
-        <div className="cheat-card-header">
-          {Icon && (
-            <div style={{ width: 44, height: 44, borderRadius: 10, background: `${accent}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Icon size={20} style={{ color: accent }} />
-            </div>
-          )}
-          <div className="cheat-card-header-meta">
-            <span className="cheat-card-tag" style={{ ...mono, fontSize: 10, fontWeight: 700, color: accent }}>{tag}</span>
-            <h3 className="cheat-card-title" style={{ ...sans, fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{title}</h3>
+    <div
+      className="cheat-card"
+      style={{
+        flex: 1,
+        background: 'var(--bg-secondary)',
+        border: '1px solid var(--border)',
+        borderRadius: 12,
+        padding: '32px 28px 36px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 22,
+        borderLeft: `4px solid ${accent}`,
+        boxSizing: 'border-box',
+      }}
+    >
+      <div className="cheat-card-header">
+        {Icon && (
+          <div style={{ width: 44, height: 44, borderRadius: 10, background: `${accent}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Icon size={20} style={{ color: accent }} />
           </div>
+        )}
+        <div className="cheat-card-header-meta">
+          <span className="cheat-card-tag" style={{ ...mono, fontSize: 10, fontWeight: 700, color: accent }}>{tag}</span>
+          <h3 className="cheat-card-title" style={{ ...sans, fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{title}</h3>
         </div>
-        <div className="cheat-card-divider" style={{ height: 1, background: 'var(--border)' }} />
-        {commands.map((row) => (
-          <div key={row.cmd} className="cheat-card-row">
-            <span className="cheat-cmd" style={{ ...mono, fontSize: 12, color: accent }}>{row.cmd}</span>
-            <span className="cheat-desc" style={{ ...sans, fontSize: 12, color: 'var(--text-muted)' }}>{row.desc}</span>
-          </div>
-        ))}
       </div>
+      <div className="cheat-card-divider" style={{ height: 1, background: 'var(--border)' }} />
+      {commands.map((row) => (
+        <div key={row.cmd} className="cheat-card-row">
+          <span className="cheat-cmd" style={{ ...mono, fontSize: 12, color: accent }}>{row.cmd}</span>
+          <span className="cheat-desc" style={{ ...sans, fontSize: 12, color: 'var(--text-muted)' }}>{row.desc}</span>
+        </div>
+      ))}
     </div>
   )
 }
@@ -148,23 +146,6 @@ export default function CheatSheet() {
         gap: 14px !important;
         break-inside: auto !important;
         page-break-inside: auto !important;
-      }
-
-      .uiverse-review-card--cheat {
-        background: transparent !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        min-height: 0 !important;
-      }
-
-      .uiverse-review-card--cheat::before,
-      .uiverse-review-card--cheat::after {
-        display: none !important;
-      }
-
-      .uiverse-review-card--cheat .uiverse-notiglow,
-      .uiverse-review-card--cheat .uiverse-notiborderglow {
-        display: none !important;
       }
 
       .cheat-card {

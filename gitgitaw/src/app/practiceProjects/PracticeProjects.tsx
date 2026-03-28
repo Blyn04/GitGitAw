@@ -255,9 +255,10 @@ export default function PracticeProjects() {
             <p style={{ ...sans, fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
               Kumpleto ang mga projects para makakuha ng XP at i-unlock ang mas mahirap na challenges.
             </p>
+
+            <GameHeader xp={progress.xp} streak={progress.streak} levelInfo={levelInfo} />
           </div>
         </div>
-        <GameHeader xp={progress.xp} streak={progress.streak} levelInfo={levelInfo} />
       </header>
 
       {/* Streak goal banner */}

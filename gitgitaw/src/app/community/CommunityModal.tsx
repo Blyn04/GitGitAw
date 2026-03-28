@@ -37,39 +37,15 @@ export default function CommunityModal({ open, onClose }: { open: boolean; onClo
     <div
       className="community-modal-backdrop"
       role="presentation"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 100,
-        background: 'color-mix(in srgb, var(--bg-primary) 28%, transparent)',
-        backdropFilter: 'blur(16px) saturate(1.08)',
-        WebkitBackdropFilter: 'blur(16px) saturate(1.08)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20,
-      }}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
       <div
+        className="community-modal-dialog"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        style={{
-          position: 'relative',
-          width: '100%',
-          maxWidth: 900,
-          maxHeight: '90vh',
-          overflow: 'auto',
-          background: 'var(--bg-secondary)',
-          border: '1px solid color-mix(in srgb, var(--accent) 22%, var(--border))',
-          borderRadius: 12,
-          padding: '28px 24px 32px',
-          boxShadow:
-            '0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent), 0 24px 80px color-mix(in srgb, var(--bg-primary) 40%, black)',
-        }}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <button

@@ -17,11 +17,12 @@ export default function GameHeader({ xp, streak, levelInfo }: GameHeaderProps) {
       background: 'var(--bg-secondary)',
       border: '1px solid var(--border)',
       borderRadius: 12,
-      padding: '14px 20px',
+      padding: '20px 20px',
       display: 'flex',
       alignItems: 'center',
       gap: 20,
       flexWrap: 'wrap',
+      marginTop: 50,
     }}>
       {/* Level badge */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { loadSettings, saveSettings, applySettings, DEFAULT_SETTINGS, type AppSettings, type AccentColor, type Theme, type AppLanguage } from '../../utils/settings'
+import { useRefreshLanguage } from '../../context/LanguageContext'
 import Footer from '../../Components/Footer'
 import { useGameProgress } from '../../hooks/useGameProgress'
 
@@ -158,15 +159,17 @@ function AccentPicker({ value, theme, onChange }: { value: AccentColor; theme: T
 // ── Main page ────────────────────────────────────────────────────────
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState<AppSettings>(loadSettings)
+  const [settings, setSettings] = useState<AppSettings>(() => loadSettings())
   const [confirmReset, setConfirmReset] = useState(false)
   const { resetProgress } = useGameProgress()
+  const refreshLanguage = useRefreshLanguage()
 
   function update<K extends keyof AppSettings>(key: K, value: AppSettings[K]) {
     const next = { ...settings, [key]: value }
     setSettings(next)
     saveSettings(next)
     applySettings(next)
+    refreshLanguage()
   }
 
   function resetAll() {
@@ -174,6 +177,7 @@ export default function SettingsPage() {
     setSettings(next)
     saveSettings(next)
     applySettings(next)
+    refreshLanguage()
   }
 
   return (

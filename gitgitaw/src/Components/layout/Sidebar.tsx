@@ -98,10 +98,10 @@ export default function Sidebar() {
               <img
                 src={restingMascot}
                 alt=""
-                width={44}
-                height={44}
+                width={60}
+                height={60}
                 className="sidebar-brand-mascot"
-                style={{ objectFit: 'contain', flexShrink: 0 }}
+                style={{ objectFit: 'contain', flexShrink: 0, marginLeft: 10, marginTop: 10}}
               />
               <span
                 className="sidebar-brand-title"
